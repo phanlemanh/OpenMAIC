@@ -68,6 +68,43 @@ describe('câu neo', () => {
     expect(unit?.n, 'anchor names the wrong unit').toBe(12);
   });
 
+  it('CHIỀU ĐỎ (vòng 4): chữ ngắn lọt trong cụm khác KHÔNG ghi điểm — «hình vẽ» không phải «Hình và đối xứng»', () => {
+    // Ca hội đồng vòng 4 tìm ra trên gói thật: đề «ôn tập xác suất», một cảnh
+    // «Dùng hình vẽ minh hoạ các khả năng xảy ra» → bản cũ trả Unit 8 (Hình và
+    // đối xứng) vì «hình» là chuỗi con của «hình vẽ» và unit 8 đứng trước unit 13.
+    const units = [
+      { n: 8, en: 'Shapes and symmetry', vi: 'Hình và đối xứng' },
+      { n: 13, en: 'Probability', vi: 'Xác suất' },
+    ];
+    const anchor = deriveCurriculumAnchor({
+      pack: { language: 'vi-VN', textbooks: [BOOK], units },
+      requirement: 'ôn tập xác suất cho bé',
+      outlines: [{ title: 'Khả năng', description: 'Dùng hình vẽ minh hoạ các khả năng xảy ra' }],
+      language: 'vi-VN',
+    });
+    expect(anchor, 'anchor names the wrong unit').toBe(`Unit 13 · Xác suất — ${BOOK}`);
+  });
+
+  it('CHIỀU ĐỎ (vòng 4): hai unit hoà điểm → KHÔNG để thứ tự mục lục quyết, chỉ nêu tên sách', () => {
+    // Hai unit, mỗi unit khớp đúng MỘT chữ — điểm bằng nhau, không có căn cứ
+    // nào để chọn; bản cũ chọn unit đứng trước trong mục lục và nói chắc.
+    const units = [
+      { n: 11, en: 'Graphs', vi: 'Đồ thị' },
+      { n: 13, en: 'Probability', vi: 'Xác suất' },
+    ];
+    const anchor = deriveCurriculumAnchor({
+      pack: { language: 'en-US', textbooks: [BOOK], units },
+      requirement: 'probability and graphs',
+      outlines: [],
+    });
+    expect(anchor, 'anchor names the wrong unit').toBe(BOOK);
+  });
+
+  it('cụm trọn chữ vẫn khớp khi đứng giữa câu, kể cả có dấu câu quanh', () => {
+    expect(matchUnit(PACK.units, 'Bài 3: tỉ số, tỉ lệ và ứng dụng.')?.n).toBe(12);
+    expect(matchUnit(PACK.units, 'Percentages: finding 15% of 80')?.n).toBe(10);
+  });
+
   it('CHIỀU ĐỎ: không unit nào khớp → chỉ tên sách, KHÔNG bịa unit', () => {
     const anchor = deriveCurriculumAnchor({
       pack: PACK,

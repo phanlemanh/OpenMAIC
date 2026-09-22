@@ -1,83 +1,106 @@
 E7 — network evidence for AC-7 (curriculumAnchor SSE event in the outline stream)
-RE-VERIFIED round 3, independent verifier session, 2026-09-22.
-Repo sha at test time: 09acf1dc "fix(hieu-be-dang-hoc-gi): bốn lỗi vòng nghiệm thu thứ hai,
-và gỡ điều kiện ngầm" (working tree also has the unrelated, pre-existing uncommitted diff
-in _acceptance/hieu-be-dang-hoc-gi/s4-args.json only — no product code touched).
-Dev server: `pnpm dev` (config.yaml dev_server.start, unmodified: PORT=3002,
+RE-VERIFIED round 4, independent verifier session, 2026-09-22.
+Repo HEAD at test time: b5896ba35b0b1f88fcfb90375a7e54d672599639
+  "fix(acceptance): cặp dàn ý mù nêu đích danh mô hình, và nói ra lý do khi tuyến trả rỗng"
+  (working tree also had the pre-existing uncommitted diff in
+  _acceptance/hieu-be-dang-hoc-gi/s4-args.json only — no product code touched by this verify pass).
+
+Dev server: config.yaml dev_server.start, UNMODIFIED and already running (verified via `ps eww`
+on the live next-server/next/pnpm process chain — env has PORT=3002,
 NEXT_PUBLIC_MAIC_EDITOR_ENABLED=true, NEXT_PUBLIC_PI_CHAT_ENABLED=true,
 NEXT_PUBLIC_COURSEWARE_REFERENCE_ENABLED=true, NEXT_PUBLIC_PERSISTENCE=1) on
-http://localhost:3002. Model key present server-side via .env.local ANTHROPIC_API_KEY /
-OPENAI_API_KEY (model used: openai:gpt-5.6, per server log "[Agent Profiles API] ...
-[model=openai:gpt-5.6]" and the outline system prompt run).
-Driver: Claude Browser pane, mcp__Claude_Browser__read_network_requests(requestId=<the POST>).
+http://localhost:3002. This verifier did NOT start or stop this server (pre-existing, shared).
+Model key present server-side: .env.local has ANTHROPIC_API_KEY (and others) plus an
+uncommented DEFAULT_MODEL; server used openai:gpt-5.6 (per the "Building for" composer badge
+"OpenAI / GPT-5.6").
 
-=== Setup note ===
-Before this run, verifier cleared this origin's localStorage/sessionStorage and deleted the
-"MAIC-Database" IndexedDB database (via javascript_tool), then reloaded. This was necessary
-because KVPersist's own "restore last saved version" behavior (a pre-existing consequence of
-dev_server.start's NEXT_PUBLIC_PERSISTENCE=1 flag with no DATABASE_URL/PERSISTENCE_DEV_TOKEN
-configured — see config.yaml comment on that flag) had, earlier in this same verifier session,
-overwritten an in-progress Cambridge profile with a stale MOET profile left over from an
-earlier acceptance round (E1) that used the same browser origin. After the clear, the profile
-setup (Bé Minh, lớp 7, Toán, Cambridge Lower Secondary, English) held correctly through to
-generation. This is an environment/config-gap workaround, not a change to product code.
+Driver: Playwright MCP (mcp__playwright__*), driving the actual on-page flow (profile setup →
+homepage composer → Enter Classroom → outline review).
 
-=== Run (profile: Bé Minh, lớp 7, Toán, Cambridge Lower Secondary, English;
-     prompt "tỉ lệ và tỉ số"; outline review opened early via "Tap to review") ===
-Request: POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK
-Full raw SSE body fetched via read_network_requests(requestId) once
-sessionStorage.generationSession.previewPhase confirmed "review" with a non-null
-curriculumAnchor (i.e. once the stream had reached "done").
+=== Setup ===
+Learner profile created via Settings → Learner: name "Bé Minh", Class "lớp 7", Subject "Toán",
+Curriculum "Cambridge Lower Secondary", Language "English" — the Learner panel showed
+"✓ this curriculum is covered — Cambridge Lower Secondary Mathematics Learner's Book 8" before
+Save, confirming a registered pack (skills/agent-runtime/cambridge-lower-secondary-maths-8,
+gradesVn: ["lớp 7"], stage 8, unit 12 = "Ratio and proportion" / "Tỉ số và tỉ lệ"). Homepage
+composer then showed "Building for: Toán — Cambridge Lower Secondary (English)".
 
-Exact event sequence in the SSE body (types only, in order):
-  languageDirective (English-primary, Cambridge terms kept in English)
-  courseTitle: "Ratio and Proportion"
-  outline x10 (scene_1 .. scene_10, each event's own "data.title"/"data.description"/etc.)
-  curriculumAnchor  <-- dedicated top-level SSE event type, distinct from the per-scene fields
-  done (outlines: [...10 scenes...])
+=== Wire-level capture method ===
+Before the (re-)generation call, `window.fetch` was monkey-patched in-page (via
+mcp__playwright__browser_evaluate) to clone() and accumulate the full response text of any
+request whose URL contains "scene-outlines-stream", plus a lightweight scan of every
+`"type":"..."` token in that text, in arrival order. Prompt used: requirement box filled with
+"tỉ lệ và tỉ số", "Enter Classroom" clicked. This is the SAME live request the browser's own UI
+code issues — not a replay or a separate script — so what was captured is exactly the bytes the
+app itself received on the wire.
 
-Raw bytes for the curriculumAnchor line (the tool's own transport re-encodes non-ASCII as
-mojibake, e.g. "â€”" = "—", "sÃ¡ch" = "sách" — confirmed clean via sessionStorage/DOM below):
+=== Request ===
+POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK
+(two runs in this verifier session, both 200 OK — request #94 or an earlier "Tap to review" pass
+used to reach the outline-review screen and take the E7-neo-co-goi.png screenshot, and request
+#108, captured with the fetch patch above, used for this wire-level SSE dump.)
 
-  data: {"type":"curriculumAnchor","data":"Unit 12 â€” Ratio and proportion, sÃ¡ch Cambridge
-  Lower Secondary Mathematics Learner's Book 8."}
+Ordered "type" tokens seen in the captured SSE body (types only, in arrival order — includes both
+the outer SSE event "type" field and the inner per-outline "type" field, e.g. "slide"/"quiz"):
+  languageDirective, courseTitle,
+  outline(type=slide), outline(type=slide), outline(type=image), outline(type=slide),
+  outline(type=quiz), outline(type=slide), outline(type=slide), outline(type=interactive),
+  outline(type=slide), outline(type=quiz), outline(type=slide), outline(type=slide),
+  curriculumAnchor,   <-- dedicated top-level SSE event type, appears ONCE, after all 10
+                          "outline" events and before "done"
+  done
 
-Clean value (read from sessionStorage.generationSession.curriculumAnchor via javascript_tool,
-i.e. exactly what the UI renders — this is the value asserted in E7-neo-co-goi.html,
-data-state="ST-neo-co-goi", and it matches the live DOM's <span> text byte-for-byte):
-  "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8."
+Exact bytes for the curriculumAnchor line (captured verbatim from the cloned Response body,
+UTF-8, no transport mojibake this time since it went through browser_evaluate's own JSON
+serialization rather than a lossy tool transport):
+
+  data: {"type":"curriculumAnchor","data":"Unit 12 · Ratio and proportion — Cambridge Lower
+  Secondary Mathematics Learner's Book 8"}
+
+  data: {"type":"done","outlines":[{"id":"scene_1","type":"slide","title":"Unit Anchor and
+  Goals", ...
+
+This is BYTE-IDENTICAL to the anchor text rendered in the DOM at data-state="ST-neo-co-goi"
+(confirmed separately via document.querySelector, and visible in evidence/E7-neo-co-goi.png):
+  "Unit 12 · Ratio and proportion — Cambridge Lower Secondary Mathematics Learner's Book 8"
+
+=== Server-side derivation check (code, not just wire behavior) ===
+app/api/generate/scene-outlines-stream/route.ts computes `curriculumAnchor` ONLY after the
+outline stream finishes parsing (`parsedOutlines.length > 0`), via
+`deriveCurriculumAnchor({ pack, requirement, outlines: parsedOutlines, language })` imported from
+lib/server/curriculum-anchor.ts — a pure function over the already-resolved curriculum pack
+(looked up server-side from the learner's subject/curriculum/gradeLabel via findPack) and the
+scenes the model already produced. The model's prompt/output never carries a `curriculumAnchor`
+key; nothing in buildOutlinePrompt/PROMPT_IDS asks the model for this field. So the event is the
+server SUMMARIZING inputs it already has (pack + outlines), not a value round-tripped through the
+model. `deriveCurriculumAnchor` places `Unit ${n} · ${title}` before the textbook name and never
+emits the word "Stage" (see the function's own doc comment: "KHÔNG chữ «Stage», không mã mục
+tiêu").
 
 === ASSERTION ===
 A dedicated SSE event of type "curriculumAnchor" (distinct from the per-scene "outline" events)
-IS present in the outline stream.
-Content check: unit name ("Unit 12 — Ratio and proportion") stands FIRST; book name follows;
-NO framework code (no "Stage", no raw packId "cambridge-lower-secondary-maths-8") opens the
-sentence; the sentence is grammatical and human-readable, matching the learner's language
-(English, per languageDirective for this run).
+IS present in the outline stream, exactly once, server-computed from pack + outlines (model not
+asked). Content check: unit name ("Unit 12 · Ratio and proportion") stands FIRST; book name
+follows after an em dash; NO framework code and NO word "Stage" opens or appears in the sentence;
+the sentence is grammatical, human-readable English (matching the learner's profile language for
+this run).
 => PASS.
 
 === NETWORK TRUTH (scope: dev_server.url http://localhost:3002, no api_base declared) ===
-FAIL-eligible request in this flow: POST /api/generate/scene-outlines-stream -> 200 OK.
-No 4xx/5xx on this route in the run whose body is quoted above.
+Full non-static request list captured via mcp__playwright__browser_network_requests across this
+verifier's whole browser session (profile setup + two outline-generation runs + start of one
+scene-content run): 117 same-origin (localhost:3002) requests.
+Status breakdown: 200 OK x105 (includes the 2 POST scene-outlines-stream calls, both 200), 304 Not
+Modified x11 (conditional GETs for static assets, expected/benign), 1 in-flight
+(POST /api/generate/scene-content — deliberately not awaited to completion; this verifier
+navigated away once the outline+anchor evidence was captured, to avoid spending an unnecessary
+extra LLM generation).
+ZERO 4xx, ZERO 5xx, ZERO connection errors/timeouts on any same-origin app-scope request in this
+session. No GET /api/stages, /api/folders, or /api/persistence/kv/* were hit at all in this run
+(this flow never reaches the agent-runtime or account-persistence code paths), so the "correct by
+design" 404 carve-outs in the eval's Expected clause do not apply here — there is nothing to
+carve out; the observed set is simply clean.
+Third-party/static: none observed outside localhost:3002 and Next.js's own dev asset requests
+(fonts, favicon, images) — all 200/304, noted only, not counted as FAIL-eligible.
 
-Out-of-scope notes (not counted as FAIL for E7, which is scoped to scene-outlines-stream;
-recorded for completeness, same root cause round 1/2 evidence already flagged):
-  - GET /api/persistence/kv/entries/{learner-profile-storage,settings-storage,
-    user-profile-storage} -> 404 "server persistence not configured", repeating throughout
-    the session. Root cause: dev_server.start sets NEXT_PUBLIC_PERSISTENCE=1 but .env.local
-    has no DATABASE_URL/PERSISTENCE_DEV_TOKEN, so the account-scope HttpKVStore backend is
-    absent — pre-existing environment/config gap, not a scene-outlines-stream (AC-7)
-    regression.
-  - GET /api/persistence/documents/<id> -> 404 and GET /api/stages, /api/folders -> 404: same
-    root cause, hit only by the DOWNSTREAM classroom-save/listing code paths (after outline
-    confirmation), not by the outline-stream route this eval measures.
-  - Earlier attempts in this same verifier session (before the profile mix-up above was
-    diagnosed and the storage was cleared) show one net::ERR_ABORTED scene-outlines-stream
-    request — that is this verifier's OWN abort (component unmount / re-navigation during
-    diagnosis, via the app's "abort in-flight request on unmount" cleanup at
-    app/generation-preview/page.tsx), not a server-side failure, and it is superseded by the
-    clean 200 OK run quoted above.
-
-networkObserved = clean (scene-outlines-stream route only; the persistence 404s are a
-documented, known-cause, out-of-scope condition per the config gap above, not an app-origin
-failure of the route being measured for E7).
+networkObserved = clean

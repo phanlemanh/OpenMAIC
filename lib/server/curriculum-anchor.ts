@@ -49,18 +49,51 @@ export function unitPhrases(unit: CurriculumUnit): string[] {
 }
 
 /**
- * Unit khớp nhất với đề và dàn ý — đếm số cụm của unit xuất hiện trong văn bản;
- * hoà thì unit đứng trước trong mục lục thắng. Không cụm nào khớp → null:
- * câu neo khi ấy chỉ nêu tên sách, KHÔNG bịa unit.
+ * Chữ của một văn bản, tách theo ranh giới KHÔNG-PHẢI-CHỮ (dấu cách, dấu câu),
+ * không dùng `\b` (chỉ biết ASCII). Cụm neo khớp khi mọi chữ của nó đứng liền
+ * nhau trong dãy này — «hình» KHÔNG khớp «hình vẽ minh hoạ», vì cụm là chữ trọn
+ * và ngữ cảnh đứng cạnh không phải tên unit.
+ */
+function tokens(text: string): string[] {
+  return fold(text)
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter(Boolean);
+}
+
+function hasPhrase(haystack: readonly string[], phrase: string): boolean {
+  const needle = phrase.split(/\s+/);
+  outer: for (let i = 0; i + needle.length <= haystack.length; i += 1) {
+    for (let j = 0; j < needle.length; j += 1) {
+      if (haystack[i + j] !== needle[j]) continue outer;
+    }
+    return true;
+  }
+  return false;
+}
+
+/**
+ * Unit khớp nhất với đề và dàn ý — đếm số cụm của unit xuất hiện TRỌN CHỮ trong
+ * văn bản, cụm nhiều chữ nặng hơn cụm một chữ. Vòng nghiệm thu thứ tư bắt được
+ * bản đầu: nó so chuỗi con trần, nên chữ «hình» trong «hình vẽ minh hoạ» ghi
+ * điểm cho unit «Hình và đối xứng» và thắng «Xác suất» nhờ đứng trước trong
+ * mục lục. Giờ: khớp theo chữ trọn; hoà điểm giữa hai unit → không chọn (câu
+ * neo chỉ nêu tên sách) thay vì để thứ tự mục lục quyết định một lời khẳng
+ * định với phụ huynh. Không cụm nào khớp → null.
  */
 export function matchUnit(units: readonly CurriculumUnit[], text: string): CurriculumUnit | null {
-  const haystack = fold(text);
-  let best: { unit: CurriculumUnit; score: number } | null = null;
-  for (const unit of units) {
-    const score = unitPhrases(unit).filter((phrase) => haystack.includes(phrase)).length;
-    if (score > 0 && (!best || score > best.score)) best = { unit, score };
-  }
-  return best?.unit ?? null;
+  const haystack = tokens(text);
+  const scored = units
+    .map((unit) => ({
+      unit,
+      score: unitPhrases(unit)
+        .filter((phrase) => hasPhrase(haystack, phrase))
+        .reduce((sum, phrase) => sum + phrase.split(/\s+/).length, 0),
+    }))
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score);
+  if (!scored.length) return null;
+  if (scored.length > 1 && scored[0].score === scored[1].score) return null;
+  return scored[0].unit;
 }
 
 function unitLabel(unit: CurriculumUnit, language: string): string {

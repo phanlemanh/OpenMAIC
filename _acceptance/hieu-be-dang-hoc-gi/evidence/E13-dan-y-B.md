@@ -1,75 +1,71 @@
-<!-- run_id: blind-509bac10-53db-4d65-b488-9d9992bed567 -->
+<!-- run_id: blind-34d83b3d-d487-4107-8e9d-52e1c6899f06 -->
 
 # Tỉ lệ và Tỉ số
 
-## 1. Giới thiệu bài học
+## 1. Giới thiệu: Tỉ số và tỉ lệ trong đời sống
 
-Mở đầu bài học, khơi gợi sự hứng thú bằng các tình huống thực tế liên quan đến tỉ số và tỉ lệ.
+Mở đầu bài học bằng các ví dụ quen thuộc về tỉ số và tỉ lệ trong đời sống hàng ngày để tạo sự hứng thú.
 
-- Chào mừng học sinh và giới thiệu chủ đề
-- Ví dụ thực tế: pha nước chanh, bản đồ, công thức nấu ăn
-- Mục tiêu bài học: hiểu và vận dụng tỉ số, tỉ lệ
+- Ví dụ: pha nước chanh, bản đồ, công thức nấu ăn
+- Giới thiệu mục tiêu bài học
+- Tại sao tỉ số và tỉ lệ quan trọng trong thực tế
 
 ## 2. Tỉ số là gì?
 
-Giới thiệu định nghĩa tỉ số, cách viết và ý nghĩa của tỉ số giữa hai đại lượng.
+Trình bày định nghĩa tỉ số, cách viết và cách đọc tỉ số giữa hai số.
 
 - Định nghĩa: tỉ số của a và b (b khác 0) là a:b hoặc a/b
-- Ví dụ: tỉ số số học sinh nam và nữ trong lớp
-- Cách rút gọn tỉ số về dạng đơn giản nhất
+- Cách đọc và viết tỉ số
+- Ví dụ minh họa với số cụ thể
+- Phân biệt tỉ số với phép chia
 
 ## 3. Tỉ lệ thức và tính chất
 
-Giới thiệu khái niệm tỉ lệ thức (a/b = c/d) và tính chất cơ bản của nó.
+Giới thiệu khái niệm tỉ lệ thức (hai tỉ số bằng nhau) và tính chất cơ bản của nó.
 
 - Định nghĩa tỉ lệ thức: a/b = c/d
-- Tính chất: a x d = b x c (tích chéo bằng nhau)
-- [Table] Ví dụ minh họa: 3 tỉ lệ thức khác nhau và cách kiểm tra tính đúng đắn
+- Tính chất: a.d = b.c (tích chéo)
+- [Table] So sánh tỉ số và tỉ lệ thức: định nghĩa, ký hiệu, ví dụ
+- Cách kiểm tra hai tỉ số có lập thành tỉ lệ thức không
 
-## 4. Kiểm tra nhanh: Tỉ số và Tỉ lệ thức
+## 4. Kiểm tra nhanh: Tỉ số và tỉ lệ thức
 
-Đánh giá mức độ hiểu bài của học sinh về định nghĩa và tính chất đã học.
+Đánh giá mức độ hiểu của học sinh về khái niệm tỉ số và tỉ lệ thức vừa học.
 
 - Nhận biết tỉ số đúng
-- Kiểm tra tính chất tỉ lệ thức
-- Rút gọn tỉ số
+- Kiểm tra tỉ lệ thức bằng tích chéo
+- Bài tập tính toán cơ bản
 
-## 5. Khám phá tỉ lệ bản đồ
+## 5. Tỉ lệ thuận và tỉ lệ nghịch
 
-Học sinh tương tác với mô phỏng để hiểu cách tỉ lệ bản đồ ảnh hưởng đến khoảng cách thực tế và khoảng cách trên bản đồ.
+Phân biệt hai đại lượng tỉ lệ thuận và tỉ lệ nghịch qua ví dụ và công thức.
 
-- Điều chỉnh tỉ lệ bản đồ (ví dụ 1:1000, 1:5000)
-- Quan sát khoảng cách trên bản đồ thay đổi tương ứng khoảng cách thực tế
-- Rút ra quy tắc: tỉ lệ = khoảng cách bản đồ / khoảng cách thực tế
+- Đại lượng tỉ lệ thuận: y = k.x
+- Đại lượng tỉ lệ nghịch: y = k/x
+- [Chart] Line chart: minh họa mối quan hệ tỉ lệ thuận giữa hai đại lượng
+- Ví dụ thực tế: tốc độ - thời gian, số người - thời gian hoàn thành việc
 
-## 6. Ứng dụng thực tế của tỉ lệ
+## 6. Khám phá tỉ lệ qua mô phỏng
 
-Trình bày các ứng dụng phổ biến của tỉ số và tỉ lệ trong đời sống.
+Học sinh tương tác trực tiếp để thay đổi tỉ số và quan sát sự thay đổi kích thước hình, hiểu rõ hơn về khái niệm phóng to/thu nhỏ theo tỉ lệ.
 
-- Ứng dụng trong nấu ăn: pha chế nguyên liệu theo tỉ lệ
-- Ứng dụng trong bản đồ và mô hình thu nhỏ
-- [Table] So sánh 3 tình huống: nấu ăn, bản đồ, pha sơn - tỉ lệ sử dụng và ý nghĩa
+- Thay đổi tỉ số để phóng to hoặc thu nhỏ hình vuông/hình chữ nhật
+- Quan sát mối quan hệ giữa tỉ số và kích thước thực tế
+- Liên hệ với tỉ lệ bản đồ trong đời sống
 
-## 7. Tỉ lệ thuận và tỉ lệ nghịch
+## 7. Ứng dụng thực tế của tỉ lệ và tỉ số
 
-Giới thiệu hai loại quan hệ tỉ lệ thường gặp và cách phân biệt chúng.
+Tổng hợp các ứng dụng phổ biến của tỉ số và tỉ lệ trong học tập và đời sống.
 
-- Tỉ lệ thuận: y = kx, khi x tăng thì y tăng
-- Tỉ lệ nghịch: y = k/x, khi x tăng thì y giảm
-- [Chart] Đường biểu diễn: so sánh đồ thị tỉ lệ thuận (đường thẳng) và tỉ lệ nghịch (đường cong)
+- Bản đồ và tỉ lệ xích
+- Pha trộn nguyên liệu theo tỉ lệ (nấu ăn, hóa học)
+- Chia phần theo tỉ lệ (chia tiền, chia phần thưởng)
+- Bài tập vận dụng nhanh
 
-## 8. Kiểm tra tổng hợp
+## 8. Tổng kết: Ôn tập tỉ số và tỉ lệ
 
-Đánh giá toàn diện kiến thức về tỉ số, tỉ lệ thức, tỉ lệ thuận và tỉ lệ nghịch.
+Bài kiểm tra tổng hợp giúp học sinh củng cố toàn bộ kiến thức đã học trong bài.
 
-- Xác định loại tỉ lệ trong bài toán
-- Giải bài toán tỉ lệ đơn giản
-- Vận dụng tính chất tỉ lệ thức
-
-## 9. Tổng kết bài học
-
-Ôn lại các kiến thức trọng tâm và khuyến khích học sinh vận dụng vào thực tế.
-
-- Tóm tắt: định nghĩa tỉ số, tỉ lệ thức, tỉ lệ thuận/nghịch
-- Nhấn mạnh ứng dụng thực tiễn
-- Gợi ý bài tập tự luyện thêm
+- Tổng hợp câu hỏi về tỉ số, tỉ lệ thức
+- Bài toán tỉ lệ thuận, tỉ lệ nghịch
+- Ứng dụng thực tế

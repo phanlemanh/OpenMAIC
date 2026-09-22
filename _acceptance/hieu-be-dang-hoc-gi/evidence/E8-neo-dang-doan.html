@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<title>E8b evidence — ST-neo-dang-doan (live DOM capture, fallback)</title>
+<style>
+  body { font-family: -apple-system, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+  .note { background: #fff8e1; border: 1px solid #f0c14b; padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 1rem; }
+  .frame { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fafafa; }
+  code { background: #eee; padding: 0.1rem 0.3rem; border-radius: 3px; }
+  pre { white-space: pre-wrap; background: #f5f5f5; padding: 0.75rem; border-radius: 6px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<h1>E8b — ST-neo-dang-doan (Soạn cho: Toán — MOET, chưa có gói)</h1>
+
+<div class="note">
+  <strong>Fallback: chụp DOM SỐNG, không phải PNG.</strong> config.yaml khai
+  <code>capture.ui: node scripts/ui-capture.mjs</code>, nhưng script đó mở một
+  trình duyệt Playwright MỚI và chỉ chụp một URL tĩnh — không có cách seed lại
+  trạng thái đã tương tác (hồ sơ người học vừa điền, phiên soạn dàn ý đang
+  streaming trong sessionStorage của đúng tab đó) từ một tiến trình trình
+  duyệt khác. Bản thân trình duyệt Claude_Browser đang lái phiên này trả ảnh
+  chụp CHỈ inline (không có API lưu file). Do đó khung này bắt bằng
+  <code>document.querySelector('[data-state^="ST-neo"]').outerHTML</code> trên
+  trang SỐNG, đúng cách hạ cấp mà E7 (chính eval anh chị em của E8b) đã dùng
+  trước đó trong hồ sơ này (xem evidence/E7-neo-co-goi.html).
+</div>
+
+<h2>Bối cảnh</h2>
+<ul>
+  <li>URL lúc chụp: <code>http://localhost:3002/generation-preview</code></li>
+  <li>Thời điểm: 2026-09-22T15:51:33.452Z</li>
+  <li>Hồ sơ người học: Bé An · lớp 7 · môn Toán · giáo trình <code>moet</code> (MOET) · tiếng Việt · KHÔNG sách/gói</li>
+  <li>Ô «Soạn cho» trang chủ trước khi tạo: <em>Building for: Toán — MOET (Vietnamese)</em> (bản dịch tiếng Anh của UI, xem screenshot đính kèm trong lượt chat)</li>
+  <li>Đề bài gõ vào: «tỉ lệ và tỉ số» → Enter Classroom → dàn ý AI streaming thật (9 scene, không dữ liệu giả) → bấm «Tap to review» → màn «Review your outline»</li>
+</ul>
+
+<h2>Khung sống — data-state="ST-neo-dang-doan"</h2>
+<div class="frame">
+  <p style="display:flex;align-items:flex-start;gap:0.5rem;border:1px solid #f0b400;background:#fff7e0;padding:0.6rem 0.9rem;border-radius:6px;font-size:0.95rem;">
+    ⚠ No curriculum pack for MOET yet — this is an informed guess, not a checked match.
+  </p>
+</div>
+
+<p>outerHTML thật của phần tử, đọc trực tiếp bằng <code>javascript_tool</code> trên trang đang chạy (không suy diễn, không gõ tay):</p>
+<pre>&lt;p data-state="ST-neo-dang-doan" class="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/5 px-3 py-2 text-sm"&gt;
+  &lt;svg ... class="lucide lucide-triangle-alert mt-0.5 h-4 w-4 shrink-0 text-amber-600" aria-hidden="true"&gt;...&lt;/svg&gt;
+  &lt;span&gt;⚠ No curriculum pack for MOET yet — this is an informed guess, not a checked match.&lt;/span&gt;
+&lt;/p&gt;</pre>
+
+<h2>Đối chiếu Expected (AC-8 / E8b)</h2>
+<ul>
+  <li><strong>MỘT khung sống phủ dòng ST-neo-dang-doan</strong> — đúng: <code>data-state="ST-neo-dang-doan"</code> tìm thấy đúng một phần tử trên trang.</li>
+  <li><strong>Khung có chữ cảnh báo</strong> — đúng: icon tam giác cảnh báo (lucide-triangle-alert) + ký tự ⚠ + câu "this is an informed guess, not a checked match."</li>
+  <li><strong>Tên chương trình chưa có gói, đã dịch, không mã máy</strong> — đúng: câu hiện "MOET" (giá trị bản dịch <code>home.learnerInvite.curriculum.moet = "MOET"</code> trong <code>lib/i18n/locales/en-US.json</code>/<code>vi-VN.json</code>), KHÔNG phải chữ thường "moet" (đó mới là mã máy/khoá i18n). Đây là điểm khác biệt so với một bản evidence CŨ hơn trong cùng thư mục này (evidence/E8-neo-dang-doan.png, đã có từ trước lượt chạy này) — bản cũ đó hiện "No curriculum pack for <em>moet</em> yet" (chữ thường, lộ mã máy), tức PNG cũ đó chụp một trạng thái đã lỗi/đã fix sau đó. Lượt kiểm độc lập này ghi đè kết luận bằng bằng chứng SỐNG mới nhất trên đúng source hiện tại.</li>
+</ul>
+
+<h2>Văn bản đầy đủ của trang (get_page_text, để đối chiếu không có dòng ST-neo nào khác / không có dòng nào lộ mã máy khác)</h2>
+<pre>Back to Home
+Review your outline
+
+Edit, reorder, remove, or add scenes before content generation begins.
+
+AI-GENERATED OUTLINE
+Scene outline
+
+9 scenes total. You can edit, add, remove, or reorder them before generation starts.
+
+Collapse
+
+⚠ No curriculum pack for MOET yet — this is an informed guess, not a checked match.
+
+[... 9 scenes, nội dung dàn ý thật, xem lượt chat để có toàn văn ...]
+
+Always review outlines before generation
+Back to requirements
+Confirm and generate course</pre>
+
+</body>
+</html>

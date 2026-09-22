@@ -1,23 +1,34 @@
 {
-  "ranAt": "2026-09-22T13:25:31.124Z",
+  "ranAt": "2026-09-22T16:04:21.912Z",
+  "baseUrl": "http://localhost:3003",
   "assertions": [
     {
-      "name": "ST-chon-moi-khai: hồ sơ trống hiện lời mời, không ô soạn-cho",
+      "name": "ST-chon-moi-khai: hồ sơ trống → nút mời khai hiện",
       "pass": true,
-      "detail": ""
+      "detail": "count=1"
     },
     {
-      "name": "nút Lưu bật khi hồ sơ đủ 5 câu",
+      "name": "ST-chon-moi-khai: KHÔNG có ô «Soạn cho»",
       "pass": true,
-      "detail": "disabled=null"
+      "detail": "count=0"
     },
     {
-      "name": "Lưu hồ sơ: toast/trạng thái \"đã lưu\" hiện ra",
+      "name": "nút Lưu bật khi hồ sơ đủ (2 môn hợp lệ)",
       "pass": true,
-      "detail": "Đã lưu"
+      "detail": "disabled=false"
     },
     {
-      "name": "ST-chon-san-sang: nhãn ô có đủ môn — chương trình (ngôn ngữ)",
+      "name": "Lưu hồ sơ: trạng thái \"đã lưu\" hiện ra",
+      "pass": true,
+      "detail": "count=2"
+    },
+    {
+      "name": "ST-chon-san-sang: ô «Soạn cho» xuất hiện",
+      "pass": true,
+      "detail": "count=1"
+    },
+    {
+      "name": "Nhãn ô đúng «Toán — Cambridge Lower Secondary (Tiếng Anh)» (đủ 3 phần)",
       "pass": true,
       "detail": "Toán — Cambridge Lower Secondary (tiếng Anh)"
     },
@@ -32,22 +43,27 @@
       "detail": "Toán — MOET (tiếng Việt)"
     },
     {
-      "name": "Sau xoá dữ liệu: hồ sơ trống trở lại (lời mời hiện lại)",
+      "name": "Mở được hộp thoại Cài đặt",
       "pass": true,
       "detail": ""
     },
     {
-      "name": "nút gửi bật khi có yêu cầu và có nhà cung cấp mô hình",
+      "name": "Sau xoá dữ liệu: hồ sơ trống trở lại (lời mời hiện lại)",
       "pass": true,
-      "detail": "disabled=null"
+      "detail": "count=1"
     },
     {
-      "name": "Luồng sinh dàn ý (SSE) trả về OK",
+      "name": "Nút gửi bật khi có yêu cầu (hồ sơ trống vẫn cho soạn)",
       "pass": true,
-      "detail": "status=200 url=http://localhost:3004/api/generate/scene-outlines-stream"
+      "detail": "disabled=false"
     },
     {
-      "name": "ST-neo-khong: hồ sơ trống → màn xem trước không có dòng neo nào",
+      "name": "màn xem lại đề cương xuất hiện",
+      "pass": true,
+      "detail": "expandClicked=true"
+    },
+    {
+      "name": "ST-neo-khong: hồ sơ trống → màn xem trước KHÔNG có dòng neo nào",
       "pass": true,
       "detail": "count=0"
     }

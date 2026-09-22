@@ -129,9 +129,10 @@ evals:
     executor: ui-check
     layer: ui-observed
     steps:
+      - "Chỉ bắt đầu khi máy chủ đã ỔN ĐỊNH: mở tab, đợi trang chủ tải xong và kênh HMR của máy chủ phát triển đã nối (không còn dòng WebSocket failed trong console); còn lỗi kết nối trong lúc khởi động thì tải lại tab rồi mới đếm — dump network tính từ bước kế tiếp, ghi rõ mốc thời gian bắt đầu đếm"
       - "Như E7 nhưng ô «Soạn cho» ở Toán — MOET (chưa có gói) → màn xem trước"
       - "Dòng neo mang cảnh báo đang đoán → chụp evidence/E8-neo-dang-doan.png"
-    expected: "exit 0; MỘT khung sống phủ dòng ST-neo-dang-doan (luật phủ khung); khung ST-neo-dang-doan có chữ cảnh báo và tên chương trình chưa có gói (đã dịch, không mã máy). Các phản hồi sau là ĐÚNG THIẾT KẾ, không phải lỗi: 404 ở GET /api/stages và GET /api/folders (chỉ phục vụ khi bộ chạy agent bật), và 404 ở GET /api/persistence/kv/* khi lối máy chủ không bật; mọi 4xx/5xx khác trên cùng origin là đỏ. Chiều đỏ: dòng neo đọc như có gói, không có dòng nào, hoặc dòng cảnh báo lộ mã giáo trình → đỏ nêu đích danh."
+    expected: "exit 0; MỘT khung sống phủ dòng ST-neo-dang-doan (luật phủ khung); khung ST-neo-dang-doan có chữ cảnh báo và tên chương trình chưa có gói (đã dịch, không mã máy). Các phản hồi sau là ĐÚNG THIẾT KẾ, không phải lỗi: 404 ở GET /api/stages và GET /api/folders (chỉ phục vụ khi bộ chạy agent bật), và 404 ở GET /api/persistence/kv/* khi lối máy chủ không bật; mọi 4xx/5xx khác trên cùng origin là đỏ. Lỗi kết nối TRƯỚC mốc bắt đầu đếm (máy chủ phát triển tự nạp lại lúc mở tab) không phải lỗi sản phẩm — bước 1 buộc đợi ổn định rồi mới đếm; lỗi kết nối hay 5xx SAU mốc ấy là đỏ. Chiều đỏ: dòng neo đọc như có gói, không có dòng nào, hoặc dòng cảnh báo lộ mã giáo trình → đỏ nêu đích danh."
     paths: ["app/generation-preview/page.tsx", "components/generation/outlines-editor.tsx"]
     evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
 
