@@ -120,6 +120,7 @@ dòng neo. Phán xét: cặp dàn ý mù có/không gói; thẻ đọc được 
 | ST-the-dang-dien | Thẻ 5 câu | các ô đang điền; dropdown lớp 1–12; dòng môn: môn ▾ · chương trình ▾ · ngôn ngữ ▾ · sách; «+ thêm môn» | điền tiếp / Lưu |
 | ST-the-mon-co-goi | Thẻ 5 câu (dòng môn) | «✓ có gói khung — Cambridge Lower Secondary Mathematics, Learner's Book 8» | không cần làm gì |
 | ST-the-mon-chua-goi | Thẻ 5 câu (dòng môn) | «chưa có gói cho chương trình này — máy sẽ đoán và nói rõ» | chấp nhận hoặc đổi chương trình |
+| ST-the-dang-luu | Thẻ 5 câu | nút Lưu mờ trong lúc đọc lại từ ngăn lưu để xác nhận | chờ |
 | ST-the-da-luu | Thẻ 5 câu | toast «đã lưu», nút Lưu mờ lại | về trang chủ |
 | ST-the-loi-luu | Thẻ 5 câu | toast «chưa lưu được — giá trị vẫn giữ trên màn» | Lưu lại |
 | ST-chon-moi-khai | Trang chủ | dòng mời «Soạn cho bé nhà mình? Khai 5 câu →» dưới lời chào | bấm mở thẻ |
@@ -132,6 +133,7 @@ dòng neo. Phán xét: cặp dàn ý mù có/không gói; thẻ đọc được 
 ### 4. Hành vi
 
 - Lưu chỉ bật khi có tên gọi + lớp + ≥1 dòng môn đủ (môn + chương trình + ngôn ngữ).
+- Bấm Lưu thì ĐỌC LẠI từ ngăn lưu trước khi dám nói «đã lưu»: việc ghi là bất đồng bộ, nên hỏi cờ sức khoẻ ngay sau khi gọi là hỏi quá sớm và màn sẽ báo đã lưu cho một lượt ghi vừa trượt. Hàng đợi ghi theo khoá là tuần tự nên lượt đọc xếp sau lượt ghi.
 - Tên gọi ≤ 40 ký tự; trường và sách ≤ 80; không họ tên đầy đủ, không ngày sinh (dữ liệu trẻ em).
 - Gói tự gắn lại mỗi khi đổi lớp / môn / chương trình; không có nút «chọn gói» ở vòng này.
 - Ô «Soạn cho» nhớ lựa chọn gần nhất (device scope, localStorage như các công tắc trang chủ).

@@ -548,6 +548,7 @@ function GenerationPreviewContent() {
       let outlines = currentSession.sceneOutlines;
       let languageDirective = currentSession.languageDirective;
       let courseTitle = currentSession.courseTitle;
+      let curriculumAnchor = currentSession.curriculumAnchor;
 
       const outlineStepIdx = activeSteps.findIndex((s) => s.id === 'outline');
       setCurrentStepIndex(outlineStepIdx >= 0 ? outlineStepIdx : 0);
@@ -661,6 +662,9 @@ function GenerationPreviewContent() {
                         // a stream that ends without an explicit `done` event
                         // does not silently drop a valid inferred title.
                         courseTitle: title,
+                        // Đi cùng courseTitle: một luồng kết không có sự kiện
+                        // `done` không được lặng lẽ đánh rơi câu neo đã bắt.
+                        curriculumAnchor: anchor,
                         taskEngineMode: false,
                       });
                     } else {
@@ -679,6 +683,7 @@ function GenerationPreviewContent() {
         outlines = outlineResult.outlines;
         languageDirective = outlineResult.languageDirective;
         courseTitle = outlineResult.courseTitle;
+        curriculumAnchor = outlineResult.curriculumAnchor;
         const effectiveTaskEngineMode = outlineResult.taskEngineMode;
         setIsOutlineStreaming(false);
 
@@ -691,6 +696,7 @@ function GenerationPreviewContent() {
           sceneOutlines: outlines,
           languageDirective,
           courseTitle,
+          curriculumAnchor,
           taskEngineMode: effectiveTaskEngineMode,
           previewPhase: shouldReviewOutlines ? 'review' : 'outline-ready',
         };

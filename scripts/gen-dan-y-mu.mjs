@@ -6,15 +6,25 @@
  * cạnh mục lục sách của bé, một bài sinh CÓ gói khung một bài KHÔNG, và xem
  * người đọc có nhận ra bài nào có gói — và nói được vì sao.
  *
+ * ĐIỀU CẶP NÀY CHỨNG, VÀ ĐIỀU NÓ KHÔNG CHỨNG — đọc trước khi chấm:
+ *
+ * Hai lượt khác nhau ở HAI thứ cùng lúc: một lượt có hồ sơ người học VÀ có gói
+ * khung, lượt kia không có gì cả. Đó đúng là câu hỏi của Cổng Giá trị («bài
+ * hôm nay» so với «bài sau vòng này»), nhưng nó KHÔNG tách được phần đóng góp
+ * của riêng gói khung khỏi phần đóng góp của hồ sơ. Người chấm kết luận được
+ * «bài nào khớp sách của bé», KHÔNG kết luận được «gói khung là thứ làm nên
+ * khác biệt». Muốn tách thì cần lượt thứ ba (có hồ sơ, không gói) — chưa làm.
+ *
  * Vì sao phải là một script chứ không phải hai tệp ai đó viết tay: một cặp
  * viết tay (hoặc sinh một lần rồi sửa) làm hội đồng phân biệt đúng trong khi
  * CHƯA có dàn ý thật nào chạy qua gói. Lúc ấy phép thử mù xanh mà thứ nó định
  * đo thì chưa từng tồn tại. Nên hai tệp phải đến từ CHÍNH tuyến soạn thật, mang
  * mã lượt chạy ở dòng đầu, và hội đồng chỉ chấm tệp có mã.
  *
- * Dùng: node scripts/gen-dan-y-mu.mjs [--slug <slug>] [--de "<đề bài>"]
- * Cần: DATABASE_URL không bắt buộc; cần khoá mô hình phía máy chủ như mọi lượt
- * soạn thật. Thiếu khoá → thoát 2 và nói rõ, KHÔNG dựng dữ liệu giả.
+ * Dùng: node scripts/gen-dan-y-mu.mjs [--slug <slug>] [--de "<đề bài>"] [--base-url <url>]
+ * Cần: một máy chủ đang chạy đã khai khoá nhà cung cấp (mặc định
+ * http://localhost:3002, khớp dev_server.url của hồ sơ). Không có máy chủ →
+ * thoát 2 và nói rõ, KHÔNG dựng dữ liệu giả.
  */
 import { randomUUID } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -28,6 +38,7 @@ const opt = (name, fallback) => {
 
 const slug = opt('--slug', 'hieu-be-dang-hoc-gi');
 const de = opt('--de', 'tỉ lệ và tỉ số');
+const baseUrl = opt('--base-url', process.env.OPENMAIC_BASE_URL ?? 'http://localhost:3002');
 const outDir = join(process.cwd(), '_acceptance', slug, 'evidence');
 
 const LEARNER = {
@@ -44,35 +55,73 @@ const LEARNER = {
   ],
 };
 
+/**
+ * Gọi CHÍNH tuyến HTTP mà trang chủ gọi.
+ *
+ * Bản đầu nhập thẳng mô-đun TypeScript từ một script thuần và không chạy được
+ * (Node không dịch `.ts`). Đi qua tuyến HTTP vừa sửa được điều đó vừa đúng hơn:
+ * nó chứng luôn cả đường route tra gói khung — thứ mà một lượt gọi thẳng hàm
+ * dựng prompt sẽ bỏ qua.
+ */
 async function outlineFor({ withPack }) {
-  const { generateSceneOutlinesFromRequirements } = await import('@openmaic/generation');
-  const { findPack, readPackBody } = await import('../lib/server/curriculum-packs.js');
-  const { callLLM } = await import('../lib/server/generation-ai-call.js').catch(() => ({}));
-  if (typeof callLLM !== 'function') {
+  let res;
+  try {
+    res = await fetch(new URL('/api/generate/scene-outlines-stream', baseUrl), {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        requirements: { requirement: de, ...(withPack ? { learner: LEARNER } : {}) },
+        researchContext: '',
+      }),
+    });
+  } catch (error) {
+    // Nói ra ĐIỀU KIỆN còn thiếu, không đổ vết ngăn xếp: người đọc thông điệp
+    // này đang muốn biết phải bật gì, không muốn biết undici gãy ở dòng nào.
     process.stderr.write(
-      'gen-dan-y-mu: không tìm được đường gọi mô hình phía máy chủ — chạy script này trong môi trường đã khai khoá nhà cung cấp.\n',
+      `gen-dan-y-mu: không gọi được ${baseUrl} — cần một máy chủ đang chạy (dev_server.start của hồ sơ) đã khai khoá nhà cung cấp. Chi tiết: ${String(error?.cause?.code ?? error)}\n`,
     );
     process.exit(2);
   }
-  const pack = withPack ? findPack('Toán', 'cambridge-lower-secondary', 'lớp 7') : null;
-  if (withPack && !pack) {
+  if (!res.ok || !res.body) {
     process.stderr.write(
-      'gen-dan-y-mu: both outlines generated without a curriculum pack — không tìm thấy gói Toán Cambridge cho lớp 7.\n',
+      `gen-dan-y-mu: tuyến dàn ý trả ${res.status} — cần một máy chủ đang chạy tại ${baseUrl} đã khai khoá nhà cung cấp.\n`,
+    );
+    process.exit(2);
+  }
+  const text = await res.text();
+  const outlines = [];
+  let courseTitle;
+  let anchor;
+  for (const line of text.split('\n')) {
+    if (!line.startsWith('data: ')) continue;
+    let evt;
+    try {
+      evt = JSON.parse(line.slice(6));
+    } catch {
+      continue;
+    }
+    if (evt.type === 'outline') outlines.push(evt.data);
+    else if (evt.type === 'courseTitle') courseTitle = evt.data;
+    else if (evt.type === 'curriculumAnchor') anchor = evt.data;
+    else if (evt.type === 'done' && Array.isArray(evt.outlines) && evt.outlines.length) {
+      outlines.length = 0;
+      outlines.push(...evt.outlines);
+      courseTitle = evt.courseTitle ?? courseTitle;
+    }
+  }
+  if (!outlines.length) {
+    process.stderr.write('gen-dan-y-mu: tuyến dàn ý không trả mục nào.\n');
+    process.exit(1);
+  }
+  // Lượt CÓ gói phải thật sự neo được: câu neo vắng nghĩa là gói không tới nơi,
+  // và khi ấy hai dàn ý giống nhau về bản chất — phép thử mù mất nghĩa.
+  if (withPack && !anchor) {
+    process.stderr.write(
+      'gen-dan-y-mu: both outlines generated without a curriculum pack — lượt CÓ gói không trả câu neo.\n',
     );
     process.exit(1);
   }
-  const res = await generateSceneOutlinesFromRequirements(
-    { requirement: de, ...(withPack ? { learner: LEARNER } : {}) },
-    undefined,
-    undefined,
-    callLLM,
-    withPack ? { curriculumContext: readPackBody(pack.id) } : {},
-  );
-  if (!res.success || !res.data) {
-    process.stderr.write(`gen-dan-y-mu: soạn dàn ý thất bại: ${res.error ?? 'không rõ'}\n`);
-    process.exit(1);
-  }
-  return res.data;
+  return { outlines, courseTitle, anchor };
 }
 
 function render(runId, data) {

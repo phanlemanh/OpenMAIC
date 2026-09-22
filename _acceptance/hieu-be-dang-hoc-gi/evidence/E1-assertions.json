@@ -1,0 +1,251 @@
+{
+  "assertions": [
+    {
+      "name": "E1-the-trong: card state is ST-the-trong",
+      "pass": true,
+      "detail": "got ST-the-trong"
+    },
+    {
+      "name": "E1-the-trong: nút Lưu mờ (disabled)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "E1-the-dang-dien: card state is ST-the-dang-dien",
+      "pass": true,
+      "detail": "got ST-the-dang-dien"
+    },
+    {
+      "name": "E1-mon-co-goi: dòng môn hiện có gói + tên sách",
+      "pass": true,
+      "detail": "✓ máy biết chương trình này — Cambridge Lower Secondary Mathematics Learner's Book 8"
+    },
+    {
+      "name": "E1-mon-chua-goi: dòng môn hiện chưa có gói — máy sẽ đoán",
+      "pass": true,
+      "detail": "Chưa có gói cho chương trình này — máy sẽ đoán và nói rõ là đang đoán."
+    },
+    {
+      "name": "E1-da-luu: card state is ST-the-da-luu after save",
+      "pass": false,
+      "detail": "got ST-the-loi-luu"
+    },
+    {
+      "name": "E1-da-luu: toast \"Đã lưu\" hiện ra",
+      "pass": false,
+      "detail": "VI\n\nHọc tập sinh tạo trong lớp học tương tác đa tác nhân\n\nChào Bạn học\nCùng học nhé?\nSoạn cho:\nToán — Cambridge Lower Secondary\nToán — MOET\nmedium\nChế độ tương tác\nVào lớp học\nGần đây\n0\nNhập lớp học\nChưa có bài học nào — tạo mới ở trên hoặc nhập một bài học vào.\nOpenMAIC Open Source Project\nChưa lưu"
+    },
+    {
+      "name": "E1-da-luu: tên gọi còn nguyên sau tải lại",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "E1-da-luu: lớp còn nguyên sau tải lại",
+      "pass": false,
+      "detail": ""
+    },
+    {
+      "name": "E1-da-luu: đủ hai dòng môn sau tải lại",
+      "pass": false,
+      "detail": "1"
+    },
+    {
+      "name": "E1-doi-lop: dòng Cambridge chuyển sang chưa có gói khi đổi sang lớp 8",
+      "pass": true,
+      "detail": "ST-the-mon-chua-goi"
+    },
+    {
+      "name": "E1-loi-luu: toast \"Chưa lưu được\" hiện ra",
+      "pass": true,
+      "detail": "VI\n\nHọc tập sinh tạo trong lớp học tương tác đa tác nhân\n\nChào Bạn học\nCùng học nhé?\nSoạn cho:\nToán — Cambridge Lower Secondary\nToán — MOET\nmedium\nChế độ tương tác\nVào lớp học\nGần đây\n0\nNhập lớp học\nChưa có bài học nào — tạo mới ở trên hoặc nhập một bài học vào.\nOpenMAIC Open Source Project\nChưa lưu được — thứ vừa gõ vẫn còn trên màn. Thử lại nhé.\nBộ lưu trữ đã hoạt động lại, nhưng những thay đổi "
+    },
+    {
+      "name": "E1-loi-luu: KHÔNG có toast \"Đã lưu\"",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "E1-loi-luu: giá trị vừa gõ còn trên form",
+      "pass": true,
+      "detail": "Bống Nhỏ"
+    },
+    {
+      "name": "E1-loi-luu: card state is ST-the-loi-luu",
+      "pass": true,
+      "detail": "got ST-the-loi-luu"
+    },
+    {
+      "name": "E1-bot-mon setup: có lựa chọn môn MOET trong ô Soạn cho",
+      "pass": true,
+      "detail": "Toán::cambridge-lower-secondary,Toán::moet"
+    },
+    {
+      "name": "E1-bot-mon: ô Soạn cho rơi về môn còn lại, không giữ lựa chọn mồ côi",
+      "pass": true,
+      "detail": "selected=Toán::cambridge-lower-secondary options=Toán::cambridge-lower-secondary"
+    }
+  ],
+  "failedRequests": [
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/stages",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/folders",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/stages",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/folders",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/stages",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/folders",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/stages",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/folders",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
+      "status": 404,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
+      "status": 404,
+      "method": "GET"
+    }
+  ]
+}

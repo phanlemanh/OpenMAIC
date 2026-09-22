@@ -59,7 +59,7 @@ const MAX_FREE_TEXT = 80;
 
 const emptySubject = (): LearnerSubject => ({ subject: '', curriculum: '', language: '' });
 
-type SaveState = 'idle' | 'saved' | 'failed';
+type SaveState = 'idle' | 'saving' | 'saved' | 'failed';
 
 export function LearnerProfileSettings() {
   const { t } = useI18n();
@@ -113,7 +113,7 @@ export function LearnerProfileSettings() {
     }));
   };
 
-  const onSave = () => {
+  const onSave = async () => {
     if (!complete) return;
     // Mã gói tính LÚC LƯU từ bộ đăng ký đang có, nhưng không phải sự thật đóng
     // băng: mỗi lần hiển thị lại tính lại, nên thêm gói mới là hồ sơ cũ hưởng.
@@ -127,8 +127,22 @@ export function LearnerProfileSettings() {
           return { ...s, textbook: s.textbook?.trim() || undefined, packId: pack?.id };
         }),
     };
+    setSave('saving');
     setLearner(learner);
-    if (isPersistUnavailable('learner-profile-storage')) {
+
+    // ĐỌC LẠI từ chính ngăn lưu trước khi dám nói «đã lưu».
+    //
+    // Hỏi cờ sức khoẻ ngay sau khi gọi là KHÔNG đủ: việc ghi bất đồng bộ, nên
+    // lúc ta hỏi thì một lượt ghi hỏng chưa kịp bật cờ và màn báo «đã lưu» cho
+    // một lượt ghi vừa trượt. Hàng đợi ghi theo khoá là tuần tự, nên lượt nạp
+    // lại này xếp SAU lượt ghi và nói về thứ đã xuống ngăn lưu.
+    await useLearnerProfileStore.persist.rehydrate();
+    const stored = useLearnerProfileStore.getState().learner;
+    const landed =
+      !isPersistUnavailable('learner-profile-storage') &&
+      JSON.stringify(stored) === JSON.stringify(learner);
+
+    if (!landed) {
       setSave('failed');
       toast.error(t('settings.learnerProfile.saveFailed'));
       return;
@@ -140,11 +154,13 @@ export function LearnerProfileSettings() {
   const cardState =
     save === 'failed'
       ? 'ST-the-loi-luu'
-      : save === 'saved'
-        ? 'ST-the-da-luu'
-        : touched
-          ? 'ST-the-dang-dien'
-          : 'ST-the-trong';
+      : save === 'saving'
+        ? 'ST-the-dang-luu'
+        : save === 'saved'
+          ? 'ST-the-da-luu'
+          : touched
+            ? 'ST-the-dang-dien'
+            : 'ST-the-trong';
 
   /**
    * Nhãn lớp KHÔNG đi qua bộ dịch, có chủ ý. Gói khung khớp theo đúng chuỗi
@@ -320,7 +336,7 @@ export function LearnerProfileSettings() {
       <Button
         type="button"
         data-role="luu"
-        disabled={!complete || save === 'saved'}
+        disabled={!complete || save === 'saved' || save === 'saving'}
         onClick={onSave}
       >
         {t('settings.learnerProfile.save')}

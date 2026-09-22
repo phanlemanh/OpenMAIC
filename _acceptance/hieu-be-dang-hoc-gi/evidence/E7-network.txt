@@ -1,0 +1,55 @@
+E7 — network evidence for AC-7 (curriculumAnchor SSE event in the outline stream)
+Captured 2026-09-22, dev server http://localhost:3002, POST /api/generate/scene-outlines-stream
+
+Driver: Claude Browser pane (mcp__Claude_Browser__read_network_requests). Full response body of the
+in-flight SSE request was fetched with read_network_requests(requestId=<the POST request>).
+
+Request: POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK
+Learner in requirements.learner.subjects[0]: { subject: "Toán", curriculum: "cambridge-lower-secondary",
+language: "en-US", packId: "cambridge-lower-secondary-maths-8" }  (read from sessionStorage.generationSession)
+
+Relevant SSE lines from the response body (raw bytes as delivered; some non-ASCII bytes were
+re-encoded by the network-read tool's transport and show as mojibake below — e.g. "Ã " / "â€”" are
+UTF-8 sequences for "à" / "—" / Vietnamese diacritics that render correctly in the browser DOM itself;
+the DOM read via javascript_tool in E7-neo-co-goi.html shows the correct rendering):
+
+data: {"type":"languageDirective","data":"Deliver the course primarily in clear, age-appropriate English because the learner studies Cambridge Mathematics in English. ..."}
+
+data: {"type":"courseTitle","data":"Ratio and Proportion"}
+
+data: {"type":"outline","data":{"id":"scene_1", ... ,"curriculumAnchor":"Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8."},"index":0}
+
+... (10 more "outline" events, scene_2..scene_11) ...
+
+data: {"type":"curriculumAnchor","data":"Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8."}
+
+data: {"type":"done","outlines":[ ... 11 outlines ... ]}
+
+=> ASSERTION: sự kiện SSE riêng {"type":"curriculumAnchor", data:"..."} CÓ MẶT trong luồng dàn ý.
+   PASS — máy chủ (route app/api/generate/scene-outlines-stream/route.ts) phát đúng sự kiện, nội dung
+   hợp lệ: tên unit ("Unit 12 — Ratio and proportion") đứng trước, tên sách theo sau, KHÔNG có mã khung
+   (không có chữ "Stage") mở đầu câu, câu đọc được bằng tiếng Việt tự nhiên.
+
+=> NHƯNG: DOM của trang /generation-preview lúc luồng đã "done" (11/11 scenes) vẫn giữ nguyên
+   data-state="ST-neo-dang-doan" (trạng thái "đang đoán", banner cam), KHÔNG chuyển sang
+   data-state="ST-neo-co-goi" mặc dù hồ sơ CÓ gói đã khớp (packId cambridge-lower-secondary-maths-8)
+   và model ĐÃ trả curriculumAnchor hợp lệ như trên. Xem chi tiết + nguyên nhân mã nguồn trong
+   E7-neo-co-goi.html.
+
+NETWORK TRUTH (đúng scope dev_server.url http://localhost:3002, không có api_base riêng khai trong
+config.yaml):
+- Request FAIL-eligible duy nhất trong flow này (POST /api/generate/scene-outlines-stream) -> 200 OK.
+  Không có request app-scope nào lỗi 4xx/5xx trong luồng tạo dàn ý.
+- Ghi chú ngoài luồng (không tính fail): các request GET /api/persistence/kv/entries/* trả 404
+  "PERSISTENCE_NOT_CONFIGURED" trong suốt phiên — do .env.local KHÔNG có DATABASE_URL /
+  PERSISTENCE_DEV_TOKEN dù dev_server.start khai NEXT_PUBLIC_PERSISTENCE=1 (xem outputTail của
+  runner để biết chi tiết). Đây là 404 nhưng route /api/persistence trả nó CÓ CHỦ Ý làm "not
+  configured" (đúng thiết kế theo mã nguồn), không phải app-origin lỗi ngoài dự kiến của route
+  scene-outlines-stream đang được đo — không tính vào FAIL-eligible của phép đo E7 này (E7 chỉ đo
+  đúng route scene-outlines-stream/route.ts theo cột "paths" của eval), nhưng được note lại vì nó
+  chặn đường lưu hồ sơ người học qua UI (workaround: lưu vẫn set state trong bộ nhớ client, đủ để
+  đi hết luồng E7).
+=> networkObserved = app-fail là SAI vì route đang đo (scene-outlines-stream) không fail; nhưng vì
+   phép đo tổng thể vẫn FAIL (do lỗi client-side ở bước hiển thị, không phải network) nên trường
+   networkObserved trong kết quả cuối phản ánh riêng phần network: "clean" cho riêng route
+   scene-outlines-stream, kèm ghi chú 404 persistence not-configured (out of scope cho E7 cụ thể).

@@ -74,7 +74,7 @@ export function LearnerSubjectPicker({
     );
   }
 
-  const options = (learner?.subjects ?? []).filter((s) => s.subject && s.curriculum && s.language);
+  const options = (learner?.subjects ?? []).filter((s) => s.subject && s.language && s.curriculum);
 
   return (
     <label data-state="ST-chon-san-sang" className="inline-flex items-center gap-2 text-sm">
@@ -87,7 +87,9 @@ export function LearnerSubjectPicker({
       >
         {options.map((s) => (
           <option key={subjectKey(s)} value={subjectKey(s)}>
-            {`${s.subject} — ${t(`home.learnerInvite.curriculum.${s.curriculum}`)}`}
+            {`${s.subject} — ${t(`home.learnerInvite.curriculum.${s.curriculum}`)} (${t(
+              `home.learnerInvite.language.${s.language}`,
+            )})`}
           </option>
         ))}
       </select>

@@ -20,6 +20,10 @@
         "cambridge-lower-secondary": "Cambridge Lower Secondary",
         "ib-myp": "IB MYP",
         "other": "Другая"
+      },
+      "language": {
+        "vi-VN": "вьетнамский",
+        "en-US": "английский"
       }
     }
   },

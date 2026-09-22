@@ -11,6 +11,12 @@ Generate an Ultra Mode course outline based on the following requirements.
 {{userProfile}}
 {{#if curriculumContext}}
 {{curriculumContext}}
+
+Also return a `curriculumAnchor` field: ONE sentence, in the learner's own
+language, naming which unit or topic of the framework above this course is
+anchored to. Put the unit or topic NAME first and the textbook name after it;
+never open the sentence with a code. This field exists only because a framework
+was supplied — never invent an anchor without one.
 {{/if}}
 
 ## Language Context

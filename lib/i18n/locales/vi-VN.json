@@ -20,6 +20,10 @@
         "cambridge-lower-secondary": "Cambridge Lower Secondary",
         "ib-myp": "IB MYP",
         "other": "Khác"
+      },
+      "language": {
+        "vi-VN": "tiếng Việt",
+        "en-US": "tiếng Anh"
       }
     }
   },

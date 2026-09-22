@@ -20,7 +20,16 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({
   packs: [] as Array<Record<string, unknown>>,
   unavailable: false,
+  /**
+   * Lượt ghi TRƯỢT mà cờ sức khoẻ CHƯA kịp bật — ca thật của finding t9. Việc
+   * ghi là bất đồng bộ, nên hỏi cờ ngay sau khi gọi là hỏi quá sớm.
+   */
+  silentWriteFailure: false,
   saved: null as unknown,
+  /** «Bộ nhớ» và «ổ đĩa» của kho giả — dọn giữa các bài, nếu không một hồ sơ
+   *  trùng nội dung từ bài trước còn nằm trên đĩa và làm phép so trùng oan. */
+  memory: { learner: null as unknown },
+  disk: { learner: null as unknown },
 }));
 
 vi.mock('@/lib/hooks/use-i18n', () => ({
@@ -31,30 +40,34 @@ vi.mock('@/lib/store/persist-health', () => ({
   isPersistUnavailable: () => mocks.unavailable,
 }));
 
+/**
+ * Kho giả mô phỏng đúng đường THẬT: `setLearner` đổi giá trị trong bộ nhớ NGAY
+ * và xếp một lượt ghi; `rehydrate` đọc lại từ ngăn lưu rồi ghi đè bộ nhớ. Khi
+ * ngăn lưu từ chối, lượt ghi không xuống đĩa nên lượt đọc lại trả về giá trị
+ * CŨ — đó chính là tín hiệu mà thẻ dùng để biết nó có được phép nói «đã lưu».
+ *
+ * Bản giả lập trước cho cờ sức khoẻ trả về ĐỒNG BỘ, nên nó che mất rằng việc
+ * ghi là bất đồng bộ: bài kiểm xanh trong khi sản phẩm báo «đã lưu» cho một
+ * lượt ghi vừa trượt (finding t9 của lượt nghiệm thu thứ nhất).
+ */
 vi.mock('@/lib/store/learner-profile', async () => {
   const actual = await vi.importActual<typeof import('@/lib/store/learner-profile')>(
     '@/lib/store/learner-profile',
   );
-  const state = { learner: null as unknown };
-  const store = Object.assign(
-    (sel: (s: Record<string, unknown>) => unknown) =>
-      sel({
-        learner: state.learner,
-        setLearner: (l: unknown) => {
-          state.learner = l;
-          mocks.saved = l;
-        },
-      }),
-    {
-      getState: () => ({
-        learner: state.learner,
-        setLearner: (l: unknown) => {
-          state.learner = l;
-          mocks.saved = l;
-        },
-      }),
+  const setLearner = (l: unknown) => {
+    mocks.memory.learner = l;
+    mocks.saved = l;
+    if (!mocks.unavailable && !mocks.silentWriteFailure) mocks.disk.learner = l;
+  };
+  const snapshot = () => ({ learner: mocks.memory.learner, setLearner });
+  const store = Object.assign((sel: (s: Record<string, unknown>) => unknown) => sel(snapshot()), {
+    getState: snapshot,
+    persist: {
+      rehydrate: async () => {
+        mocks.memory.learner = mocks.disk.learner;
+      },
     },
-  );
+  });
   return { ...actual, useLearnerProfileStore: store };
 });
 
@@ -87,7 +100,10 @@ beforeEach(() => {
     },
   ];
   mocks.unavailable = false;
+  mocks.silentWriteFailure = false;
   mocks.saved = null;
+  mocks.memory.learner = null;
+  mocks.disk.learner = null;
   vi.stubGlobal(
     'fetch',
     vi.fn(async () => new Response(JSON.stringify({ packs: mocks.packs }), { status: 200 })),
@@ -128,7 +144,7 @@ describe('thẻ 5 câu', () => {
   it('ST-the-da-luu: bấm Lưu thì hồ sơ xuống kho và màn báo đã lưu', async () => {
     await mount();
     await fillMinimum('cambridge-lower-secondary');
-    await click('button[data-role="luu"]');
+    await clickAndSettle('button[data-role="luu"]');
     expect(state('ST-the-da-luu'), 'ST-the-da-luu').not.toBeNull();
     expect(mocks.saved, 'hồ sơ phải xuống kho').toMatchObject({
       nickname: 'Bi',
@@ -140,9 +156,23 @@ describe('thẻ 5 câu', () => {
     mocks.unavailable = true;
     await mount();
     await fillMinimum('cambridge-lower-secondary');
-    await click('button[data-role="luu"]');
+    await clickAndSettle('button[data-role="luu"]');
     expect(state('ST-the-loi-luu'), 'ST-the-loi-luu').not.toBeNull();
     expect(state('ST-the-da-luu'), 'save reported success while the write failed').toBeNull();
+    const name = container.querySelector('input[data-role="ten-be"]') as HTMLInputElement;
+    expect(name.value, 'thứ vừa gõ phải còn trên màn').toBe('Bi');
+  });
+
+  it('CHIỀU ĐỎ THẬT: ghi trượt mà cờ chưa kịp bật — vẫn KHÔNG được báo đã lưu', async () => {
+    // Đây là ca phân biệt được hai cách làm. Hỏi cờ sức khoẻ ngay sau khi gọi
+    // thì ở đây cờ còn TẮT, nên bản cũ báo «đã lưu» cho một lượt ghi vừa trượt.
+    // Đọc lại từ ngăn lưu thì thấy giá trị cũ, nên bản mới nói đúng sự thật.
+    mocks.silentWriteFailure = true;
+    await mount();
+    await fillMinimum('cambridge-lower-secondary');
+    await clickAndSettle('button[data-role="luu"]');
+    expect(state('ST-the-da-luu'), 'save reported success while the write failed').toBeNull();
+    expect(state('ST-the-loi-luu'), 'ST-the-loi-luu').not.toBeNull();
     const name = container.querySelector('input[data-role="ten-be"]') as HTMLInputElement;
     expect(name.value, 'thứ vừa gõ phải còn trên màn').toBe('Bi');
   });
@@ -178,6 +208,15 @@ async function setValue(selector: string, value: string) {
     setter.call(el, value);
     el.dispatchEvent(new Event('change', { bubbles: true }));
     el.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+}
+
+/** Bấm rồi CHỜ lượt đọc-lại lắng — xác nhận lưu là bất đồng bộ. */
+async function clickAndSettle(selector: string) {
+  await click(selector);
+  await act(async () => {
+    await Promise.resolve();
+    await Promise.resolve();
   });
 }
 

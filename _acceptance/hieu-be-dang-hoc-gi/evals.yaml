@@ -6,17 +6,18 @@ evals:
     executor: ui-check
     layer: ui-observed
     steps:
-      - "Dựng máy chủ phát triển theo config dev_server.start"
+      - "Dựng máy chủ phát triển theo config dev_server.start NHƯNG BỎ biến NEXT_PUBLIC_PERSISTENCE (lối local-first). Lý do: cờ ấy bật phạm vi tài khoản mà máy đo không có cơ sở dữ liệu, nên mọi lượt ghi bị từ chối và các trạng thái «đã lưu» / «nhớ qua tải lại» KHÔNG dựng được — không phải lỗi sản phẩm, mà là một cấu hình không dùng được. Lối local-first là cấu hình người tự dựng thật sự chạy, và hồ sơ lưu bền qua trình duyệt ở đó."
       - "Mở {url} với hồ sơ trống → Cài đặt → mục «Người học» → chụp evidence/E1-the-trong.png (nút Lưu mờ)"
       - "Điền tên gọi, chọn lớp 7, thêm dòng môn Toán · Cambridge Lower Secondary · tiếng Anh → chụp evidence/E1-the-dang-dien.png"
       - "Quan sát dòng môn hiện «có gói khung» kèm tên sách → chụp evidence/E1-mon-co-goi.png"
       - "Thêm dòng môn Toán · MOET · tiếng Việt → dòng hiện «chưa có gói — máy sẽ đoán» → chụp evidence/E1-mon-chua-goi.png"
-      - "Bấm Lưu → toast đã lưu, tải lại trang, mở lại mục → giá trị còn nguyên → chụp evidence/E1-da-luu.png"
+      - "Bấm Lưu → trong lúc đọc lại để xác nhận, nút Lưu mờ → chụp evidence/E1-dang-luu.png (khung này có thể rất ngắn; không bắt kịp thì khai thẳng)"
+      - "Sau xác nhận: toast đã lưu, tải lại trang, mở lại mục → giá trị còn nguyên → chụp evidence/E1-da-luu.png"
       - "Trên hồ sơ ĐÃ LƯU: đổi lớp 7 → lớp 8 trên dòng Cambridge → dòng chuyển sang «chưa có gói» (chưa có gói Stage 9) → chụp evidence/E1-doi-lop.png; trả lại lớp 7"
       - "Ép ghi hỏng: chặn tuyến /api/persistence/kv trả 500 bằng công cụ trình duyệt → đổi một giá trị → Lưu → chụp evidence/E1-loi-luu.png (toast «chưa lưu được — giá trị vẫn giữ trên màn» VÀ giá trị vừa gõ còn trên form, KHÔNG có toast đã lưu)"
       - "Bớt dòng môn đang được ô «Soạn cho» nhớ → về trang chủ → ô rơi về môn còn lại, không giữ lựa chọn mồ côi → chụp evidence/E1-bot-mon.png"
       - "MỌI khung phải là chụp SỐNG; khung nào không dựng được thì khai thẳng."
-    expected: "exit 0; đủ BẢY khung sống — ST-the-trong, ST-the-dang-dien, ST-the-mon-co-goi, ST-the-mon-chua-goi, ST-the-da-luu, ST-the-loi-luu, cộng khung đổi-lớp; và khung bớt-môn cho AC-5. LUẬT PHỦ KHUNG: mỗi dòng ST-the-* trong bảng trạng thái của design-doc phải có ít nhất một khung ở phép đo này (sáu dòng); hai khung đổi-lớp và bớt-môn là khung hành vi, chụp thêm chứ không thay dòng nào; thiếu một dòng → đỏ nêu ĐÍCH DANH tên dòng thiếu. Sau tải lại giá trị còn nguyên. Máy đo không có cơ sở dữ liệu nên GET /api/persistence/kv/* trả 404 là đúng thiết kế; 500 ở tuyến kv trong bước ép-ghi-hỏng là do chính người đo dựng, cũng đúng thiết kế; mọi 4xx/5xx khác trên cùng origin là đỏ. Chiều đỏ: (a) thiếu một khung → đỏ nêu tên dòng; (b) dòng môn Cambridge lớp 7 KHÔNG hiện «có gói» → đỏ; (c) lúc ghi hỏng mà màn báo đã lưu → đỏ ghim 'save reported success while the write failed'."
+    expected: "exit 0; đủ BẢY khung sống — ST-the-trong, ST-the-dang-dien, ST-the-mon-co-goi, ST-the-mon-chua-goi, ST-the-da-luu, ST-the-loi-luu, cộng khung đổi-lớp; và khung bớt-môn cho AC-5. LUẬT PHỦ KHUNG: mỗi dòng ST-the-* trong bảng trạng thái của design-doc phải có ít nhất một khung ở phép đo này (BẢY dòng, gồm ST-the-dang-luu); hai khung đổi-lớp và bớt-môn là khung hành vi, chụp thêm chứ không thay dòng nào; thiếu một dòng → đỏ nêu ĐÍCH DANH tên dòng thiếu. Sau tải lại giá trị còn nguyên. Các phản hồi sau là ĐÚNG THIẾT KẾ, không phải lỗi: 404 ở GET /api/stages và GET /api/folders (chỉ phục vụ khi bộ chạy agent bật), và 404 ở GET /api/persistence/kv/* nếu lối máy chủ không bật; 500 ở tuyến kv trong bước ép-ghi-hỏng là do chính người đo dựng, cũng đúng thiết kế; mọi 4xx/5xx khác trên cùng origin là đỏ. Chiều đỏ: (a) thiếu một khung → đỏ nêu tên dòng; (b) dòng môn Cambridge lớp 7 KHÔNG hiện «có gói» → đỏ; (c) lúc ghi hỏng mà màn báo đã lưu → đỏ ghim 'save reported success while the write failed'."
     paths: ["components/settings/learner-profile-settings.tsx", "components/settings/index.tsx", "lib/store/learner-profile.ts", "app/api/curriculum-packs/**", "app/page.tsx"]
     evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
 
@@ -63,7 +64,8 @@ evals:
       - "Khai hồ sơ có hai môn (Toán Cambridge, Toán MOET) → về trang chủ → ô «Soạn cho: Toán — Cambridge (tiếng Anh) ▾» → chụp evidence/E5-san-sang.png"
       - "Đổi sang Toán — MOET, tải lại trang → ô vẫn ở MOET (nhớ lựa chọn) → chụp evidence/E5-nho-lua-chon.png"
       - "Xoá hồ sơ đi, soạn một dàn ý bất kỳ → màn xem trước KHÔNG có dòng neo nào → chụp evidence/E5-neo-khong.png"
-    expected: "exit 0; bốn khung sống phủ ST-chon-moi-khai (không ô), ST-chon-san-sang (ô đúng nhãn môn — chương trình (ngôn ngữ)), lựa chọn nhớ qua tải lại, và ST-neo-khong (hồ sơ trống → màn xem trước không dòng neo, y như trước vòng). LUẬT PHỦ KHUNG: ba dòng ST-chon-moi-khai, ST-chon-san-sang và ST-neo-khong mỗi dòng phải có ít nhất một khung ở phép đo này; thiếu một dòng → đỏ nêu ĐÍCH DANH tên dòng. Chiều đỏ: ô hiện khi hồ sơ trống, nhãn thiếu chương trình, hoặc hồ sơ trống mà vẫn có dòng neo → đỏ nêu đích danh khung."
+      - "Dựng máy chủ như E1: BỎ biến NEXT_PUBLIC_PERSISTENCE (lối local-first), nếu không hồ sơ không lưu bền được và khung «nhớ lựa chọn qua tải lại» không dựng được."
+    expected: "exit 0; bốn khung sống phủ ST-chon-moi-khai (không ô), ST-chon-san-sang (ô đúng nhãn môn — chương trình (ngôn ngữ)), lựa chọn nhớ qua tải lại, và ST-neo-khong (hồ sơ trống → màn xem trước không dòng neo, y như trước vòng). LUẬT PHỦ KHUNG: ba dòng ST-chon-moi-khai, ST-chon-san-sang và ST-neo-khong mỗi dòng phải có ít nhất một khung ở phép đo này; thiếu một dòng → đỏ nêu ĐÍCH DANH tên dòng. Nhãn ô phải nêu ĐỦ ba phần «môn — chương trình (ngôn ngữ)». Các 404 ở /api/stages và /api/folders là đúng thiết kế (bộ chạy agent tắt). Chiều đỏ: ô hiện khi hồ sơ trống, nhãn thiếu chương trình HOẶC thiếu ngôn ngữ, hoặc hồ sơ trống mà vẫn có dòng neo → đỏ nêu đích danh khung."
     paths: ["app/page.tsx", "lib/store/learner-profile.ts"]
     evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
 
@@ -163,7 +165,7 @@ evals:
     criterion: AC-13
     executor: script
     cmd: config:executors.script.dan_y_mu
-    expected: "exit 0; sinh HAI dàn ý từ chính tuyến soạn thật, cùng đề «tỉ lệ và tỉ số», cùng hồ sơ bé lớp 7 — một lượt CÓ gói Cambridge, một lượt KHÔNG — ghi ra evidence/E13-dan-y-A.md và evidence/E13-dan-y-B.md với mã lượt chạy ở dòng đầu mỗi tệp và thứ tự A/B xáo ngẫu nhiên (bản ghi nào là bản nào nằm ở evidence/E13-khoa.txt, hội đồng KHÔNG đọc tệp khoá). Chiều đỏ: cho cả hai lượt cùng đi đường không-gói → đỏ ghim 'both outlines generated without a curriculum pack'."
+    expected: "exit 0; CẦN một máy chủ đang chạy đã khai khoá nhà cung cấp (mặc định http://localhost:3002, khớp dev_server.url); không có thì script thoát 2 và nói rõ thiếu gì, không dựng dữ liệu giả. Sinh HAI dàn ý bằng cách gọi CHÍNH tuyến HTTP mà trang chủ gọi — nên nó chứng luôn cả đường route tra gói khung, cùng đề «tỉ lệ và tỉ số», cùng hồ sơ bé lớp 7 — một lượt CÓ gói Cambridge, một lượt KHÔNG — ghi ra evidence/E13-dan-y-A.md và evidence/E13-dan-y-B.md với mã lượt chạy ở dòng đầu mỗi tệp và thứ tự A/B xáo ngẫu nhiên (bản ghi nào là bản nào nằm ở evidence/E13-khoa.txt, hội đồng KHÔNG đọc tệp khoá). Chiều đỏ: cho cả hai lượt cùng đi đường không-gói → đỏ ghim 'both outlines generated without a curriculum pack'."
     paths: ["scripts/gen-dan-y-mu.mjs", "lib/server/curriculum-packs.ts", "app/api/generate/scene-outlines-stream/route.ts"]
     evidence_required: [run_id, exit_code, verifier, verified_at, output]
 

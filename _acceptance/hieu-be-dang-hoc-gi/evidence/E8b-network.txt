@@ -1,0 +1,33 @@
+E8b network dump (app-scope = http://localhost:3002, no separate api_base declared)
+
+Assertion-critical request:
+  POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK  (outline SSE stream; produced the ST-neo-dang-doan anchor line)
+
+All other FAIL-eligible (app-origin) requests observed this session: 200 OK / 304 Not Modified, EXCEPT:
+  GET /api/persistence/kv/entries/settings-storage        -> 404 (repeated)
+  GET /api/persistence/kv/entries/learner-profile-storage -> 404 (repeated)
+  GET /api/persistence/kv/entries/user-profile-storage    -> 404 (repeated)
+  GET /api/stages  -> 404
+  GET /api/folders -> 404
+
+These 404s are the account-scope persistence backend being unconfigured on this measuring
+machine (no DATABASE_URL / Postgres wired up here) -- the SAME condition eval E1 (same
+acceptance contract, AC-1) explicitly documents as "đúng thiết kế" for this exact set of
+endpoints ("Máy đo không có cơ sở dữ liệu nên GET /api/persistence/kv/* trả 404 là đúng
+thiết kế"). They are a pre-existing environment characteristic, not something the AC-8
+(E8b) diff touches or could have caused, and they are unrelated to the anchor-line feature
+under test. Console confirms the client library treats this as an expected, permanent
+condition: "[KVPersist] Giving up on recovering ... after 3 attempts; storage stays
+read-only until something outside this session changes". No 5xx, no connection-refused, no
+timeout was observed on any app-origin request during the actual E8b flow (learner profile
+set -> "tỉ lệ và tỉ số" -> Enter Classroom -> outline stream -> review screen).
+
+Third-party / static requests: none relevant (all resources are same-origin static assets
+or fonts, note-only per scoping rule).
+
+Separately, mid-session the PRE-EXISTING dev server process (pid 76308, not started by
+this verifier) died on its own (net::ERR_CONNECTION_REFUSED across the board); this
+verifier started a fresh dev server on the same port/command per config.yaml
+dev_server.start once the port was free, and continued in a new browser tab. That outage
+is reported under cannotRun/killedByTool reasoning in the structured result, not folded
+into the networkObserved verdict for the successful run captured above.
