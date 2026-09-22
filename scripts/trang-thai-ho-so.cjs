@@ -38,6 +38,10 @@ const TRANG_THAI = {
   'da-giao-may-thong-xanh-sach': { nhan: 'đã giao — máy thông, bằng chứng xanh-sạch', viecKe: 'không ai — người đã duyệt hoặc miễn Cổng Phạm vi' },
   'da-giao-khong-do':            { nhan: 'đã giao — không đo, khai ở Cổng Đáng',      viecKe: 'không ai — vòng đóng theo lời khai, không có phiên nghiệm thu' },
   'da-dong-ho-so':               { nhan: 'đã đóng có hồ sơ',                          viecKe: 'không ai — đã quyết dừng, hồ sơ giữ lại' },
+  'da-nghi':                     { nhan: 'đã giao — đã nghỉ, giữ sử liệu',
+                                   viecKe: 'không ai — đã quyết cho nghỉ, chữ ký giữ làm sử liệu' },
+  // Trạng thái thứ bảy (ADR 0020 Đ8): reality đã chấm — người ghi bản dựng prod + ngày + tên.
+  'da-cham-thuc-te':          { nhan: 'đã chấm bởi thực tế',                viecKe: 'không ai — reality đã chấm' },
   'cho-cong-gia-tri':         { nhan: 'chờ chữ ký — Cổng Giá trị',          viecKe: 'người: xem số thật từ phiên nghiệm thu rồi quyết' },
   'da-nghiem-thu-release':    { nhan: 'đã nghiệm thu — giao rộng',          viecKe: 'không ai — vòng đã đóng' },
   'da-nghiem-thu-iterate':    { nhan: 'đã nghiệm thu — lặp thêm',           viecKe: 'người: mở vòng kế' },
@@ -61,6 +65,7 @@ const BUCKET_OF = {
   'da-giao': 'da-ship',                     'cho-cong-gia-tri': 'cho-nghiem-thu',
   'da-giao-may-thong-veto-mo': 'da-ship',   'da-giao-may-thong-xanh-sach': 'da-ship',
   'da-giao-khong-do': 'da-ship',            'da-dong-ho-so': 'da-bac',
+  'da-nghi': 'da-ship',                     'da-cham-thuc-te': 'da-ship',
   'da-nghiem-thu-release': 'da-nghiem-thu', 'da-nghiem-thu-iterate': 'da-nghiem-thu',
   'da-nghiem-thu-kill': 'da-nghiem-thu',    'ho-so-hong': 'hong',
 };

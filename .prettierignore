@@ -27,7 +27,9 @@ lib/evidence-core.cjs
 lib/gap-probe.cjs
 lib/lop-nhin-thay.cjs
 lib/md-section.cjs
+lib/nhan-canh-gay.cjs
 lib/nguong-o-co-hoi.cjs
+lib/out-of-contract.cjs
 lib/workspace-record.cjs
 lib/design-detect.mjs
 

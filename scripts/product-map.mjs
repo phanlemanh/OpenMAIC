@@ -25,7 +25,7 @@ const { frontmatterField } = require(path.join(__dirname, '..', 'lib', 'evidence
 // cùng hồ sơ cho hai kết luận trái nhau).
 const { recordProblem, navValues, consumedTexts, usesUat, usesOpportunity, usesEvidence,
         missingArtifact, readRecord, ioReason, configList, NAV_RULES, mapState, MAP_LABELS,
-        mapTracked, DA_THONG_CONG_2, conflictProblem } =
+        mapTracked, DA_THONG_CONG_2, conflictProblem, hoSoNghi, DA_DONG_THUC_TE } =
   require(path.join(__dirname, '..', 'lib', 'workspace-record.cjs'));
 
 export { NAV_RULES };
@@ -155,6 +155,13 @@ function classify(dir, slug) {
   const cTxt = cR.t;
   const uR = readRecord(path.join(dir, 'uat-session.md'));
   const oR = readRecord(path.join(dir, 'opportunity.md'));
+  // Sổ quyết định — chỉ để hỏi vị từ NGHỈ; lỗi đọc KHÔNG quyết định ô của slug
+  // (sổ không phải hồ sơ điều hướng), nên nuốt về null như mọi bộ đọc sổ.
+  const ledgerTxt = readRecord(path.join(dir, 'decisions.jsonl')).t;
+  // Báo cáo đọc KHÔNG điều kiện CHỈ để hỏi vị từ nghỉ: `usesEvidence` loại
+  // `signed-off` khỏi tập tiêu thụ, mà hồ sơ đã ký lại đúng là hồ sơ duy nhất
+  // được quyền nghỉ sau khi thu phạm vi — dùng `eR.t` ở đây là mù với ca chính.
+  const nghiReport = readRecord(path.join(dir, 'evidence-report.md')).t;
 
   // HAI câu hỏi khác nhau, đừng trộn:
   //   PHÂN Ô — hồ sơ nào được quyền quyết định ô của slug, và lỗi của hồ sơ nào
@@ -209,6 +216,20 @@ function classify(dir, slug) {
   // nhãn) vì phép chiếu gom chúng lại, nên bản đồ vẫn đứng yên giữa hai lần
   // đóng cổng người và `--check` không đỏ oan giữa vòng.
   const o = k => ({ key: BUCKET_OF[k], slug, name, edge });
+  // Hồ sơ NGHỈ — HỎI cùng vị từ với bộ quét (lib/workspace-record.cjs). Bản đồ
+  // tự suy ô từ status là bộ đọc thứ hai của cùng một sự thật, và nó đã trôi:
+  // hợp đồng chưa thông Cổng 2 mang dòng nghỉ thì bộ quét xếp «đã đóng có hồ sơ»
+  // còn bản đồ xếp «đang làm» — hai NHÓM khác nhau cho cùng một hồ sơ (S4-r1 t3).
+  // So ĐÚNG LOẠI như ba bộ đọc kia. Bản trước dùng giá trị trả về như đúng/sai,
+  // mà vị từ còn trả `dong-so-thieu` và `chua-ky` — hai hình dạng KHÔNG phải
+  // nghỉ — nên một dòng viết thiếu vẫn được bản đồ xếp vào ô nghỉ (lượt chấm 2).
+  if (status && hoSoNghi({ ledgerText: ledgerTxt, reportText: nghiReport,
+                           contractAtRoot: true, suLieuContract: false })?.kieu === 'dong-so') {
+    const kNghi = DA_THONG_CONG_2.includes(status) ? 'da-nghi' : 'da-dong-ho-so';
+    return { ...o(kNghi), note: chu(kNghi).nhan };
+  }
+  // Trạng thái thứ bảy (ADR 0020 Đ8): reality đã chấm — ô cuối, cùng khoá với bộ quét.
+  if (status && DA_DONG_THUC_TE && DA_DONG_THUC_TE.includes(status)) return { ...o('da-cham-thuc-te'), note: chu('da-cham-thuc-te').nhan };
   if (status) {
     if (DA_THONG_CONG_2.includes(status)) {
       // LỜI KHAI PHẢI CÓ VẬT — hỏi TRƯỚC mọi nhánh rẽ, đúng vị trí start-scan đặt nó
@@ -216,7 +237,8 @@ function classify(dir, slug) {
       // nhánh `status === 'machine-cleared'` ở cuối là vô dụng: hồ sơ đường A thoát ra ở
       // `if (duongA) return …` TRƯỚC đó, nên bản đồ lại tin thẳng frontmatter trong khi bộ
       // quét gọi HỎNG — đúng lớp lỗi vừa định giết, chỉ đổi chỗ (S4-r12 [0][1]).
-      if (status === 'machine-cleared' && !khongCanNguoi(cTxt, texts['evidence-report.md'] || '')) {
+      if (status === 'machine-cleared' && !khongCanNguoi(cTxt, texts['evidence-report.md'] || '',
+          { findings: readRecord(path.join(dir, 'review-findings.md')).t ?? null, ledger: ledgerTxt ?? null })) {
         return { key: 'hong', slug, file: 'evidence-report.md', reason: 'status machine-cleared nhưng bằng chứng KHÔNG đạt sáu điều kiện xanh-sạch — hồ sơ tự khai «máy đã thông» mà không có vật' };
       }
       // Đường A (cơ hội quyết build/iterate) còn một cổng người nữa: phiên
