@@ -11,13 +11,13 @@ evals:
       - "Điền tên gọi, chọn lớp 7, thêm dòng môn Toán · Cambridge Lower Secondary · tiếng Anh → chụp evidence/E1-the-dang-dien.png"
       - "Quan sát dòng môn hiện «có gói khung» kèm tên sách → chụp evidence/E1-mon-co-goi.png"
       - "Thêm dòng môn Toán · MOET · tiếng Việt → dòng hiện «chưa có gói — máy sẽ đoán» → chụp evidence/E1-mon-chua-goi.png"
-      - "Bấm Lưu → trong lúc đọc lại để xác nhận, nút Lưu mờ → chụp evidence/E1-dang-luu.png (khung này có thể rất ngắn; không bắt kịp thì khai thẳng)"
+      - "Bấm Lưu → trong lúc đọc lại để xác nhận, nút Lưu mờ → chụp evidence/E1-dang-luu.png. Khung này ở lối local-first chỉ kéo dài dưới một khung hình (ngăn lưu là trình duyệt, không có mạng để làm chậm), nên PNG thường không kịp: khi ấy bắt bằng bản chụp DOM SỐNG — cài MutationObserver trên thẻ trước khi bấm Lưu, ghi outerHTML đúng lúc data-state đổi sang ST-the-dang-luu vào evidence/E1-dang-luu.html — và KHÔNG đặt tên dang-luu cho một PNG chụp trạng thái khác."
       - "Sau xác nhận: toast đã lưu, tải lại trang, mở lại mục → giá trị còn nguyên → chụp evidence/E1-da-luu.png"
       - "Trên hồ sơ ĐÃ LƯU: đổi lớp 7 → lớp 8 trên dòng Cambridge → dòng chuyển sang «chưa có gói» (chưa có gói Stage 9) → chụp evidence/E1-doi-lop.png; trả lại lớp 7"
       - "Ép ghi hỏng: chặn tuyến /api/persistence/kv trả 500 bằng công cụ trình duyệt → đổi một giá trị → Lưu → chụp evidence/E1-loi-luu.png (toast «chưa lưu được — giá trị vẫn giữ trên màn» VÀ giá trị vừa gõ còn trên form, KHÔNG có toast đã lưu)"
       - "Bớt dòng môn đang được ô «Soạn cho» nhớ → về trang chủ → ô rơi về môn còn lại, không giữ lựa chọn mồ côi → chụp evidence/E1-bot-mon.png"
       - "MỌI khung phải là chụp SỐNG; khung nào không dựng được thì khai thẳng."
-    expected: "exit 0; đủ BẢY khung sống — ST-the-trong, ST-the-dang-dien, ST-the-mon-co-goi, ST-the-mon-chua-goi, ST-the-da-luu, ST-the-loi-luu, cộng khung đổi-lớp; và khung bớt-môn cho AC-5. LUẬT PHỦ KHUNG: mỗi dòng ST-the-* trong bảng trạng thái của design-doc phải có ít nhất một khung ở phép đo này (BẢY dòng, gồm ST-the-dang-luu); hai khung đổi-lớp và bớt-môn là khung hành vi, chụp thêm chứ không thay dòng nào; thiếu một dòng → đỏ nêu ĐÍCH DANH tên dòng thiếu. Sau tải lại giá trị còn nguyên. Các phản hồi sau là ĐÚNG THIẾT KẾ, không phải lỗi: 404 ở GET /api/stages và GET /api/folders (chỉ phục vụ khi bộ chạy agent bật), và 404 ở GET /api/persistence/kv/* nếu lối máy chủ không bật; 500 ở tuyến kv trong bước ép-ghi-hỏng là do chính người đo dựng, cũng đúng thiết kế; mọi 4xx/5xx khác trên cùng origin là đỏ. Chiều đỏ: (a) thiếu một khung → đỏ nêu tên dòng; (b) dòng môn Cambridge lớp 7 KHÔNG hiện «có gói» → đỏ; (c) lúc ghi hỏng mà màn báo đã lưu → đỏ ghim 'save reported success while the write failed'."
+    expected: "exit 0; đủ BẢY khung sống — ST-the-trong, ST-the-dang-dien, ST-the-mon-co-goi, ST-the-mon-chua-goi, ST-the-da-luu, ST-the-loi-luu, cộng khung đổi-lớp; và khung bớt-môn cho AC-5. LUẬT PHỦ KHUNG: mỗi dòng ST-the-* trong bảng trạng thái của design-doc phải có ít nhất một khung ở phép đo này (BẢY dòng, gồm ST-the-dang-luu); hai khung đổi-lớp và bớt-môn là khung hành vi, chụp thêm chứ không thay dòng nào; thiếu một dòng → đỏ nêu ĐÍCH DANH tên dòng thiếu. Riêng dòng ST-the-dang-luu: khung sống được phép là bản chụp DOM (evidence/E1-dang-luu.html, bắt bằng MutationObserver lúc data-state đổi) khi PNG không kịp; một PNG mang tên dang-luu mà chụp trạng thái khác → đỏ ghim 'frame mislabeled: ST-the-dang-luu'. Sau tải lại giá trị còn nguyên. Các phản hồi sau là ĐÚNG THIẾT KẾ, không phải lỗi: 404 ở GET /api/stages và GET /api/folders (chỉ phục vụ khi bộ chạy agent bật), và 404 ở GET /api/persistence/kv/* nếu lối máy chủ không bật; 500 ở tuyến kv trong bước ép-ghi-hỏng là do chính người đo dựng, cũng đúng thiết kế; mọi 4xx/5xx khác trên cùng origin là đỏ. Chiều đỏ: (a) thiếu một khung → đỏ nêu tên dòng; (b) dòng môn Cambridge lớp 7 KHÔNG hiện «có gói» → đỏ; (c) lúc ghi hỏng mà màn báo đã lưu → đỏ ghim 'save reported success while the write failed'."
     paths: ["components/settings/learner-profile-settings.tsx", "components/settings/index.tsx", "lib/store/learner-profile.ts", "app/api/curriculum-packs/**", "app/page.tsx"]
     evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
 
@@ -50,8 +50,8 @@ evals:
     criterion: AC-4
     executor: test
     cmd: config:executors.test.api
-    expected: "exit 0; «xoá bộ nhớ đệm» gọi clearPersistedStore cho đủ mọi kho phạm vi account, danh sách rút từ account-stores — kho hồ sơ người học có trong đó. Chiều đỏ: bỏ kho hồ sơ khỏi danh sách xoá → đỏ với thông điệp ghim 'clear-cache skipped an account store: learner-profile-storage'."
-    paths: ["components/settings/general-settings.tsx", "lib/store/account-stores.ts"]
+    expected: "exit 0; «xoá bộ nhớ đệm» gọi clearPersistedStore cho đủ mọi kho phạm vi account, danh sách rút từ account-stores — kho hồ sơ người học có trong đó; và trên máy chủ KHÔNG còn tệp nào nhắc tới một khoá bản chụp riêng của hồ sơ (learner-profile.snapshot) — xoá ở thẻ là xoá bản duy nhất. Chiều đỏ: bỏ kho hồ sơ khỏi danh sách xoá → đỏ với thông điệp ghim 'clear-cache skipped an account store: learner-profile-storage'; máy chủ ghi hồ sơ ra khoá riêng → đỏ ghim 'orphan learner snapshot key still referenced'."
+    paths: ["components/settings/general-settings.tsx", "lib/store/account-stores.ts", "lib/server/agent-runtime/learner-context.ts", "lib/server/agent-runtime/runner.ts"]
     evidence_required: [run_id, exit_code, verifier, verified_at]
 
   - id: E5
@@ -94,8 +94,8 @@ evals:
       - "Dựng máy chủ phát triển theo config dev_server.start (cần khoá mô hình phía máy chủ; không có → khai thẳng, hạ về khung HTML tĩnh của dòng neo với dữ liệu giả và nói rõ)"
       - "Hồ sơ có Toán Cambridge lớp 7; ô «Soạn cho» ở Toán — Cambridge; gõ «tỉ lệ và tỉ số» → Tạo → màn xem trước"
       - "Dòng neo hiện trên đầu dàn ý: tên unit + tên sách, mã (nếu có) in nhỏ phía sau → chụp evidence/E7-neo-co-goi.png"
-      - "Ghi evidence/E7-network.txt: sự kiện SSE curriculumAnchor có mặt trong luồng dàn ý"
-    expected: "exit 0; MỘT khung sống phủ dòng ST-neo-co-goi (luật phủ khung); khung ST-neo-co-goi với dòng neo đọc được bằng ngôn ngữ người học, tên unit đứng trước, không mã đứng trước; luồng SSE có sự kiện curriculumAnchor. Chiều đỏ: dàn ý sinh xong mà không dòng neo dù mô hình đã trả curriculumAnchor, hoặc dòng neo mở đầu bằng mã → đỏ nêu đích danh."
+      - "Ghi evidence/E7-network.txt: sự kiện SSE curriculumAnchor có mặt trong luồng dàn ý (máy chủ suy từ gói + dàn ý; mô hình không được hỏi)"
+    expected: "exit 0; MỘT khung sống phủ dòng ST-neo-co-goi (luật phủ khung); khung ST-neo-co-goi với dòng neo đọc được bằng ngôn ngữ người học, tên unit đứng trước, không mã đứng trước; luồng SSE có sự kiện curriculumAnchor do máy chủ suy từ gói + dàn ý. Các phản hồi sau là ĐÚNG THIẾT KẾ, không phải lỗi: 404 ở GET /api/stages và GET /api/folders (chỉ phục vụ khi bộ chạy agent bật), và 404 ở GET /api/persistence/kv/* khi lối máy chủ không bật; mọi 4xx/5xx khác trên cùng origin là đỏ. Chiều đỏ: dàn ý sinh xong từ môn có gói mà không dòng neo, hoặc dòng neo mở đầu bằng mã / có chữ «Stage» → đỏ nêu đích danh."
     paths: ["app/generation-preview/page.tsx", "components/generation/outlines-editor.tsx", "app/api/generate/scene-outlines-stream/route.ts"]
     evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
 
@@ -104,8 +104,16 @@ evals:
     executor: test
     layer: backend-effect
     cmd: config:executors.test.api
-    expected: "exit 0; phép đo ĐẦU-CUỐI qua chính tuyến HTTP, mô hình giả ghi lại prompt nó nhận: POST /api/generate/scene-outlines-stream với thân yêu cầu chứa learner (môn Toán · cambridge-lower-secondary · lớp 7) và KHÔNG chứa thân gói — route phải tự tra bộ đăng ký, đọc thân gói, đặt vào ô curriculumContext. Ba assert trên cùng một lượt gọi: (a) prompt mô hình giả nhận được CHỨA thân gói fixture tại đúng ô; (b) prompt chứa khối hồ sơ do bộ định dạng chung sinh; (c) route phát sự kiện {type:'curriculumAnchor', data:<chuỗi>} khi mô hình giả trả curriculumAnchor, đi cùng khuôn với courseTitle, và không phát khi mô hình không trả. Đây là phép đo DUY NHẤT bắt nhịp yêu cầu → route → tra gói → prompt; E7 (chụp sống) KHÔNG được thay thế nó. Ba chiều đỏ trên cùng fixture: (a) bỏ dòng tra gói trong route → đỏ ghim 'learner dropped between request and outline prompt'; (b) route chuyển learner sang bộ dựng prompt nhưng bỏ thân gói → đỏ ghim 'curriculum pack body missing from outline prompt'; (c) bỏ nhánh phát sự kiện → đỏ ghim 'curriculumAnchor event missing from outline stream'."
-    paths: ["app/api/generate/scene-outlines-stream/route.ts", "packages/@openmaic/generation/src/outline-generator.ts", "lib/server/curriculum-packs.ts", "packages/@openmaic/generation/src/prompt-formatters.ts"]
+    expected: "exit 0; phép đo ĐẦU-CUỐI qua chính tuyến HTTP, mô hình giả ghi lại prompt nó nhận: POST /api/generate/scene-outlines-stream với thân yêu cầu chứa learner (môn Toán · cambridge-lower-secondary · lớp 7) và KHÔNG chứa thân gói — route phải tự tra bộ đăng ký, đọc thân gói, đặt vào ô curriculumContext. Ba assert trên cùng một lượt gọi: (a) prompt mô hình giả nhận được CHỨA thân gói fixture tại đúng ô; (b) prompt chứa khối hồ sơ do bộ định dạng chung sinh; (c) route phát sự kiện {type:'curriculumAnchor', data:<chuỗi>} khi tra được gói — chuỗi SUY từ gói + đề + dàn ý (tên unit trước, tên sách sau), KHÔNG lấy từ đầu ra mô hình: mô hình tự trả một khoá curriculumAnchor thì bị bỏ qua; không gói → không sự kiện; (d) prompt mô hình giả nhận KHÔNG chứa lời xin câu neo. Đây là phép đo DUY NHẤT bắt nhịp yêu cầu → route → tra gói → prompt; E7 (chụp sống) KHÔNG được thay thế nó. Chiều đỏ trên cùng fixture: (a) bỏ dòng tra gói trong route → đỏ ghim 'learner dropped between request and outline prompt'; (b) route chuyển learner sang bộ dựng prompt nhưng bỏ thân gói → đỏ ghim 'curriculum pack body missing from outline prompt'; (c) bỏ nhánh phát sự kiện → đỏ ghim 'curriculumAnchor event missing from outline stream'; (d) route lấy câu neo từ mô hình → đỏ ghim 'anchor taken from the model instead of derived'; (e) một khuôn dàn ý xin lại khoá thứ tư → đỏ ghim 'template still asks the model for curriculumAnchor'; (f) bộ sinh dàn ý đọc lại khoá ấy → đỏ ghim 'generator still parses a model anchor'."
+    paths: ["app/api/generate/scene-outlines-stream/route.ts", "packages/@openmaic/generation/src/outline-generator.ts", "lib/server/curriculum-packs.ts", "lib/server/curriculum-anchor.ts", "packages/@openmaic/generation/src/prompt-formatters.ts", "packages/@openmaic/generation/templates/requirements-to-outlines/**", "lib/prompts/templates/**"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E7c
+    criterion: AC-7
+    executor: test
+    cmd: config:executors.test.api
+    expected: "exit 0; câu neo là hàm THUẦN trên gói + đề + dàn ý, đo không cần mô hình: đề «tỉ lệ và tỉ số» khớp Unit 12 qua tên tiếng Việt của unit; ngôn ngữ của môn quyết định tên unit hiện (en-US → «Ratio and proportion», vi-VN → «Tỉ số và tỉ lệ»); đề mơ hồ nhưng dàn ý nói rõ → unit lấy từ dàn ý; nhiều unit chạm → unit khớp nhiều cụm hơn thắng; không unit nào khớp → CHỈ tên sách; không chữ «Stage», không mở đầu bằng mã; gói không có sách → null. Dấu tiếng Việt gấp về NFC trước khi so. Chiều đỏ trên cùng fixture: không unit khớp mà vẫn nêu unit → đỏ ghim 'anchor invented a unit the outline never mentions'; chọn sai unit → 'anchor names the wrong unit'; lộ chữ Stage → 'anchor exposes a framework stage to the parent'."
+    paths: ["lib/server/curriculum-anchor.ts", "skills/agent-runtime/cambridge-lower-secondary-maths-8/curriculum-pack.json"]
     evidence_required: [run_id, exit_code, verifier, verified_at]
 
   - id: E8
@@ -123,7 +131,7 @@ evals:
     steps:
       - "Như E7 nhưng ô «Soạn cho» ở Toán — MOET (chưa có gói) → màn xem trước"
       - "Dòng neo mang cảnh báo đang đoán → chụp evidence/E8-neo-dang-doan.png"
-    expected: "exit 0; MỘT khung sống phủ dòng ST-neo-dang-doan (luật phủ khung); khung ST-neo-dang-doan có chữ cảnh báo và tên chương trình chưa có gói. Chiều đỏ: dòng neo đọc như có gói, hoặc không có dòng nào → đỏ nêu đích danh."
+    expected: "exit 0; MỘT khung sống phủ dòng ST-neo-dang-doan (luật phủ khung); khung ST-neo-dang-doan có chữ cảnh báo và tên chương trình chưa có gói (đã dịch, không mã máy). Các phản hồi sau là ĐÚNG THIẾT KẾ, không phải lỗi: 404 ở GET /api/stages và GET /api/folders (chỉ phục vụ khi bộ chạy agent bật), và 404 ở GET /api/persistence/kv/* khi lối máy chủ không bật; mọi 4xx/5xx khác trên cùng origin là đỏ. Chiều đỏ: dòng neo đọc như có gói, không có dòng nào, hoặc dòng cảnh báo lộ mã giáo trình → đỏ nêu đích danh."
     paths: ["app/generation-preview/page.tsx", "components/generation/outlines-editor.tsx"]
     evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
 
@@ -143,13 +151,29 @@ evals:
     paths: ["packages/@openmaic/generation/src/scene-generator.ts", "packages/@openmaic/generation/templates/slide-content/**", "packages/@openmaic/generation/templates/quiz-content/**", "packages/@openmaic/generation/templates/slide-actions/**"]
     evidence_required: [run_id, exit_code, verifier, verified_at]
 
+  - id: E10b
+    criterion: AC-10
+    executor: test
+    cmd: config:executors.test.api
+    expected: "exit 0; hồ sơ đi theo KHOÁ HỌC: (a) màn xem trước ĐÓNG hồ sơ lên `stage.learner` ngay cạnh chỗ đóng ngôn ngữ dạy; (b) túi tiếp-tục sang lớp học mang `learner`; (c) lớp học mở lại đọc hồ sơ từ túi rồi rơi về Stage; (d) requirements của MỌI trang sinh tiếp (vòng nối tiếp lẫn sinh lại một trang) dựng qua MỘT hàm thuần `continuationRequirements` — có hồ sơ thì mang hồ sơ, không hồ sơ không cờ thì không trường nào (y như trước vòng). Chiều đỏ trên cùng fixture: (a) → 'learner never stamped on the Stage'; (b) → 'continuation bag drops the learner'; (c) → 'classroom resume drops the learner'; (d) một chỗ gọi tự dựng requirements → 'continuation call site builds its own requirements'."
+    paths: ["app/generation-preview/page.tsx", "components/classroom/ClassroomSurface.tsx", "lib/hooks/continuation-requirements.ts", "lib/hooks/use-scene-generator.ts", "lib/server/agent-runtime/generation-tools.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E10c
+    criterion: AC-10
+    executor: test
+    cmd: config:executors.test.dsl
+    expected: "exit 0; kiểu khoá học của hợp đồng DSL mang `learner?`: lược đồ JSON sinh ra nhận một khoá học có hồ sơ đủ hình (tên gọi, lớp, hai dòng môn, sách và mã gói tuỳ chọn), từ chối dòng môn thiếu giáo trình và hồ sơ thiếu nhãn lớp; khoá học KHÔNG có hồ sơ vẫn hợp lệ (trường tuỳ chọn, không tăng phiên bản hợp đồng). Chiều đỏ trên cùng fixture: nới trường thành tuỳ ý → đỏ ghim 'learner subject accepted without a curriculum'."
+    paths: ["packages/@openmaic/dsl/src/stage.ts", "packages/@openmaic/dsl/scripts/gen-schema.mjs"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
   - id: E11
     criterion: AC-11
     executor: test
     layer: backend-effect
     cmd: config:executors.test.api
-    expected: "exit 0; POST /api/agent/sessions với learner sai hình (subjects không phải mảng; tên > 40 ký tự; curriculum không phải chuỗi) → 400 nêu tên trường; đúng hình → 201 và KV chủ sở hữu (fixture PGlite) có khoá learner-profile.snapshot đúng nội dung; bảng phiên không có cột mới. Chiều đỏ trên cùng fixture: bỏ kiểm hình → đỏ với thông điệp ghim 'malformed learner accepted'."
-    paths: ["app/api/agent/sessions/route.ts", "app/api/agent/sessions/[id]/messages/route.ts", "lib/server/agent-runtime/learner-context.ts"]
+    expected: "exit 0; bộ chạy đọc hồ sơ từ ngăn account của chủ sở hữu bằng ĐÚNG khoá learner-profile-storage (kho KV giả ghi lại lời gọi: chủ sở hữu, khoá, ngăn) và bóc phong bì lưu bền {state:{learner},version}; khoá vắng / phong bì lạ / hồ sơ đã xoá / hồ sơ sai hình trong kho → null, không lỗi; hồ sơ sai hình bị từ chối KÈM TÊN TRƯỜNG (subjects không phải mảng; tên > 40 ký tự; curriculum không phải chuỗi); tên kho ở máy chủ BẰNG tên kho ở trình duyệt (so với persist.getOptions().name); POST /api/agent/sessions mang trường learner → 202 và KHÔNG chạm lớp lưu bền (không bản chụp), createSession không nhận trường ấy; không tệp nào còn nhắc khoá bản chụp cũ; client không còn gửi hồ sơ khi mở phiên; thẻ 5 câu hiện ghi chú «xưởng chưa thấy hồ sơ» khi xưởng bật mà đồng bộ tài khoản tắt, và KHÔNG hiện khi đồng bộ bật hoặc xưởng tắt. Chiều đỏ trên cùng fixture: đọc sai khoá → 'server reads a key other than the profile store'; bóc sai phong bì → 'stored profile envelope misread'; hai tên lệch → 'server and browser disagree on the profile store name'; route ghi bản chụp → 'orphan learner snapshot written on session open'; mã còn nhắc khoá cũ → 'orphan learner snapshot key still referenced'; bỏ kiểm hình → 'malformed learner accepted'; thẻ im khi xưởng không thấy hồ sơ → 'workbench cannot see the profile and the card stays silent'."
+    paths: ["lib/server/agent-runtime/learner-context.ts", "lib/store/learner-profile-key.ts", "lib/store/learner-profile.ts", "app/api/agent/sessions/route.ts", "lib/workbench/session-store.ts", "lib/server/agent-runtime/runner.ts", "components/settings/learner-profile-settings.tsx"]
     evidence_required: [run_id, exit_code, verifier, verified_at]
 
   - id: E12
@@ -157,8 +181,8 @@ evals:
     executor: test
     layer: backend-effect
     cmd: config:executors.test.api
-    expected: "exit 0; với bản chụp trong KV chủ sở hữu (fixture) và bộ đăng ký gói fixture, khối learner trong courseSystemPrompt nêu tên bé, các môn, và dòng «đọc skill <tên gói> trước khi soạn môn Toán»; bản chụp vắng → không khối. Chiều đỏ trên cùng fixture: xoá dòng trỏ tên skill → đỏ với thông điệp ghim 'learner block does not name the curriculum pack skill'."
-    paths: ["lib/server/agent-runtime/learner-context.ts", "lib/server/agent-runtime/course-tools.ts", "lib/server/agent-runtime/runner.ts"]
+    expected: "exit 0; với hồ sơ trong kho KV chủ sở hữu (fixture) và bộ đăng ký gói fixture, khối learner trong courseSystemPrompt nêu tên bé, các môn, và dòng «đọc skill <tên gói> trước khi soạn môn Toán»; hồ sơ vắng → không khối. VÀ công cụ generate_scene của xưởng đưa hồ sơ vào lời nhắc nội dung từng trang (bộ chạy đọc một lần, đưa vào deps của bộ công cụ); hồ sơ đã đóng trên khoá học thắng hồ sơ hiện tại của chủ sở hữu; không hồ sơ → lời nhắc y như trước vòng. Chiều đỏ trên cùng fixture: xoá dòng trỏ tên skill → đỏ ghim 'learner block does not name the curriculum pack skill'; bỏ hồ sơ khỏi options sinh trang → 'learner dropped between the runner and page generation'; hồ sơ chủ sở hữu đè hồ sơ trên khoá học → 'stage learner overridden by the owner profile'."
+    paths: ["lib/server/agent-runtime/learner-context.ts", "lib/server/agent-runtime/course-tools.ts", "lib/server/agent-runtime/runner.ts", "lib/server/agent-runtime/generation-tools.ts"]
     evidence_required: [run_id, exit_code, verifier, verified_at]
 
   - id: E13gen

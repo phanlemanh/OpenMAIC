@@ -28,6 +28,8 @@ const mocks = vi.hoisted(() => ({
   saved: null as unknown,
   /** «Bộ nhớ» và «ổ đĩa» của kho giả — dọn giữa các bài, nếu không một hồ sơ
    *  trùng nội dung từ bài trước còn nằm trên đĩa và làm phép so trùng oan. */
+  workbench: false,
+  sync: true,
   memory: { learner: null as unknown },
   disk: { learner: null as unknown },
 }));
@@ -38,6 +40,19 @@ vi.mock('@/lib/hooks/use-i18n', () => ({
 
 vi.mock('@/lib/store/persist-health', () => ({
   isPersistUnavailable: () => mocks.unavailable,
+}));
+// Hai cờ bản triển khai mà dòng ghi chú «xưởng chưa thấy hồ sơ» phụ thuộc.
+vi.mock('@/lib/config/feature-flags', async () => ({
+  ...(await vi.importActual<typeof import('@/lib/config/feature-flags')>(
+    '@/lib/config/feature-flags',
+  )),
+  isProWorkbenchEnabled: () => mocks.workbench,
+}));
+vi.mock('@/lib/persistence/enabled', async () => ({
+  ...(await vi.importActual<typeof import('@/lib/persistence/enabled')>(
+    '@/lib/persistence/enabled',
+  )),
+  isAccountSyncEnabled: () => mocks.sync,
 }));
 
 /**
@@ -115,6 +130,8 @@ beforeEach(() => {
   ];
   mocks.unavailable = false;
   mocks.silentWriteFailure = false;
+  mocks.workbench = false;
+  mocks.sync = true;
   mocks.saved = null;
   mocks.memory.learner = null;
   mocks.disk.learner = null;
@@ -129,6 +146,32 @@ afterEach(() => {
   container?.remove();
   vi.unstubAllGlobals();
   vi.resetModules();
+});
+
+describe('ghi chú «xưởng Pro chưa thấy hồ sơ»', () => {
+  const note = () => container.querySelector('[data-note="workbench-needs-sync"]');
+
+  it('xưởng bật + đồng bộ tài khoản tắt → nói thẳng với phụ huynh', async () => {
+    mocks.workbench = true;
+    mocks.sync = false;
+    await mount();
+    expect(note(), 'workbench cannot see the profile and the card stays silent').not.toBeNull();
+    expect(byText('settings.learnerProfile.workbenchNeedsSync')).toBe(true);
+  });
+
+  it('CHIỀU ĐỎ: đồng bộ bật → không ghi chú (xưởng đọc được hồ sơ)', async () => {
+    mocks.workbench = true;
+    mocks.sync = true;
+    await mount();
+    expect(note()).toBeNull();
+  });
+
+  it('CHIỀU ĐỎ: xưởng không có trên bản này → không doạ người không dùng', async () => {
+    mocks.workbench = false;
+    mocks.sync = false;
+    await mount();
+    expect(note()).toBeNull();
+  });
 });
 
 describe('thẻ 5 câu', () => {

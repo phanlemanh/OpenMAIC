@@ -1940,6 +1940,7 @@
       "removeSubject": "Quitar",
       "packFound": "✓ este plan de estudios está cubierto",
       "packMissing": "Aún no hay paquete para este plan — las lecciones serán una estimación y lo dirán.",
+      "workbenchNeedsSync": "Este perfil solo está guardado en este dispositivo. El taller Pro corre en el servidor y aún no puede verlo — activa la sincronización de cuenta para que las lecciones hechas ahí también sigan a tu hijo.",
       "save": "Guardar",
       "saved": "Guardado",
       "saveFailed": "No se pudo guardar — lo que escribiste sigue aquí. Inténtalo de nuevo.",

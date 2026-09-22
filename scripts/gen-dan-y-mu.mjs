@@ -113,8 +113,10 @@ async function outlineFor({ withPack }) {
     process.stderr.write('gen-dan-y-mu: tuyến dàn ý không trả mục nào.\n');
     process.exit(1);
   }
-  // Lượt CÓ gói phải thật sự neo được: câu neo vắng nghĩa là gói không tới nơi,
-  // và khi ấy hai dàn ý giống nhau về bản chất — phép thử mù mất nghĩa.
+  // Lượt CÓ gói phải thật sự neo được: máy chủ chỉ phát câu neo khi nó đã tra
+  // được gói (câu neo suy từ gói + dàn ý, không hỏi mô hình), nên câu neo vắng
+  // nghĩa là gói không tới nơi — hai dàn ý khi ấy giống nhau về bản chất và
+  // phép thử mù mất nghĩa.
   if (withPack && !anchor) {
     process.stderr.write(
       'gen-dan-y-mu: both outlines generated without a curriculum pack — lượt CÓ gói không trả câu neo.\n',

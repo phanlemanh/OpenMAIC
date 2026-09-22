@@ -4,5 +4,87 @@
   "stage": 8,
   "gradesVn": ["lớp 7"],
   "language": "en-US",
-  "textbooks": ["Cambridge Lower Secondary Mathematics Learner's Book 8"]
+  "textbooks": ["Cambridge Lower Secondary Mathematics Learner's Book 8"],
+  "units": [
+    {
+      "n": 1,
+      "en": "Integers",
+      "vi": "Số nguyên"
+    },
+    {
+      "n": 2,
+      "en": "Expressions, formulae and equations",
+      "vi": "Biểu thức, công thức và phương trình"
+    },
+    {
+      "n": 3,
+      "en": "Place value and rounding",
+      "vi": "Giá trị theo hàng và làm tròn"
+    },
+    {
+      "n": 4,
+      "en": "Decimals",
+      "vi": "Số thập phân"
+    },
+    {
+      "n": 5,
+      "en": "Angles and constructions",
+      "vi": "Góc và dựng hình"
+    },
+    {
+      "n": 6,
+      "en": "Collecting data",
+      "vi": "Thu thập dữ liệu"
+    },
+    {
+      "n": 7,
+      "en": "Fractions",
+      "vi": "Phân số"
+    },
+    {
+      "n": 8,
+      "en": "Shapes and symmetry",
+      "vi": "Hình và đối xứng"
+    },
+    {
+      "n": 9,
+      "en": "Sequences and functions",
+      "vi": "Dãy số và hàm"
+    },
+    {
+      "n": 10,
+      "en": "Percentages",
+      "vi": "Phần trăm"
+    },
+    {
+      "n": 11,
+      "en": "Graphs",
+      "vi": "Đồ thị"
+    },
+    {
+      "n": 12,
+      "en": "Ratio and proportion",
+      "vi": "Tỉ số và tỉ lệ"
+    },
+    {
+      "n": 13,
+      "en": "Probability",
+      "vi": "Xác suất"
+    },
+    {
+      "n": 14,
+      "en": "Position and transformation",
+      "vi": "Vị trí và phép biến hình"
+    },
+    {
+      "n": 15,
+      "en": "Distance, area and volume",
+      "vi": "Khoảng cách, diện tích và thể tích"
+    },
+    {
+      "n": 16,
+      "en": "Interpreting and discussing results",
+      "vi": "Đọc và bàn về kết quả"
+    }
+  ]
 }

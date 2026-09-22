@@ -852,3 +852,20 @@ git commit -am "chore(acceptance): contract về status implemented"
 **Nhất quán kiểu:** `LearnerContext`/`LearnerSubject` khai ở T1 và dùng nguyên tên ở T3, T5, T10. `formatLearnerContext` một tên duy nhất ở mọi chỗ. `findPack`/`readPackBody`/`listPacks` khai ở T2, dùng nguyên tên ở T5, T7, T10. `isCompleteLearner` khai T3 dùng T7.
 
 **Task độc lập (chạy song song được):** T1, T2, T3.
+
+## Lối A (2026-09-22) — sửa khuôn sau ba vòng nghiệm thu
+
+Ba việc thay cho phần tương ứng của Task 5, 9 và 10 ở trên (giữ lại làm lịch sử):
+
+1. **Hồ sơ ở đúng tầng tuổi thọ.** `LearnerContext` sống ở `@openmaic/dsl` và `Stage.learner?`
+   (trường tuỳ chọn thêm; `build:schema`). Màn xem trước đóng `stage.learner`; túi tiếp-tục và
+   lớp học mở lại mang nó; `lib/hooks/continuation-requirements.ts` là hàm thuần duy nhất dựng
+   `requirements` cho trang 2..N ở cả hai chỗ gọi.
+2. **Không bản sao mồ côi.** `lib/store/learner-profile-key.ts` giữ MỘT tên kho; máy chủ
+   (`readLearnerProfileForOwner`) đọc thẳng `learner-profile-storage` ở ngăn account và bóc phong
+   bì persist; route mở phiên và client không còn mang `learner`; `generate_scene` nhận hồ sơ qua
+   deps của bộ công cụ. Thẻ 5 câu ghi chú khi xưởng bật mà đồng bộ tắt.
+3. **Câu neo suy trong code.** `lib/server/curriculum-anchor.ts` + mục lục `units` trong
+   `curriculum-pack.json`; route phát sự kiện từ bản suy; sáu khuôn dàn ý không còn xin mô hình.
+
+Phép đo: E4, E7, E7b, E7c (mới), E10, E10b (mới), E11, E12 sửa theo; hợp đồng AC-4/7/10/11/12.

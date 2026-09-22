@@ -11,12 +11,6 @@ Generate an Ultra Mode course outline based on the following requirements.
 {{userProfile}}
 {{#if curriculumContext}}
 {{curriculumContext}}
-
-Also return a `curriculumAnchor` field: ONE sentence, in the learner's own
-language, naming which unit or topic of the framework above this course is
-anchored to. Put the unit or topic NAME first and the textbook name after it;
-never open the sentence with a code. This field exists only because a framework
-was supplied — never invent an anchor without one.
 {{/if}}
 
 ## Language Context
@@ -124,4 +118,4 @@ Choose widgets based on the content:
 }
 ```
 
-**Final reminder**: your entire response must be a JSON **object** with exactly three top-level keys{{#if curriculumContext}} — plus `curriculumAnchor` as a FOURTH top-level key, never nested inside a scene{{/if}} — `languageDirective` (string, inferred via the Language Inference rules in the system prompt), `courseTitle` (string, ≤30 chars, in the teaching language), and `outlines` (array of scene objects). Do not return a bare array. Do not wrap in prose or code fences.
+**Final reminder**: your entire response must be a JSON **object** with exactly three top-level keys — `languageDirective` (string, inferred via the Language Inference rules in the system prompt), `courseTitle` (string, ≤30 chars, in the teaching language), and `outlines` (array of scene objects). Do not return a bare array. Do not wrap in prose or code fences.

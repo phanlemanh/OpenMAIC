@@ -1940,6 +1940,7 @@
       "removeSubject": "Retirer",
       "packFound": "✓ ce programme est couvert",
       "packMissing": "Pas encore de pack pour ce programme — les cours seront une estimation, et le diront.",
+      "workbenchNeedsSync": "Ce profil n'est enregistré que sur cet appareil. L'atelier Pro tourne sur le serveur et ne le voit pas encore — activez la synchronisation du compte pour que les cours créés là-bas suivent aussi votre enfant.",
       "save": "Enregistrer",
       "saved": "Enregistré",
       "saveFailed": "Échec de l'enregistrement — ce que vous avez saisi est toujours là. Réessayez.",

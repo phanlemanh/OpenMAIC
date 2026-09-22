@@ -22,7 +22,6 @@
  *    `lastEventId` instead of replaying the whole run.
  */
 import { create } from 'zustand';
-import { useLearnerProfileStore } from '@/lib/store/learner-profile';
 import { isSkillLoadTool, skillLoadId } from './skill-load';
 import { defaultWorkbenchTranslator, type WorkbenchCopyKey } from '@/lib/i18n/workbench';
 import { parseElementRefs, type ElementRef } from './element-refs';
@@ -1956,12 +1955,6 @@ export async function createWorkbenchSession(input: {
       ...(input.existingCourse ? { existingCourse: true } : {}),
       ...(input.materials?.length
         ? { materialIds: input.materials.map((material) => material.materialId) }
-        : {}),
-      // Hồ sơ người học đi THEO YÊU CẦU mở phiên; máy chủ ghi một bản chụp vào
-      // ngăn của chủ sở hữu. Đọc lúc gửi chứ không giữ bản sao: hồ sơ sửa xong
-      // thì phiên kế nhận ngay bản mới.
-      ...(useLearnerProfileStore.getState().learner
-        ? { learner: useLearnerProfileStore.getState().learner }
         : {}),
     }),
   });

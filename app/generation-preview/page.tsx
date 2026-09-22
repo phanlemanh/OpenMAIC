@@ -739,6 +739,14 @@ function GenerationPreviewContent() {
         stage.languageDirective = languageDirective;
       }
 
+      // Hồ sơ người học đóng lên KHOÁ HỌC, cạnh languageDirective: đây là tầng
+      // tuổi thọ đúng của nó. Trên yêu cầu thì trang đầu có, trang sau mất;
+      // trên khoá học thì trang thứ N, lượt sinh lại, và xưởng Pro mở lại khoá
+      // học này đều thấy cùng một đứa trẻ.
+      if (currentSession.requirements.learner) {
+        stage.learner = currentSession.requirements.learner;
+      }
+
       // Adopt the LLM-inferred course title as the stage name when available,
       // replacing the raw-requirement placeholder set at stage creation time.
       if (courseTitle) {
@@ -1063,6 +1071,7 @@ function GenerationPreviewContent() {
           agents,
           userProfile,
           languageDirective,
+          learner: stage.learner,
         }),
       );
 

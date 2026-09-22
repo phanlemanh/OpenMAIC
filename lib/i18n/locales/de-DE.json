@@ -1940,6 +1940,7 @@
       "removeSubject": "Entfernen",
       "packFound": "✓ dieser Lehrplan wird unterstützt",
       "packMissing": "Für diesen Lehrplan gibt es noch kein Paket — die Stunden sind eine begründete Schätzung und sagen das auch.",
+      "workbenchNeedsSync": "Dieses Profil ist nur auf diesem Gerät gespeichert. Die Pro-Werkstatt läuft auf dem Server und sieht es noch nicht — mit Konto-Synchronisierung folgen auch dort erstellte Stunden deinem Kind.",
       "save": "Speichern",
       "saved": "Gespeichert",
       "saveFailed": "Konnte nicht gespeichert werden — Ihre Eingaben sind noch da. Bitte erneut versuchen.",

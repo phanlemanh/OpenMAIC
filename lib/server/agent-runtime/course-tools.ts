@@ -29,7 +29,7 @@
  */
 import type { AgentTool } from '@earendil-works/pi-agent-core';
 import type { DocumentFolderStore, DocumentStore, MaicDocument } from '@openmaic/storage';
-import type { Stage } from '@openmaic/dsl';
+import type { LearnerContext, Stage } from '@openmaic/dsl';
 
 import type { Scene } from '@/lib/types/stage';
 import { STAGE_WRITER_TOOL_NAMES } from '@/lib/agent-runtime/stage-writer-tools';
@@ -95,6 +95,12 @@ export interface CourseToolDeps {
   synthesizeTts?: (input: SceneTtsInput) => Promise<SceneTtsSummary>;
   /** Resolve the skill that owns structural diagnostics for the current turn. */
   getActiveSkill?: () => LoadedSkill | null;
+  /**
+   * The session owner's learner profile, read once per run from the account
+   * partition. Every page the generation tools produce is generated for this
+   * learner; absent when the owner has no profile or sync is off.
+   */
+  learner?: LearnerContext | null;
 }
 
 /**

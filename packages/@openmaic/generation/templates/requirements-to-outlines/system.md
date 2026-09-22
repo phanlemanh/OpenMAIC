@@ -242,13 +242,7 @@ Your entire response MUST be a single JSON **object** with exactly these three t
 }
 ```
 
-{{#if curriculumContext}}When — and only when — a curriculum framework was supplied in the user message,
-add a FOURTH top-level key `curriculumAnchor` (string) beside the three above.
-It is the only key ever allowed beyond the three, it is top-level, and it is
-never nested inside `outlines` or any scene object. No framework supplied → the
-three keys above are the whole object.
-
-{{/if}}Rules:
+Rules:
 
 - **Never** return a bare array. The top level is an object, not an array.
 - **Never** omit `languageDirective` or `courseTitle`. Both are required even if you think they are obvious.
@@ -377,7 +371,7 @@ Omit `scenarioRoleplay` and `scenarioBrief` entirely for ordinary build-an-artef
 **Top-level response shape (these come first because they are most often violated):**
 
 1. Return exactly one JSON **object** — never a bare array.
-2. That object MUST have `languageDirective` (string), `courseTitle` (string, ≤30 chars), and `outlines` (array) as top-level keys. Omitting any is a failure.{{#if curriculumContext}} A framework was supplied, so the object MUST ALSO have `curriculumAnchor` (string) as a FOURTH top-level key — never nested inside a scene.{{/if}}
+2. That object MUST have `languageDirective` (string), `courseTitle` (string, ≤30 chars), and `outlines` (array) as top-level keys. Omitting any is a failure.
 3. Do not wrap the object in prose, markdown, or code fences.
 
 **Scene-level rules:**

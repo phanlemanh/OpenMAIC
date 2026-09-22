@@ -1940,6 +1940,7 @@
       "removeSubject": "Remover",
       "packFound": "✓ este currículo é suportado",
       "packMissing": "Ainda não há pacote para este currículo — as aulas serão uma estimativa e vão dizer isso.",
+      "workbenchNeedsSync": "Este perfil está guardado só neste dispositivo. A oficina Pro roda no servidor e ainda não consegue vê-lo — ative a sincronização da conta para que as aulas feitas lá também sigam sua criança.",
       "save": "Salvar",
       "saved": "Salvo",
       "saveFailed": "Não foi possível salvar — o que você digitou continua aqui. Tente de novo.",

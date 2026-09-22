@@ -7,6 +7,13 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { agentRuntimeConfig } from '@/lib/server/agent-runtime/config';
 
+/** Một unit của sách, gọi tên bằng hai thứ tiếng — tên là thứ duy nhất dùng để neo. */
+export interface CurriculumUnit {
+  n: number;
+  en: string;
+  vi?: string;
+}
+
 export interface CurriculumPack {
   id: string;
   subject: string;
@@ -16,6 +23,8 @@ export interface CurriculumPack {
   gradesVn: string[];
   language: string;
   textbooks: string[];
+  /** Mục lục sách theo unit; vắng thì câu neo chỉ nêu tên sách. */
+  units?: CurriculumUnit[];
 }
 
 export function loadPacksFrom(dir: string, warn: (m: string) => void = () => {}): CurriculumPack[] {

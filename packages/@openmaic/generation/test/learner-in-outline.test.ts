@@ -1,8 +1,12 @@
 /**
  * Hồ sơ người học và thân gói khung đi vào prompt dàn ý qua ĐÚNG MỘT bộ định
- * dạng, và mô hình có đường trả lại một câu neo. Ba bản chép tay trước đây của
- * đường soạn phải biến mất — bài kiểm soi thẳng mã nguồn cho điều đó, vì một
- * bản chép còn sót không làm prompt sai ngay, nó chỉ lệch khi ai đó sửa một chỗ.
+ * dạng. Ba bản chép tay trước đây của đường soạn phải biến mất — bài kiểm soi
+ * thẳng mã nguồn cho điều đó, vì một bản chép còn sót không làm prompt sai
+ * ngay, nó chỉ lệch khi ai đó sửa một chỗ.
+ *
+ * Câu neo KHÔNG còn đi qua mô hình: máy chủ suy nó từ gói + dàn ý. Bộ sinh này
+ * vì thế không được đọc một khoá `curriculumAnchor` mô hình tự trả — đọc là mở
+ * lại đường mà ba vòng nghiệm thu không đóng được.
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -44,7 +48,7 @@ describe('bối cảnh người học vào prompt dàn ý', () => {
     expect(user).not.toContain('Unit 3');
   });
 
-  test('câu neo mô hình trả về được mang ra ngoài', async () => {
+  test('mô hình tự trả curriculumAnchor → bộ sinh BỎ QUA, kết quả không mang khoá ấy', async () => {
     const res = await generateSceneOutlinesFromRequirements(
       { requirement: 'tỉ lệ và tỉ số', learner: BE },
       undefined,
@@ -53,26 +57,27 @@ describe('bối cảnh người học vào prompt dàn ý', () => {
         JSON.stringify({
           languageDirective: 'Teach in Vietnamese.',
           courseTitle: 'Tỉ lệ và tỉ số',
-          curriculumAnchor: 'Bài này theo Unit 3 — Tỉ lệ và tỉ số',
+          curriculumAnchor: 'Stage 8 objective 8Nf.01',
           outlines: [{ type: 'slide', title: 'Mở đầu', description: 'x', keyPoints: ['a'] }],
         }),
       { curriculumContext: PACK },
     );
     expect(res.success).toBe(true);
-    expect(res.data?.curriculumAnchor, 'curriculumAnchor was dropped by the generator').toBe(
-      'Bài này theo Unit 3 — Tỉ lệ và tỉ số',
+    expect(res.data, 'generator still parses a model anchor').not.toHaveProperty(
+      'curriculumAnchor',
     );
+    expect(res.data?.courseTitle).toBe('Tỉ lệ và tỉ số');
   });
 
-  test('mô hình KHÔNG trả câu neo thì không có gì, và không lỗi', async () => {
-    const res = await generateSceneOutlinesFromRequirements(
-      { requirement: 'x' },
-      undefined,
-      undefined,
-      async () => JSON.stringify({ languageDirective: 'vi', outlines: [] }),
+  test('prompt dàn ý không còn xin mô hình câu neo, kể cả khi có thân gói', () => {
+    const { system, user } = buildOutlinePrompt(
+      { requirement: 'tỉ lệ và tỉ số', learner: BE },
+      { curriculumContext: PACK },
     );
-    expect(res.success).toBe(true);
-    expect(res.data?.curriculumAnchor).toBeUndefined();
+    expect(
+      `${system}\n${user}`,
+      'template still asks the model for curriculumAnchor',
+    ).not.toContain('curriculumAnchor');
   });
 
   test('đường soạn chỉ còn MỘT chỗ dựng khối hồ sơ — prompt-formatters', () => {

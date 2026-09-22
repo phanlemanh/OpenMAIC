@@ -32,10 +32,25 @@ Tài liệu khung là bản quyền và gated. Tên unit/chủ đề có trên t
 lục cuốn sách bé cầm — và đó cũng là thứ phụ huynh nhìn ra. Mã, nếu có, đứng sau và không
 là điều kiện.
 
-### Vì sao hồ sơ đi theo yêu cầu, không đi theo phiên
-Bảng phiên của agent nằm trong gói lưu trữ (vùng T3). Client gửi hồ sơ khi mở phiên; route
-ghi bản chụp vào ngăn KV của chủ sở hữu (`PgKVStore.set(owner, key)` đã có); runner đọc
-bản chụp khi dựng prompt. Không sửa bảng phiên, không nhét hồ sơ vào lời nhắn. Hạng T2.
+### Vì sao hồ sơ đi theo người và theo khoá học, không theo yêu cầu (lối A, 22/09)
+Bản đầu cho hồ sơ đi theo YÊU CẦU: client gửi kèm lúc mở phiên, route chép ra một khoá riêng
+(`learner-profile.snapshot`), trang đầu của cửa bấm-một-phát nhận qua thân yêu cầu. Ba vòng
+nghiệm thu cho thấy đó là sai tầng tuổi thọ: yêu cầu chết khi trang đầu sinh xong, nên trang 2
+trở đi mất bé; khoá riêng đứng ngoài sổ đăng ký nên «Xoá bộ nhớ đệm» không với tới; và bản sao
+có thể lệch với hồ sơ thật. Lối A đặt lại: kho `learner-profile-storage` ở ngăn tài khoản là
+bản DUY NHẤT — trình duyệt ghi, máy chủ đọc thẳng (`PgKVStore.get(owner, khoá, 'account')`,
+chỉ gọi, không sửa); màn xem trước đóng hồ sơ lên `stage.learner` (cạnh `languageDirective`,
+tầng tuổi thọ của khoá học) để mọi trang sau, mọi lượt mở lại, và xưởng Pro mở lại khoá học
+ấy cùng thấy một bé. Không sửa bảng phiên, không nhét hồ sơ vào lời nhắn. Hạng T2. Hệ quả nói
+thẳng: bản triển khai bật xưởng mà tắt đồng bộ tài khoản thì máy chủ không thấy hồ sơ — thẻ 5
+câu nói điều đó.
+
+### Vì sao câu neo suy trong code, không hỏi mô hình (lối A)
+Bản đầu xin mô hình một khoá thứ tư `curriculumAnchor` qua bốn khuôn lời nhắc viết tay; lớp lỗi
+«khuôn này nói ba khoá, khuôn kia nói bốn» lặp qua cả ba vòng. Câu neo giờ là hàm thuần trên
+gói đã khớp (mục lục unit trong `curriculum-pack.json`) + đề + dàn ý: tên sách luôn có; tên
+unit chỉ khi một unit khớp đề hoặc dàn ý — không khớp thì không bịa. Một nguồn, đo được không
+cần mô hình, không bao giờ mở đầu bằng mã hay chữ «Stage».
 
 ### Vì sao không lưu con trỏ tuần
 Chủ đề là thứ duy nhất đổi mỗi lần soạn và phụ huynh vốn gõ nó. Gói ánh xạ chủ đề → unit;
@@ -50,12 +65,16 @@ hồ sơ người học (kho zustand, phạm vi account, đăng ký vào account
           │
           ├── bấm-một-phát: app/page.tsx → UserRequirements.learner + môn đã chọn
           │     → route dàn ý: formatLearnerContext + thân gói → {{userProfile}} + {{curriculumContext}}
-          │     → mô hình trả curriculumAnchor (SSE, như courseTitle) → màn xem trước: dòng neo
+          │     → máy chủ SUY curriculumAnchor từ gói + dàn ý (SSE, như courseTitle) → màn xem trước: dòng neo
+          │     → màn xem trước đóng hồ sơ lên stage.learner (cạnh languageDirective)
+          │     → trang đầu: requirements.learner; trang 2..N và sinh lại: continuationRequirements(stage.learner)
           │     → slide/quiz/lời giảng: {{learnerContext}} (mặc định rỗng)
           │
-          └── xưởng Pro: POST /api/agent/sessions { learner } → KV owner 'learner-profile.snapshot'
-                → runner: learnerPromptBlock(snapshot, packs) → CoursePromptBlocks.learner
+          └── xưởng Pro: runner đọc THẲNG kho learner-profile-storage ở ngăn account của chủ sở hữu
+                (bóc phong bì persist; không khoá riêng; route mở phiên không nhận learner)
+                → learnerPromptBlock(hồ sơ, packs) → CoursePromptBlocks.learner
                 → khối trỏ tên skill gói; agent đọc skill, nói neo trước khi soạn
+                → generate_scene: userRequirements.learner = stage.learner ?? hồ sơ chủ sở hữu (từng trang)
 
 gói khung = skills/agent-runtime/<id>/SKILL.md + curriculum-pack.json (cạnh, như outline-constraints.json)
 bộ đăng ký = lib/server/curriculum-packs.ts quét curriculum-pack.json; GET /api/curriculum-packs cho thẻ
@@ -66,13 +85,13 @@ bộ đăng ký = lib/server/curriculum-packs.ts quét curriculum-pack.json; GET
 | Mảnh | Đụng đâu | Việc |
 |---|---|---|
 | Kho hồ sơ | `lib/store/learner-profile.ts` (mới), `lib/store/account-stores.ts` | `useLearnerProfileStore`, persist `learner-profile-storage`, phạm vi account; đăng ký để mã nhận mang theo và «xoá bộ nhớ đệm» xoá cùng |
-| Kiểu chung | `packages/@openmaic/generation/src/outline-types.ts`, `lib/types/generation.ts` | `LearnerContext`, `LearnerSubject`; `UserRequirements.learner?` |
+| Kiểu chung | `packages/@openmaic/dsl/src/stage.ts` (kiểu sống ở DSL: `Stage.learner?`), `packages/@openmaic/generation/src/learner-types.ts` (re-export), `lib/types/generation.ts` | `LearnerContext`, `LearnerSubject`; `UserRequirements.learner?`; `Stage.learner?` (trường tuỳ chọn thêm, không tăng DSL_VERSION, `build:schema` sinh lại lược đồ) |
 | Bộ định dạng | `packages/@openmaic/generation/src/prompt-formatters.ts` | `formatLearnerContext(learner, packBody?)` — thay ba bản chép tay (`outline-generator.ts`, `scene-outlines-stream/route.ts`, `generation-preview/page.tsx`). **Cả hai cửa dùng chung hàm này**: phía máy chủ nhập được gói soạn (`lib/server/*` đã nhập ở năm chỗ), nên `learnerPromptBlock` của xưởng Pro GỌI nó rồi bọc thêm tiêu đề khối và câu «đọc skill gói trước khi soạn» — không tự ghép chuỗi riêng |
-| Ô template | `templates/requirements-to-outlines/*.md`, `slide-content/user.md`, `quiz-content/user.md`, `lib/prompts/templates/{interactive,task-engine}-outlines/user.md`, hai `loader.ts` | `{{curriculumContext}}`, `{{learnerContext}}` + mặc định rỗng; luật `curriculumAnchor` trong system prompt dàn ý |
+| Ô template | `templates/requirements-to-outlines/*.md`, `slide-content/user.md`, `quiz-content/user.md`, `lib/prompts/templates/{interactive,task-engine}-outlines/user.md`, hai `loader.ts` | `{{curriculumContext}}`, `{{learnerContext}}` + mặc định rỗng; KHÔNG khuôn nào xin mô hình câu neo |
 | Gói mẫu | `skills/agent-runtime/cambridge-lower-secondary-maths-8/` | SKILL.md (mạch → unit → chủ đề; cách trình bày; từ vựng/ký hiệu; luật nói neo) + `curriculum-pack.json` (subject, curriculum, stage, grades.vn, language, textbooks) |
 | Bộ đăng ký | `lib/server/curriculum-packs.ts` (mới), `app/api/curriculum-packs/route.ts` (mới) | quét `skillsDir/*/curriculum-pack.json`; `findPack(subject, curriculum, gradeLabel)`, `readPackBody(id)` |
-| Cửa bấm-một-phát | `app/page.tsx`, `app/api/generate/scene-outlines-stream/route.ts`, `app/generation-preview/page.tsx`, `components/generation/outlines-editor.tsx` | ô «Soạn cho», learner vào yêu cầu; route lấy thân gói, phát sự kiện `curriculumAnchor`; màn xem trước hiện dòng neo |
-| Cửa xưởng Pro | `app/api/agent/sessions/route.ts`, `.../[id]/messages/route.ts`, `lib/server/agent-runtime/learner-context.ts` (mới), `course-tools.ts`, `runner.ts` | nhận `learner`, ghi bản chụp KV; `learnerPromptBlock` = bọc quanh `formatLearnerContext`; `CoursePromptBlocks.learner` |
+| Cửa bấm-một-phát | `app/page.tsx`, `app/api/generate/scene-outlines-stream/route.ts`, `lib/server/curriculum-anchor.ts` (mới), `app/generation-preview/page.tsx`, `components/classroom/ClassroomSurface.tsx`, `lib/hooks/continuation-requirements.ts` (mới), `lib/hooks/use-scene-generator.ts`, `components/generation/outlines-editor.tsx` | ô «Soạn cho», learner vào yêu cầu; route lấy thân gói, SUY và phát sự kiện `curriculumAnchor`; màn xem trước hiện dòng neo và đóng hồ sơ lên `stage.learner`; trang 2..N mang hồ sơ qua một hàm dùng chung |
+| Cửa xưởng Pro | `lib/server/agent-runtime/learner-context.ts` (mới), `lib/store/learner-profile-key.ts` (mới — một tên kho, hai bên đọc), `course-tools.ts`, `generation-tools.ts`, `runner.ts` | runner đọc hồ sơ từ ngăn account (`readLearnerProfileForOwner`, bóc phong bì persist); `learnerPromptBlock` = bọc quanh `formatLearnerContext`; `CoursePromptBlocks.learner`; `generate_scene` đưa hồ sơ vào từng trang |
 | Thẻ 5 câu | `components/settings/learner-profile-settings.tsx` (mới), `components/settings/index.tsx`, `lib/types/settings.ts`, `lib/i18n/locales/*.json` (12) | mục «Người học»; dòng mời trên trang chủ |
 
 ## Xử lý lỗi
@@ -81,18 +100,22 @@ bộ đăng ký = lib/server/curriculum-packs.ts quét curriculum-pack.json; GET
   `persist-health` như các kho khác; không mất thứ vừa gõ.
 - Gói không đọc được (JSON hỏng) → bộ đăng ký cảnh báo có tên tệp và **bỏ gói đó**; hồ sơ
   hiện «chưa có gói» thay vì đổ vỡ.
-- `learner` sai hình ở route mở phiên → 400 nêu tên trường; đúng hình mới ghi bản chụp.
-- Bản chụp KV vắng (deployment không có DATABASE_URL, hoặc client cũ) → không khối người học,
-  prompt như hôm nay.
-- Mô hình không trả `curriculumAnchor` → màn xem trước không hiện dòng neo; không đỏ.
+- Hồ sơ trong kho sai hình (trình duyệt ghi, máy chủ không tin) → coi như không hồ sơ, không
+  khối, không lỗi; bộ kiểm hình nêu tên trường để đo được.
+- Kho trống, đồng bộ tài khoản tắt, hoặc deployment không có DATABASE_URL → không khối người
+  học, prompt như hôm nay; thẻ 5 câu ghi chú «xưởng chưa thấy hồ sơ» khi xưởng bật mà đồng bộ tắt.
+- Gói không có unit nào khớp đề/dàn ý → câu neo chỉ nêu tên sách, không bịa unit; gói không
+  có sách → không câu neo.
 
 ## Kiểm thử
 
 Máy: bộ định dạng (cặp hai chiều trên cùng fixture), bộ đăng ký (fixture gói giả, lọc lớp),
 không còn `{{…}}` sót sau khi đổ biến, tập kho account rút từ khai báo (mở rộng bài kiểm có
-sẵn), snapshot prompt khi hồ sơ trống (không hồi quy), route mở phiên từ chối hồ sơ sai hình,
-runner dựng khối người học từ bản chụp. Nhìn thấy: thẻ 5 câu qua các trạng thái, ô chọn môn,
-dòng neo. Phán xét: cặp dàn ý mù có/không gói; thẻ đọc được bởi phụ huynh non-tech.
+sẵn), snapshot prompt khi hồ sơ trống (không hồi quy), runner đọc hồ sơ từ ngăn account (đúng
+khoá, đúng phong bì), route mở phiên không chép bản sao, câu neo suy thuần (đúng unit / không
+bịa unit / không «Stage»), trang 2..N mang hồ sơ, `Stage.learner` trong lược đồ DSL. Nhìn
+thấy: thẻ 5 câu qua các trạng thái, ô chọn môn, dòng neo. Phán xét: cặp dàn ý mù có/không gói;
+thẻ đọc được bởi phụ huynh non-tech.
 
 <!-- <<<UX-SPEC-TEMPLATE -->
 ## Đặc tả UX
@@ -125,7 +148,7 @@ dòng neo. Phán xét: cặp dàn ý mù có/không gói; thẻ đọc được 
 | ST-the-loi-luu | Thẻ 5 câu | toast «chưa lưu được — giá trị vẫn giữ trên màn» | Lưu lại |
 | ST-chon-moi-khai | Trang chủ | dòng mời «Soạn cho bé nhà mình? Khai 5 câu →» dưới lời chào | bấm mở thẻ |
 | ST-chon-san-sang | Trang chủ | ô «Soạn cho: Toán — Cambridge (tiếng Anh) ▾» cạnh các công tắc | chọn môn / gõ chủ đề |
-| ST-neo-co-goi | Màn xem trước | «Bài này theo Unit 3 — Tỉ lệ và tỉ số · Cambridge Stage 8 · Learner's Book 8» | gật, hoặc sửa dàn ý |
+| ST-neo-co-goi | Màn xem trước | «Unit 12 · Ratio and proportion — Cambridge Lower Secondary Mathematics Learner's Book 8» (unit chỉ khi suy được; không thì tên sách) | gật, hoặc sửa dàn ý |
 | ST-neo-dang-doan | Màn xem trước | «⚠ chưa có gói khung cho MOET lớp 7 — máy đang đoán theo hiểu biết chung» | gật với dè dặt, hoặc đổi môn |
 | ST-neo-khong | Màn xem trước | không dòng neo (hồ sơ trống) — y như hôm nay | như hôm nay |
 <!-- UX-STATE-TABLE>>> -->

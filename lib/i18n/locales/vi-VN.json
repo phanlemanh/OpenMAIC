@@ -1940,6 +1940,7 @@
       "removeSubject": "Bớt môn",
       "packFound": "✓ máy biết chương trình này",
       "packMissing": "Chưa có gói cho chương trình này — máy sẽ đoán và nói rõ là đang đoán.",
+      "workbenchNeedsSync": "Hồ sơ này đang chỉ lưu trên máy này. Xưởng Pro chạy trên máy chủ nên chưa thấy được hồ sơ — bật đồng bộ tài khoản thì bài soạn trong xưởng cũng bám theo bé.",
       "save": "Lưu",
       "saved": "Đã lưu",
       "saveFailed": "Chưa lưu được — thứ vừa gõ vẫn còn trên màn. Thử lại nhé.",

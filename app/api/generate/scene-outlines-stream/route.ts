@@ -8,7 +8,7 @@
  * SSE events:
  *   { type: 'languageDirective', data: string }
  *   { type: 'courseTitle', data: string }
- *   { type: 'curriculumAnchor', data: string }   // chỉ khi có gói khung
+ *   { type: 'curriculumAnchor', data: string }   // chỉ khi có gói khung; máy chủ suy từ gói + dàn ý
  *   { type: 'outline', data: SceneOutline, index: number }
  *   { type: 'done', outlines: SceneOutline[], languageDirective: string, courseTitle?: string }
  *   { type: 'error', error: string }
@@ -17,6 +17,7 @@
 import { NextRequest } from 'next/server';
 import { streamLLM } from '@/lib/ai/llm';
 import { findPack, readPackBody } from '@/lib/server/curriculum-packs';
+import { deriveCurriculumAnchor } from '@/lib/server/curriculum-anchor';
 import { buildPrompt, PROMPT_IDS } from '@/lib/prompts';
 import {
   formatImageDescription,
@@ -75,7 +76,6 @@ function extractLanguageDirective(buffer: string): string | null {
  * the buffer head. Returns the decoded title, or null if not yet streamed.
  */
 const COURSE_TITLE_RE = /"courseTitle"\s*:\s*"((?:[^"\\]|\\.)*)"/;
-const CURRICULUM_ANCHOR_RE = /"curriculumAnchor"\s*:\s*"((?:[^"\\]|\\.)*)"/;
 
 // Normalize a captured title identically to the non-streaming parser
 // (@openmaic/generation outline parser): ignore whitespace-only titles and cap
@@ -104,30 +104,6 @@ function extractCourseTitle(buffer: string): string | null {
  * cases the head-bound `extractCourseTitle` scan would miss. Only invoked when
  * the streaming scan produced nothing, so the extra full-buffer regex is paid once.
  */
-/**
- * Câu neo: mô hình chỉ trả khi có khung giáo trình trong lời nhắc. Vắng nó là
- * ca THƯỜNG (không gói, hoặc không hồ sơ) — không phải lỗi, nên không cảnh báo.
- */
-/** Trần riêng cho câu neo. Tên khoá học có trần 30; câu neo là MỘT CÂU nêu tên
- *  unit VÀ tên sách — riêng tên sách của gói đã 53 ký tự — nên dùng chung bộ
- *  chuẩn hoá của tên khoá học là cắt cụt giữa chừng, lặng lẽ. */
-const CURRICULUM_ANCHOR_MAX = 200;
-
-function extractCurriculumAnchor(buffer: string): string | null {
-  const match = buffer.match(CURRICULUM_ANCHOR_RE);
-  if (!match) return null;
-  // Chỉ gỡ ký tự thoát và gom khoảng trắng — KHÔNG dùng normalizeStreamedTitle,
-  // vì nó kết bằng một lát cắt 120 viết cho tên khoá học, nên lát cắt 200 đứng
-  // sau nó không bao giờ chạy tới (mã chết) và mọi câu neo dài đều bị cắt.
-  const unescaped = match[1]
-    .replace(/\\n/g, ' ')
-    .replace(/\\"/g, '"')
-    .replace(/\\\\/g, '\\')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return unescaped ? unescaped.slice(0, CURRICULUM_ANCHOR_MAX) : null;
-}
-
 function extractCourseTitleFromComplete(buffer: string): string | null {
   const match = buffer.match(COURSE_TITLE_RE);
   return match ? normalizeStreamedTitle(match[1]) : null;
@@ -650,9 +626,16 @@ export async function POST(req: NextRequest) {
                   // recover it from the now-complete response before finalizing.
                   courseTitle = extractCourseTitleFromComplete(fullText);
                 }
-                // Câu neo rút từ buffer ĐÃ TRỌN: nó nằm sau mảng outlines nên
-                // lối quét đầu-luồng của hai trường kia không với tới.
-                curriculumAnchor = extractCurriculumAnchor(fullText);
+                // Câu neo SUY TRONG CODE từ gói và dàn ý vừa sinh — không rút
+                // từ đầu ra mô hình. Có gói là có câu neo; không gói là không.
+                curriculumAnchor = pack
+                  ? deriveCurriculumAnchor({
+                      pack,
+                      requirement: requirements.requirement ?? '',
+                      outlines: parsedOutlines,
+                      language: chosenSubject?.language,
+                    })
+                  : null;
                 if (curriculumAnchor) {
                   const caEvent = JSON.stringify({
                     type: 'curriculumAnchor',

@@ -1,10 +1,15 @@
 /**
- * Hai lỗ mà lượt nghiệm thu thứ nhất tìm ra, nay ghim thành thước.
+ * Câu neo đi trọn đường tới màn — và chỉ có MỘT nguồn.
  *
- * Cả hai cùng một hình dạng và cùng một hậu quả: thân gói khung ĐƯỢC đưa vào
- * lời nhắc — bài học thật sự có neo — nhưng câu neo không bao giờ về tới màn,
- * nên phụ huynh đọc đúng dòng cảnh báo «máy đang đoán, chưa phải một khớp đã
- * kiểm». Sai theo chiều nguy nhất: nói dối về chính độ tin của mình.
+ * Lượt nghiệm thu thứ nhất tìm ra hai lỗ cùng hình dạng: thân gói ĐƯỢC đưa
+ * vào lời nhắc — bài học thật sự có neo — nhưng câu neo không bao giờ về tới
+ * màn, nên phụ huynh đọc đúng dòng cảnh báo «máy đang đoán». Sai theo chiều
+ * nguy nhất: nói dối về chính độ tin của mình.
+ *
+ * Ba vòng sau đó thêm một lớp lỗi nữa: câu neo XIN MÔ HÌNH qua bốn khuôn lời
+ * nhắc viết tay, và «khuôn này nói ba khoá, khuôn kia nói bốn» không bao giờ
+ * đóng được. Lối A gỡ hẳn: câu neo suy trong code từ gói + dàn ý. Bài này ghim
+ * cả hai — đường tới màn còn nguyên, và không khuôn nào còn hỏi mô hình.
  *
  * Bài này soi CẤU TRÚC (mã nguồn và khuôn lời nhắc) chứ không chạy giao diện,
  * vì lỗ nằm ở chỗ nối chứ không ở hành vi một thành phần — và một thành phần
@@ -17,6 +22,15 @@ import { describe, expect, it } from 'vitest';
 
 const root = process.cwd();
 const read = (p: string) => readFileSync(join(root, p), 'utf8');
+
+const OUTLINE_TEMPLATES = [
+  'packages/@openmaic/generation/templates/requirements-to-outlines/user.md',
+  'packages/@openmaic/generation/templates/requirements-to-outlines/system.md',
+  'lib/prompts/templates/interactive-outlines/user.md',
+  'lib/prompts/templates/interactive-outlines/system.md',
+  'lib/prompts/templates/task-engine-outlines/user.md',
+  'lib/prompts/templates/task-engine-outlines/system.md',
+];
 
 describe('câu neo đi trọn đường tới màn', () => {
   it('trang xem trước GHI câu neo vào phiên — không chỉ bắt rồi bỏ', () => {
@@ -47,68 +61,35 @@ describe('câu neo đi trọn đường tới màn', () => {
     ).toContain('curriculumAnchor');
   });
 
-  it('MỌI khuôn dàn ý nhận thân gói đều PHẢI xin câu neo', () => {
-    const templates = [
-      'packages/@openmaic/generation/templates/requirements-to-outlines/user.md',
-      'lib/prompts/templates/interactive-outlines/user.md',
-      'lib/prompts/templates/task-engine-outlines/user.md',
-    ];
-    const thieu = templates.filter((p) => {
-      const t = read(p);
-      return t.includes('{{curriculumContext}}') && !t.includes('curriculumAnchor');
-    });
-    expect(thieu, `template nhận thân gói mà không xin câu neo: ${thieu.join(', ')}`).toEqual([]);
-  });
-
-  it('khuôn nào xin câu neo thì hình dạng đầu ra PHẢI cho phép nó', () => {
-    // Thước trên chỉ soi «chuỗi có mặt», nên nó xanh cả khi chính khuôn ấy
-    // KHOÁ hình dạng đầu ra vào đúng ba khoá — mô hình khi đó tuân luật mạnh
-    // hơn và nhét câu neo vào TRONG một mục dàn ý. Bằng chứng vòng 2 bắt được
-    // đúng cảnh ấy, và bản sửa chỉ chạy nhờ một biểu thức rút quá rộng.
-    const pairs: Array<[string, string]> = [
-      [
-        'packages/@openmaic/generation/templates/requirements-to-outlines/user.md',
-        'packages/@openmaic/generation/templates/requirements-to-outlines/system.md',
-      ],
-      [
-        'lib/prompts/templates/interactive-outlines/user.md',
-        'lib/prompts/templates/interactive-outlines/system.md',
-      ],
-      [
-        'lib/prompts/templates/task-engine-outlines/user.md',
-        'lib/prompts/templates/task-engine-outlines/system.md',
-      ],
-    ];
-    const mauThuan = pairs
-      .filter(([user]) => read(user).includes('curriculumAnchor'))
-      .filter(([user, system]) =>
-        // Mọi chỗ khai hình dạng — ở khuôn hệ thống lẫn nhắc cuối của khuôn
-        // người dùng — đều phải nói ra khoá thứ tư. Chỗ nào im thì chỗ đó là
-        // luật mà mô hình sẽ theo.
-        [read(system), read(user)].some(
-          (text) => /top-level keys/i.test(text) && !text.includes('curriculumAnchor'),
-        ),
-      )
-      .map(([user]) => user);
+  it('KHÔNG khuôn dàn ý nào còn xin mô hình câu neo', () => {
+    // Chiều đỏ của lối A: một khuôn xin lại khoá thứ tư là mở lại đúng lớp
+    // lỗi «khuôn tự mâu thuẫn» đã đóng — dù mọi phép đo hành vi vẫn xanh, vì
+    // route không đọc thứ mô hình trả.
+    const conXin = OUTLINE_TEMPLATES.filter((p) => read(p).includes('curriculumAnchor'));
     expect(
-      mauThuan,
-      `khuôn xin câu neo nhưng hình dạng đầu ra không cho phép: ${mauThuan.join(', ')}`,
+      conXin,
+      `template still asks the model for curriculumAnchor: ${conXin.join(', ')}`,
     ).toEqual([]);
   });
 
-  it('câu neo KHÔNG bị cắt bằng trần của tên khoá học', () => {
-    const src = read('app/api/generate/scene-outlines-stream/route.ts');
-    const i = src.indexOf('function extractCurriculumAnchor');
-    expect(i, 'không tìm thấy bộ rút câu neo').toBeGreaterThan(0);
-    // Soi LỜI GỌI, không soi chữ: chính dòng chú thích giải thích vì sao KHÔNG
-    // dùng bộ chuẩn hoá ấy, nên soi chuỗi trần là đỏ oan cho một đoạn mã đúng.
-    const fn = src
-      .slice(i, src.indexOf('\n}', i))
+  it('route SUY câu neo trong code, không cào đầu ra mô hình', () => {
+    const src = read('app/api/generate/scene-outlines-stream/route.ts')
       .replace(/\/\/[^\n]*/g, '')
       .replace(/\/\*[\s\S]*?\*\//g, '');
-    expect(fn, 'curriculum anchor is truncated by the course-title normalizer').not.toContain(
-      'normalizeStreamedTitle(',
+    expect(src, 'route does not derive the anchor from the pack').toContain(
+      'deriveCurriculumAnchor(',
     );
+    // Soi LỜI GỌI và biểu thức cào, không soi chữ trong chú thích.
+    expect(src, 'anchor scraped from model output').not.toMatch(
+      /"curriculumAnchor"\s*:|extractCurriculumAnchor\(|CURRICULUM_ANCHOR_RE/,
+    );
+  });
+
+  it('bộ sinh dàn ý không còn đọc khoá curriculumAnchor từ mô hình', () => {
+    const src = read('packages/@openmaic/generation/src/outline-generator.ts')
+      .replace(/\/\/[^\n]*/g, '')
+      .replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(src, 'generator still parses a model anchor').not.toContain('curriculumAnchor');
   });
 
   it('dòng cảnh báo «đang đoán» KHÔNG lộ mã giáo trình cho phụ huynh', () => {

@@ -1,24 +1,10 @@
-/** Một môn bé đang học, kèm giáo trình và ngôn ngữ học môn đó. */
-export interface LearnerSubject {
-  subject: string;
-  /** Mã giáo trình, vd 'cambridge-lower-secondary' | 'moet'. */
-  curriculum: string;
-  /** BCP-47 của ngôn ngữ học môn này, vd 'vi-VN' | 'en-US'. */
-  language: string;
-  textbook?: string;
-  /** Gói khung đã khớp. Vắng = chưa có gói → chế độ đoán. */
-  packId?: string;
-}
-
 /**
- * Bối cảnh người học. Một bé, nhiều môn — trường tích hợp dạy song song hai
- * giáo trình trên cùng một đứa (MOET tiếng Việt + Cambridge tiếng Anh).
- * CỐ Ý không có họ tên đầy đủ và ngày sinh: dữ liệu trẻ em, giữ tối thiểu.
+ * Bối cảnh người học — kiểu sống ở `@openmaic/dsl` (trên `Stage`), đây chỉ là
+ * lối vào cũ để mọi chỗ đã nhập từ gói này khỏi đổi.
+ *
+ * Vì sao kiểu nằm ở DSL: hồ sơ đi theo KHOÁ HỌC, không theo yêu cầu. Nó được
+ * đóng lên `Stage` lúc tạo, nên trang đầu, trang thứ N sinh trong lớp học, và
+ * mọi lượt sinh lại đều nhìn cùng một đứa trẻ. Đặt kiểu ở gói sinh nội dung
+ * thì `Stage` không thể mang nó (DSL không được phụ thuộc ngược lên đây).
  */
-export interface LearnerContext {
-  nickname: string;
-  /** Nhãn lớp theo hệ người dùng khai, vd 'lớp 7'. Quy đổi sang stage là việc của gói. */
-  gradeLabel: string;
-  school?: string;
-  subjects: LearnerSubject[];
-}
+export type { LearnerContext, LearnerSubject } from '@openmaic/dsl';

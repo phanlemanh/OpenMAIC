@@ -21,6 +21,7 @@ import { persist } from 'zustand/middleware';
 import type { LearnerContext } from '@openmaic/generation';
 
 import { createKVPersistStorage, purgeLegacyPersistKey } from '@/lib/store/kv-persist';
+import { LEARNER_PROFILE_STORE_NAME } from '@/lib/store/learner-profile-key';
 
 export type { LearnerContext, LearnerSubject } from '@openmaic/generation';
 
@@ -69,7 +70,7 @@ export const useLearnerProfileStore = create<LearnerProfileState>()(
       clearLearner: () => set({ learner: null }),
     }),
     {
-      name: 'learner-profile-storage',
+      name: LEARNER_PROFILE_STORE_NAME,
       storage: createKVPersistStorage<LearnerProfileState>('account', {
         // One recovery attempt when a write is refused because hydration never
         // succeeded — the backend may have come back since. Routed through a
@@ -89,4 +90,4 @@ recovery.rehydrate = () => useLearnerProfileStore.persist.rehydrate();
 // Best-effort, fire-and-forget: drop the pre-cutover raw `localStorage` blob.
 // It is never read (this store does not migrate legacy data), so a leftover is
 // only garbage. No correctness depends on it.
-purgeLegacyPersistKey('learner-profile-storage');
+purgeLegacyPersistKey(LEARNER_PROFILE_STORE_NAME);

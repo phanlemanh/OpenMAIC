@@ -132,7 +132,6 @@ export async function generateSceneOutlinesFromRequirements(
   GenerationResult<{
     languageDirective: string;
     courseTitle?: string;
-    curriculumAnchor?: string;
     outlines: SceneOutline[];
   }>
 > {
@@ -157,7 +156,6 @@ export async function generateSceneOutlinesFromRequirements(
       | {
           languageDirective: string;
           courseTitle?: string;
-          curriculumAnchor?: string;
           outlines: SceneOutline[];
         }
       | SceneOutline[]
@@ -165,7 +163,6 @@ export async function generateSceneOutlinesFromRequirements(
 
     let languageDirective: string;
     let courseTitle: string | undefined;
-    let curriculumAnchor: string | undefined;
     let rawOutlines: SceneOutline[];
 
     if (Array.isArray(parsed)) {
@@ -176,11 +173,6 @@ export async function generateSceneOutlinesFromRequirements(
       const rawTitle = parsed.courseTitle;
       courseTitle =
         typeof rawTitle === 'string' && rawTitle.trim() ? rawTitle.trim().slice(0, 120) : undefined;
-      const rawAnchor = parsed.curriculumAnchor;
-      curriculumAnchor =
-        typeof rawAnchor === 'string' && rawAnchor.trim()
-          ? rawAnchor.trim().slice(0, 200)
-          : undefined;
       rawOutlines = parsed.outlines;
     } else {
       return { success: false, error: 'Failed to parse scene outlines response' };
@@ -203,7 +195,7 @@ export async function generateSceneOutlinesFromRequirements(
 
     return {
       success: true,
-      data: { languageDirective, courseTitle, curriculumAnchor, outlines: result },
+      data: { languageDirective, courseTitle, outlines: result },
     };
   } catch (error) {
     return { success: false, error: String(error) };

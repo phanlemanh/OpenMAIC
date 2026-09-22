@@ -1940,6 +1940,7 @@
       "removeSubject": "Remove",
       "packFound": "✓ this curriculum is covered",
       "packMissing": "No pack for this curriculum yet — lessons will be an informed guess, and will say so.",
+      "workbenchNeedsSync": "This profile is only stored on this device. The Pro workbench runs on the server and cannot see it yet — turn on account sync so lessons made there follow your child too.",
       "save": "Save",
       "saved": "Saved",
       "saveFailed": "Couldn't save — what you typed is still here. Try again.",

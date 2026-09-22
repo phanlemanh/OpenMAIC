@@ -25,7 +25,15 @@ vi.mock('@/lib/server/curriculum-packs', () => ({
   readPackBody: readPackBodyMock,
 }));
 
-const PACK_BODY = '## Mạch và unit\n\n- Unit 3 — Tỉ lệ và tỉ số';
+const PACK_BODY = '## Mạch và unit\n\n- Unit 12 — Tỉ số và tỉ lệ';
+const BOOK = "Cambridge Lower Secondary Mathematics Learner's Book 8";
+const PACK = {
+  id: 'cambridge-lower-secondary-maths-8',
+  stage: 8,
+  language: 'en-US',
+  textbooks: [BOOK],
+  units: [{ n: 12, en: 'Ratio and proportion', vi: 'Tỉ số và tỉ lệ' }],
+};
 const LEARNER = {
   nickname: 'Bi',
   gradeLabel: 'lớp 7',
@@ -56,9 +64,11 @@ describe('hồ sơ người học đi từ thân yêu cầu tới prompt dàn ý
     });
   });
 
-  test('route TỰ tra gói và đặt thân gói vào prompt; câu neo về theo luồng', async () => {
-    findPackMock.mockReturnValue({ id: 'cambridge-lower-secondary-maths-8', stage: 8 });
+  test('route TỰ tra gói và đặt thân gói vào prompt; câu neo SUY trong code về theo luồng', async () => {
+    findPackMock.mockReturnValue(PACK);
     readPackBodyMock.mockReturnValue(PACK_BODY);
+    // Mô hình KHÔNG trả câu neo nào — nó không còn được hỏi. Câu neo phải về
+    // dù vậy, vì máy chủ suy nó từ gói + đề + dàn ý.
     streamLLMMock.mockReturnValue({
       textStream: (async function* () {
         yield JSON.stringify({
@@ -74,7 +84,6 @@ describe('hồ sơ người học đi từ thân yêu cầu tới prompt dàn ý
               order: 1,
             },
           ],
-          curriculumAnchor: 'Bài này theo Unit 3 — Tỉ lệ và tỉ số · Learner’s Book 8',
         });
       })(),
     });
@@ -90,16 +99,61 @@ describe('hồ sơ người học đi từ thân yêu cầu tới prompt dàn ý
     const prompt = promptTextOf(streamLLMMock);
     // (b) Thân gói có mặt trong prompt: nhịp tra-gói → đọc-thân → đổ-vào-ô đã nối.
     expect(prompt, 'curriculum pack body missing from outline prompt').toContain(
-      'Unit 3 — Tỉ lệ và tỉ số',
+      'Unit 12 — Tỉ số và tỉ lệ',
     );
     // (c) Khối hồ sơ có mặt: nhịp yêu-cầu → route → prompt đã nối.
     expect(prompt, 'learner dropped between request and outline prompt').toContain('Bi');
     expect(prompt).toContain('lớp 7');
-    // (d) Câu neo về tới client qua cùng luồng với tên khoá học.
+    // (d) Prompt KHÔNG còn xin mô hình câu neo — bốn khuôn đã gỡ hẳn.
+    expect(prompt, 'template still asks the model for curriculumAnchor').not.toContain(
+      'curriculumAnchor',
+    );
+    // (e) Câu neo về tới client qua cùng luồng với tên khoá học, SUY từ gói:
+    //     tên unit đứng trước, tên sách sau — đúng luật chữ của đặc tả UX.
     expect(body, 'curriculumAnchor event missing from outline stream').toContain(
       '"type":"curriculumAnchor"',
     );
-    expect(body).toContain('Unit 3');
+    const anchorEvent = body
+      .split('\n')
+      .find((line) => line.startsWith('data: ') && line.includes('"curriculumAnchor"'));
+    const anchor = JSON.parse(anchorEvent!.slice(6)).data as string;
+    expect(anchor).toBe(`Unit 12 · Ratio and proportion — ${BOOK}`);
+  });
+
+  test('mô hình tự bịa một câu neo → route BỎ QUA, câu neo vẫn là bản suy trong code', async () => {
+    findPackMock.mockReturnValue(PACK);
+    readPackBodyMock.mockReturnValue(PACK_BODY);
+    streamLLMMock.mockReturnValue({
+      textStream: (async function* () {
+        yield JSON.stringify({
+          languageDirective: 'Teach in Vietnamese.',
+          courseTitle: 'Tỉ lệ và tỉ số',
+          outlines: [
+            {
+              id: 's1',
+              type: 'slide',
+              title: 'Mở đầu',
+              description: 'x',
+              keyPoints: ['a'],
+              order: 1,
+            },
+          ],
+          curriculumAnchor: 'Stage 8 objective 8Nf.01 — invented by the model',
+        });
+      })(),
+    });
+
+    const { POST } = await import('@/app/api/generate/scene-outlines-stream/route');
+    const body = await readStreamBody(
+      await POST(mockRequest({ requirement: 'tỉ lệ và tỉ số', learner: LEARNER })),
+    );
+    const anchorEvent = body
+      .split('\n')
+      .find((line) => line.startsWith('data: ') && line.includes('"curriculumAnchor"'));
+    const anchor = JSON.parse(anchorEvent!.slice(6)).data as string;
+    expect(anchor, 'anchor taken from the model instead of derived').not.toContain('8Nf.01');
+    expect(anchor).not.toContain('Stage 8');
+    expect(anchor).toBe(`Unit 12 · Ratio and proportion — ${BOOK}`);
   });
 
   test('không hồ sơ: không tra gói, không thân gói, không câu neo', async () => {
@@ -118,7 +172,7 @@ describe('hồ sơ người học đi từ thân yêu cầu tới prompt dàn ý
     const body = await readStreamBody(await POST(mockRequest({ requirement: 'teach recursion' })));
 
     expect(findPackMock).not.toHaveBeenCalled();
-    expect(promptTextOf(streamLLMMock)).not.toContain('Unit 3');
+    expect(promptTextOf(streamLLMMock)).not.toContain('Unit 12');
     expect(body).not.toContain('curriculumAnchor');
   });
 

@@ -145,6 +145,90 @@ describe('generation and deck tools', () => {
     );
   });
 
+  it('mỗi trang sinh ra mang hồ sơ người học của chủ sở hữu vào lời nhắc nội dung', async () => {
+    const current = state(document([]));
+    const aiCall = vi.fn(async (_system: string, _user: string) =>
+      JSON.stringify([{ id: 'q1', type: 'short_answer', question: 'First?' }]),
+    );
+    const learner = {
+      nickname: 'Bi',
+      gradeLabel: 'lớp 7',
+      subjects: [{ subject: 'Toán', curriculum: 'cambridge-lower-secondary', language: 'en-US' }],
+    };
+    const generate = find(
+      buildGenerationTools(
+        deps(current.store, { aiCall, generateActions: vi.fn(async () => []), learner }),
+      ),
+      'generate_scene',
+    );
+    await generate.execute('first', {
+      stageId: 'stage-test',
+      order: 1,
+      title: 'Ratio',
+      type: 'quiz',
+      brief: 'ratio brief',
+    } as never);
+    const userPrompt = String(aiCall.mock.calls[0]?.[1] ?? '');
+    expect(userPrompt, 'learner dropped between the runner and page generation').toContain('Bi');
+    expect(userPrompt).toContain('lớp 7');
+  });
+
+  it('hồ sơ đã đóng trên khoá học thắng hồ sơ hiện tại của chủ sở hữu', async () => {
+    // Khoá học tạo ở cửa bấm-một-phát cho bé Tí; mở lại trong xưởng khi hồ sơ
+    // đã đổi sang bé Bi — trang sinh thêm vẫn phải cho Tí, cùng bé với các
+    // trang đã có.
+    const doc = document([]);
+    doc.stage.learner = {
+      nickname: 'Tí',
+      gradeLabel: 'lớp 6',
+      subjects: [{ subject: 'Toán', curriculum: 'moet', language: 'vi-VN' }],
+    };
+    const current = state(doc);
+    const aiCall = vi.fn(async (_system: string, _user: string) =>
+      JSON.stringify([{ id: 'q1', type: 'short_answer', question: 'First?' }]),
+    );
+    const learner = {
+      nickname: 'Bi',
+      gradeLabel: 'lớp 7',
+      subjects: [{ subject: 'Toán', curriculum: 'cambridge-lower-secondary', language: 'en-US' }],
+    };
+    const generate = find(
+      buildGenerationTools(
+        deps(current.store, { aiCall, generateActions: vi.fn(async () => []), learner }),
+      ),
+      'generate_scene',
+    );
+    await generate.execute('first', {
+      stageId: 'stage-test',
+      order: 1,
+      title: 'Phân số',
+      type: 'quiz',
+      brief: 'phân số',
+    } as never);
+    const userPrompt = String(aiCall.mock.calls[0]?.[1] ?? '');
+    expect(userPrompt, 'stage learner overridden by the owner profile').toContain('Tí');
+    expect(userPrompt).not.toContain('Bi');
+  });
+
+  it('CHIỀU ĐỎ: không hồ sơ → lời nhắc nội dung y như trước vòng', async () => {
+    const current = state(document([]));
+    const aiCall = vi.fn(async (_system: string, _user: string) =>
+      JSON.stringify([{ id: 'q1', type: 'short_answer', question: 'First?' }]),
+    );
+    const generate = find(
+      buildGenerationTools(deps(current.store, { aiCall, generateActions: vi.fn(async () => []) })),
+      'generate_scene',
+    );
+    await generate.execute('first', {
+      stageId: 'stage-test',
+      order: 1,
+      title: 'Ratio',
+      type: 'quiz',
+      brief: 'ratio brief',
+    } as never);
+    expect(String(aiCall.mock.calls[0]?.[1] ?? '')).not.toContain('Student Profile');
+  });
+
   it('keeps an earlier page after a later page generation crashes', async () => {
     const current = state(document([]));
     let contentCalls = 0;
