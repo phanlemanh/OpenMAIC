@@ -132,6 +132,7 @@ export const workbenchEn = {
     },
     title: {
       'build-personal-skill': 'Build a personal Skill',
+      'cambridge-lower-secondary-maths-8': 'Cambridge Lower Secondary maths 8',
       'curriculum-planner': 'Series planning',
       'zone-of-proximal-development': 'Practice lesson (zone of proximal development)',
       'stage-dsl': 'Classroom document structure',
@@ -433,6 +434,7 @@ export const workbenchZh = {
     },
     title: {
       'build-personal-skill': '创建专属 Skill',
+      'cambridge-lower-secondary-maths-8': '剑桥低段数学 8',
       'curriculum-planner': '系列课规划',
       'zone-of-proximal-development': '习题课（最近发展区）',
       'stage-dsl': '课堂文档结构',
