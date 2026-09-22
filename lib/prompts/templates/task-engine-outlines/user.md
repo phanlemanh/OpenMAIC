@@ -7,6 +7,9 @@ Create a Task Engine outline from this vocational task request.
 ---
 
 {{userProfile}}
+{{#if curriculumContext}}
+{{curriculumContext}}
+{{/if}}
 
 ## Reference Materials
 

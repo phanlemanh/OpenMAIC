@@ -9,6 +9,9 @@ Generate an Ultra Mode course outline based on the following requirements.
 ---
 
 {{userProfile}}
+{{#if curriculumContext}}
+{{curriculumContext}}
+{{/if}}
 
 ## Language Context
 

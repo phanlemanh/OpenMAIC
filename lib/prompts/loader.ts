@@ -121,11 +121,27 @@ export function interpolateVariables(template: string, variables: Record<string,
   });
 }
 
+/**
+ * Mặc định cho ô của template app-owned. Ô bối cảnh người học mặc định RỖNG:
+ * người không khai hồ sơ thì prompt giống hệt trước vòng này. Cùng luật với
+ * PROMPT_VARIABLE_DEFAULTS của gói generation — hai bộ nạp, một hành vi.
+ */
+const PROMPT_VARIABLE_DEFAULTS: Partial<Record<PromptId, Readonly<Record<string, unknown>>>> = {
+  'interactive-outlines': { curriculumContext: '' },
+  'task-engine-outlines': { curriculumContext: '' },
+};
+
 function applyPromptVariableDefaults(
-  _promptId: PromptId,
+  promptId: PromptId,
   variables: Record<string, unknown>,
 ): Record<string, unknown> {
-  return variables;
+  const defaults = PROMPT_VARIABLE_DEFAULTS[promptId];
+  if (!defaults) return variables;
+  const merged = { ...variables };
+  for (const [key, value] of Object.entries(defaults)) {
+    if (merged[key] === undefined) merged[key] = value;
+  }
+  return merged;
 }
 
 /**

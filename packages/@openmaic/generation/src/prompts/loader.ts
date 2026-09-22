@@ -13,6 +13,11 @@ import type { LoadedPrompt, PromptId, PromptVariableDefaults, SnippetId } from '
 const DEFAULT_PROMPTS_DIR = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
 const PROMPT_VARIABLE_DEFAULTS = {
+  // Ô bối cảnh người học mặc định RỖNG: người không khai hồ sơ thì prompt phải
+  // giống hệt trước vòng này, từng byte (bài kiểm no-regression-prompt canh).
+  'requirements-to-outlines': { curriculumContext: '' },
+  'slide-content': { learnerContext: '' },
+  'quiz-content': { learnerContext: '' },
   'pbl-actions': {
     projectSummary:
       '(No generated milestones are available; introduce the project topic without inventing any.)',
