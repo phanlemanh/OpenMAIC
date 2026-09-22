@@ -3,13 +3,13 @@ schema_version: 1
 slug: hieu-be-dang-hoc-gi
 feature: Bài học bám đúng thứ bé đang học ở trường — không phải kể lại bối cảnh mỗi lần
 owner: Manh Phan
-stage: discovery
-decision:
-decided_by:
-decided_at:
+stage: decided
+decision: build
+decided_by: Manh Phan
+decided_at: 2026-09-22T00:00:00Z
 prototype:
   base_commit:
-  disposition:
+  disposition: archive
 ---
 
 ## Vấn đề & ai gặp
@@ -66,9 +66,9 @@ tầng 3 để vòng sau (xem Out of scope).
 ## Ngưỡng chết / ngưỡng UAT
 
 - Câu hỏi phép đo trả lời: Phụ huynh đã khai hồ sơ bé **một lần**, tuần sau ngồi xuống soạn bài — bài ra có bám đúng thứ bé đang học ở trường mà không phải kể lại bối cảnh không?
-- Kết quả nào là SỐNG: [đề xuất] trong 2 tuần dùng thật, ít nhất 4 trên 5 bài soạn ra dùng được cho bé mà không gõ lại lớp / trường / sách lần nào, VÀ trong phép thử mù (giả định 1) phụ huynh nhận ra bài có khung đúng ít nhất 2 trên 3 lần
-- Kết quả nào là CHẾT: [đề xuất] vẫn phải kể lại bối cảnh từ 2 bài trở lên trong một tuần, HOẶC phép thử mù không phân biệt được bài có khung với bài «toán lớp 7» chung
-- Timebox: [đề xuất] 3 ngày dựng, 2 tuần chờ tín hiệu — hai tuần vì con trỏ tuần phải dịch ít nhất hai lần mới đo được giả định 2
+- Kết quả nào là SỐNG: trong 2 tuần dùng thật, ít nhất 4 trên 5 bài soạn ra dùng được cho bé mà không gõ lại lớp / trường / sách lần nào, VÀ trong phép thử mù (giả định 1) phụ huynh nhận ra bài có khung đúng ít nhất 2 trên 3 lần
+- Kết quả nào là CHẾT: vẫn phải kể lại bối cảnh từ 2 bài trở lên trong một tuần, HOẶC phép thử mù không phân biệt được bài có khung với bài «toán lớp 7» chung
+- Timebox: 3 ngày dựng, 2 tuần chờ tín hiệu — hai tuần vì con trỏ tuần phải dịch ít nhất hai lần mới đo được giả định 2
 
 ## Kết quả prototype
 
@@ -84,9 +84,9 @@ riêng, phép thử mù của giả định 1 chạy ngay trên bản đầu ti�
 
 ## Cổng Đáng
 
-- **decision = …** Căn cứ: …
-- **disposition = …** Căn cứ: …
-- **Ngưỡng UAT chốt cùng lúc ký:** …
+- **decision = build** Căn cứ: chủ kho chốt 22/09/2026 sau buổi khai thác, chọn lối làm-trước-thử-trên-thật. Ba chỗ cắm đã có sẵn trong kho — phạm vi theo người vừa merge, thư viện tài liệu theo chủ sở hữu, skill người dùng bền — và bộ soạn hôm nay không có một từ nào về cấp lớp hay giáo trình, nên đây là nối bối cảnh vào chỗ trống, không phải dựng hệ mới. Tầng 3 (dữ liệu trẻ em) để ngoài, xem Out of scope.
+- **disposition = archive** Căn cứ: không dựng prototype riêng — phép thử mù của giả định 1 chạy trên bản đầu tiên; không có mã nào để mang sang.
+- **Ngưỡng UAT chốt cùng lúc ký:** trong 2 tuần dùng thật, ít nhất 4 trên 5 bài soạn ra dùng được cho bé mà không gõ lại lớp / trường / sách lần nào, VÀ phép thử mù nhận ra bài có khung đúng ít nhất 2 trên 3 lần. CHẾT khi vẫn phải kể lại bối cảnh từ 2 bài trở lên trong một tuần, hoặc phép thử mù không phân biệt được. Timebox 3 ngày dựng, 2 tuần chờ tín hiệu.
 
 ## Thước đo thành công → ứng viên criterion
 
