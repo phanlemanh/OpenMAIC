@@ -5,7 +5,7 @@ slug: hieu-be-dang-hoc-gi
 owner: phanlemanh@gmail.com
 risk_tier: T2
 surfaces: [api, ui]
-status: approved
+status: implemented
 design_doc: _acceptance/hieu-be-dang-hoc-gi/design.md
 approved_by:
 approved_at:
