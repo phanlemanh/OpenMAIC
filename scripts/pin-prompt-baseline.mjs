@@ -38,9 +38,13 @@ const head = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).tr
  * mặt này. Đụng thì từ chối, vì lúc ấy ảnh chụp chính bản đã sửa.
  */
 const PROMPT_SURFACE = ['packages/@openmaic/generation', 'lib/prompts', 'app/api/generate'];
-const drift = execFileSync('git', ['diff', '--name-only', `${base}..${head}`, '--', ...PROMPT_SURFACE], {
-  encoding: 'utf8',
-})
+const drift = execFileSync(
+  'git',
+  ['diff', '--name-only', `${base}..${head}`, '--', ...PROMPT_SURFACE],
+  {
+    encoding: 'utf8',
+  },
+)
   .split('\n')
   .filter(Boolean)
   // Chính tệp ảnh nền nằm trong mặt prompt — nó đổi là chuyện đương nhiên.
@@ -55,7 +59,10 @@ if (drift.length) {
 
 /** Dữ liệu dựng sẵn CỐ ĐỊNH — đổi nó là đổi ý nghĩa của ảnh nền. */
 const FIXTURES = {
-  outlineBare: [{ requirement: 'Teach recursion to beginners' }, { researchContext: '', teacherContext: '' }],
+  outlineBare: [
+    { requirement: 'Teach recursion to beginners' },
+    { researchContext: '', teacherContext: '' },
+  ],
   outlineLegacyProfile: [
     { requirement: 'Dạy tỉ lệ và tỉ số', userNickname: 'Bi', userBio: 'học sinh lớp 7' },
     { researchContext: '', teacherContext: '' },
