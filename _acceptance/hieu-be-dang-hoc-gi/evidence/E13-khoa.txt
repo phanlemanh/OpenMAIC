@@ -1,0 +1,5 @@
+run_id: blind-509bac10-53db-4d65-b488-9d9992bed567
+A = CÓ gói khung
+B = KHÔNG gói khung
+
+Hội đồng KHÔNG đọc tệp này.

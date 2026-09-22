@@ -21,10 +21,18 @@
  * đo thì chưa từng tồn tại. Nên hai tệp phải đến từ CHÍNH tuyến soạn thật, mang
  * mã lượt chạy ở dòng đầu, và hội đồng chỉ chấm tệp có mã.
  *
- * Dùng: node scripts/gen-dan-y-mu.mjs [--slug <slug>] [--de "<đề bài>"] [--base-url <url>]
+ * Dùng: node scripts/gen-dan-y-mu.mjs [--slug <slug>] [--de "<đề bài>"] [--base-url <url>] [--model <provider:model>]
  * Cần: một máy chủ đang chạy đã khai khoá nhà cung cấp (mặc định
  * http://localhost:3002, khớp dev_server.url của hồ sơ). Không có máy chủ →
  * thoát 2 và nói rõ, KHÔNG dựng dữ liệu giả.
+ *
+ * MÔ HÌNH phải nêu tên: tuyến này giải mô hình theo thứ tự «tuyến theo chặng →
+ * x-model của client → DEFAULT_MODEL», và trang chủ LUÔN gửi x-model (người
+ * dùng chọn trong Cài đặt). Một script gọi cùng tuyến mà không gửi x-model đi
+ * một đường KHÁC đường thật, và trên bản dựng không khai DEFAULT_MODEL thì
+ * tuyến trả 500 — đúng ca đã chặn lượt nghiệm thu vòng 3. Nêu tên bằng
+ * `--model` hoặc biến `OPENMAIC_MODEL`; thiếu thì thoát 2 và liệt kê nhà cung
+ * cấp mà máy chủ khai là đã có khoá, KHÔNG tự đoán một mô hình.
  */
 import { randomUUID } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -39,7 +47,32 @@ const opt = (name, fallback) => {
 const slug = opt('--slug', 'hieu-be-dang-hoc-gi');
 const de = opt('--de', 'tỉ lệ và tỉ số');
 const baseUrl = opt('--base-url', process.env.OPENMAIC_BASE_URL ?? 'http://localhost:3002');
+const model = opt('--model', process.env.OPENMAIC_MODEL ?? process.env.DEFAULT_MODEL ?? '');
 const outDir = join(process.cwd(), '_acceptance', slug, 'evidence');
+
+/** Nhà cung cấp máy chủ khai là đã có khoá — để thông điệp thiếu-mô-hình chỉ đúng chỗ. */
+async function configuredProviders() {
+  try {
+    const res = await fetch(new URL('/api/server-providers', baseUrl));
+    const body = await res.json();
+    return Object.keys(body?.data?.providers ?? body?.providers ?? {});
+  } catch {
+    return [];
+  }
+}
+
+if (!model) {
+  const providers = await configuredProviders();
+  process.stderr.write(
+    'gen-dan-y-mu: chưa nêu mô hình. Đặt OPENMAIC_MODEL (hoặc --model) dạng «nhà-cung-cấp:mô-hình» — ' +
+      'tuyến soạn giải mô hình từ x-model như trang chủ gửi, không tự chọn hộ.' +
+      (providers.length
+        ? ` Máy chủ tại ${baseUrl} khai đã có khoá cho: ${providers.join(', ')}.`
+        : ` Máy chủ tại ${baseUrl} không khai nhà cung cấp nào — khai khoá trước.`) +
+      '\n',
+  );
+  process.exit(2);
+}
 
 const LEARNER = {
   nickname: 'Bi',
@@ -68,7 +101,7 @@ async function outlineFor({ withPack }) {
   try {
     res = await fetch(new URL('/api/generate/scene-outlines-stream', baseUrl), {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', 'x-model': model },
       body: JSON.stringify({
         requirements: { requirement: de, ...(withPack ? { learner: LEARNER } : {}) },
         researchContext: '',
@@ -92,6 +125,7 @@ async function outlineFor({ withPack }) {
   const outlines = [];
   let courseTitle;
   let anchor;
+  let streamError;
   for (const line of text.split('\n')) {
     if (!line.startsWith('data: ')) continue;
     let evt;
@@ -100,7 +134,8 @@ async function outlineFor({ withPack }) {
     } catch {
       continue;
     }
-    if (evt.type === 'outline') outlines.push(evt.data);
+    if (evt.type === 'error') streamError = evt.error;
+    else if (evt.type === 'outline') outlines.push(evt.data);
     else if (evt.type === 'courseTitle') courseTitle = evt.data;
     else if (evt.type === 'curriculumAnchor') anchor = evt.data;
     else if (evt.type === 'done' && Array.isArray(evt.outlines) && evt.outlines.length) {
@@ -110,7 +145,11 @@ async function outlineFor({ withPack }) {
     }
   }
   if (!outlines.length) {
-    process.stderr.write('gen-dan-y-mu: tuyến dàn ý không trả mục nào.\n');
+    // NÓI RA lý do tuyến nêu, không chỉ nói «rỗng»: lượt nghiệm thu vòng 3 mất
+    // một vòng vì thông điệp cũ im lặng về một lỗi cấu hình phía nhà cung cấp.
+    process.stderr.write(
+      `gen-dan-y-mu: tuyến dàn ý không trả mục nào${streamError ? ` — tuyến nói: ${streamError}` : ''}.\n`,
+    );
     process.exit(1);
   }
   // Lượt CÓ gói phải thật sự neo được: máy chủ chỉ phát câu neo khi nó đã tra

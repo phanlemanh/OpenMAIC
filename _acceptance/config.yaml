@@ -22,7 +22,16 @@ executors:
     # Bọc trong with-dev-server.sh: phép đo này đòi một máy chủ đang chạy, và
     # một phép đo đòi điều kiện mà không tự dựng được nó thì chỉ là một điều
     # kiện ngầm — lượt nghiệm thu vòng 2 bị chặn đúng vì thế.
-    dan_y_mu: ./scripts/with-dev-server.sh ./scripts/with-pinned-node.sh node scripts/gen-dan-y-mu.mjs
+    # Mô hình nêu ĐÍCH DANH: tuyến soạn giải mô hình từ x-model (trang chủ luôn
+    # gửi), nên một script không gửi đi một đường khác đường thật — và trên bản
+    # dựng không khai DEFAULT_MODEL thì tuyến trả 500, đúng ca chặn vòng 3.
+    # Ghi ở đây để cặp dàn ý mù lặp lại được: ai chấm cũng biết nó sinh bằng gì.
+    # `env -u ANTHROPIC_BASE_URL`: vỏ của một số công cụ xuất sẵn biến này trỏ
+    # GỐC api (không có đoạn phiên bản), và máy chủ kế thừa nó thì mọi lượt gọi
+    # rơi vào một đường 404 — lượt soạn trả rỗng mà không nói vì sao. Bỏ biến đi
+    # để phép đo chạy trên cấu hình mặc định của kho; ai cần gốc riêng thì đổi
+    # OPENMAIC_MODEL sang nhà cung cấp khác hoặc sửa dòng này.
+    dan_y_mu: env -u ANTHROPIC_BASE_URL OPENMAIC_MODEL=${OPENMAIC_MODEL:-anthropic:claude-sonnet-5} ./scripts/with-dev-server.sh ./scripts/with-pinned-node.sh node scripts/gen-dan-y-mu.mjs
   design:                                                 # repo có web UI (app/, components/)
     gate: "./scripts/with-pinned-node.sh node scripts/design-gate-changed.mjs"   # chấm mọi file giao diện vòng đụng; design-gate.mjs chỉ nhận MỘT file nên không dùng thẳng làm khoá cấp kho được
     ui_check: "scripts/design-scan.js"
