@@ -1321,8 +1321,15 @@ function GenerationPreviewContent() {
                     // Chỉ nói «đang đoán» khi hồ sơ CÓ khai giáo trình mà mô
                     // hình không trả câu neo — tức thật sự thiếu gói. Hồ sơ
                     // trống thì không dòng nào, y như trước vòng này.
+                    //
+                    // DỊCH mã giáo trình trước khi đưa lên màn: dòng này là
+                    // lời cảnh báo nhắm thẳng vào phụ huynh không chuyên, nên
+                    // nó là dòng CUỐI CÙNG được phép lộ một mã máy. Mọi mặt
+                    // khác đã dịch qua cùng bộ khoá này.
                     !session?.curriculumAnchor && session?.requirements?.learner?.subjects?.[0]
-                      ? session.requirements.learner.subjects[0].curriculum
+                      ? t(
+                          `home.learnerInvite.curriculum.${session.requirements.learner.subjects[0].curriculum}`,
+                        )
                       : undefined
                   }
                 />

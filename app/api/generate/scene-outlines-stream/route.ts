@@ -108,10 +108,24 @@ function extractCourseTitle(buffer: string): string | null {
  * Câu neo: mô hình chỉ trả khi có khung giáo trình trong lời nhắc. Vắng nó là
  * ca THƯỜNG (không gói, hoặc không hồ sơ) — không phải lỗi, nên không cảnh báo.
  */
+/** Trần riêng cho câu neo. Tên khoá học có trần 30; câu neo là MỘT CÂU nêu tên
+ *  unit VÀ tên sách — riêng tên sách của gói đã 53 ký tự — nên dùng chung bộ
+ *  chuẩn hoá của tên khoá học là cắt cụt giữa chừng, lặng lẽ. */
+const CURRICULUM_ANCHOR_MAX = 200;
+
 function extractCurriculumAnchor(buffer: string): string | null {
   const match = buffer.match(CURRICULUM_ANCHOR_RE);
-  const raw = match ? normalizeStreamedTitle(match[1]) : null;
-  return raw ? raw.slice(0, 200) : null;
+  if (!match) return null;
+  // Chỉ gỡ ký tự thoát và gom khoảng trắng — KHÔNG dùng normalizeStreamedTitle,
+  // vì nó kết bằng một lát cắt 120 viết cho tên khoá học, nên lát cắt 200 đứng
+  // sau nó không bao giờ chạy tới (mã chết) và mọi câu neo dài đều bị cắt.
+  const unescaped = match[1]
+    .replace(/\\n/g, ' ')
+    .replace(/\\"/g, '"')
+    .replace(/\\\\/g, '\\')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return unescaped ? unescaped.slice(0, CURRICULUM_ANCHOR_MAX) : null;
 }
 
 function extractCourseTitleFromComplete(buffer: string): string | null {

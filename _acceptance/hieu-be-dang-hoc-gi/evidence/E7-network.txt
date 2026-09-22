@@ -1,55 +1,80 @@
 E7 — network evidence for AC-7 (curriculumAnchor SSE event in the outline stream)
-Captured 2026-09-22, dev server http://localhost:3002, POST /api/generate/scene-outlines-stream
+RE-VERIFIED round 2, independent verifier session, 2026-09-22.
+Repo sha at test time: 409cc620 (post round-1 fixes) + uncommitted _acceptance/.../s4-args.json only.
+Dev server: `pnpm dev` (config.yaml dev_server.start, unmodified) on http://localhost:3002.
+Driver: Claude Browser pane, mcp__Claude_Browser__read_network_requests(requestId=<the POST>).
 
-Driver: Claude Browser pane (mcp__Claude_Browser__read_network_requests). Full response body of the
-in-flight SSE request was fetched with read_network_requests(requestId=<the POST request>).
-
+=== Run A (profile: Bé Minh, lớp 7, Toán, Cambridge Lower Secondary, English; prompt "tỉ lệ và tỉ số") ===
 Request: POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK
-Learner in requirements.learner.subjects[0]: { subject: "Toán", curriculum: "cambridge-lower-secondary",
-language: "en-US", packId: "cambridge-lower-secondary-maths-8" }  (read from sessionStorage.generationSession)
+Full raw SSE body fetched via read_network_requests after the stream reached "done".
 
-Relevant SSE lines from the response body (raw bytes as delivered; some non-ASCII bytes were
-re-encoded by the network-read tool's transport and show as mojibake below — e.g. "Ã " / "â€”" are
-UTF-8 sequences for "à" / "—" / Vietnamese diacritics that render correctly in the browser DOM itself;
-the DOM read via javascript_tool in E7-neo-co-goi.html shows the correct rendering):
+Relevant lines (exact bytes as the tool returned them — the tool's own transport re-encodes
+non-ASCII as mojibake, e.g. "â€”" = "—", "Ã¡" = "á"; the browser's own DOM and
+sessionStorage — queried separately via javascript_tool, which is NOT subject to this transport
+bug — show the correctly-rendered UTF-8 string, quoted clean below):
 
-data: {"type":"languageDirective","data":"Deliver the course primarily in clear, age-appropriate English because the learner studies Cambridge Mathematics in English. ..."}
+  data: {"type":"languageDirective","data":"Deliver the course primarily in clear ... English ..."}
+  data: {"type":"courseTitle","data":"Ratio and Proportion"}
+  data: {"type":"outline","data":{"id":"scene_1",...,"curriculumAnchor":"Unit 12 â€” Ratio and
+    proportion, sÃ¡ch Cambridge Lower Secondary Mathematics Learner's Book 8."},"index":0}
+  ... (8 more "outline" events, scene_2..scene_9) ...
+  data: {"type":"curriculumAnchor","data":"Unit 12 â€” Ratio and proportion, sÃ¡ch Cambridge Lower
+    Secondary Mathematics Learner's Book 8."}
+  data: {"type":"done","outlines":[... 9 outlines ...]}
 
-data: {"type":"courseTitle","data":"Ratio and Proportion"}
+Clean value (read from sessionStorage.generationSession.curriculumAnchor in the live tab right
+after "done", i.e. what the UI actually renders — this is the value asserted in E7-neo-co-goi.html,
+data-state="ST-neo-co-goi"):
+  "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8."
 
-data: {"type":"outline","data":{"id":"scene_1", ... ,"curriculumAnchor":"Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8."},"index":0}
+=== Run B (same profile; prompt again "tỉ lệ và tỉ số", separate tab, separate generation) ===
+Request: POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK
+This run's languageDirective happened to pick primarily-Vietnamese delivery (model's own choice for
+a grade-7 VN-context learner) — 10 scenes, courseTitle "Tỉ số và tỉ lệ". Full raw body captured
+(response body was available this time because the request had just completed):
 
-... (10 more "outline" events, scene_2..scene_11) ...
+  data: {"type":"languageDirective","data":"Giảng dạy chủ yếu bằng tiếng Việt ... (mojibake in raw
+    capture, decoded via sessionStorage below)"}
+  data: {"type":"courseTitle","data":"Tỉ số và tỉ lệ"}
+  data: {"type":"outline","data":{"id":"scene_1","type":"slide","title":"Pha nước theo đúng vị",
+    ...,"curriculumAnchor":"Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary
+    Mathematics Learner's Book 8, là nơi bài học này bám vào."},"index":0}
+  ... (9 more "outline" events, scene_2..scene_10) ...
+  data: {"type":"curriculumAnchor","data":"Unit 12 — Ratio and proportion, sách Cambridge Lower
+    Secondary Mathematics Learner's Book 8, là nơi bài học này bám vào."}
+  data: {"type":"done","outlines":[... 10 outlines ...]}
 
-data: {"type":"curriculumAnchor","data":"Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8."}
+Clean value (sessionStorage.generationSession.curriculumAnchor, exact UTF-8, no transport mangling):
+  "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8, là
+  nơi bài học này bám vào."
 
-data: {"type":"done","outlines":[ ... 11 outlines ... ]}
+=== ASSERTION ===
+A dedicated SSE event of type "curriculumAnchor" (distinct from the per-scene "outline" events,
+which also embed the same string in each scene's own curriculumAnchor field) IS present in the
+outline stream, in BOTH independent runs.
+Content check: unit name ("Unit 12 — Ratio and proportion") stands FIRST in both runs; book name
+follows; NO framework code (no "Stage", no raw packId "cambridge-lower-secondary-maths-8") opens
+the sentence; both sentences are grammatical, human-readable.
+=> PASS.
 
-=> ASSERTION: sự kiện SSE riêng {"type":"curriculumAnchor", data:"..."} CÓ MẶT trong luồng dàn ý.
-   PASS — máy chủ (route app/api/generate/scene-outlines-stream/route.ts) phát đúng sự kiện, nội dung
-   hợp lệ: tên unit ("Unit 12 — Ratio and proportion") đứng trước, tên sách theo sau, KHÔNG có mã khung
-   (không có chữ "Stage") mở đầu câu, câu đọc được bằng tiếng Việt tự nhiên.
+=== NETWORK TRUTH (scope: dev_server.url http://localhost:3002, no api_base declared) ===
+FAIL-eligible request in this flow (POST /api/generate/scene-outlines-stream, both runs) -> 200 OK.
+No 4xx/5xx on this route in either run.
 
-=> NHƯNG: DOM của trang /generation-preview lúc luồng đã "done" (11/11 scenes) vẫn giữ nguyên
-   data-state="ST-neo-dang-doan" (trạng thái "đang đoán", banner cam), KHÔNG chuyển sang
-   data-state="ST-neo-co-goi" mặc dù hồ sơ CÓ gói đã khớp (packId cambridge-lower-secondary-maths-8)
-   và model ĐÃ trả curriculumAnchor hợp lệ như trên. Xem chi tiết + nguyên nhân mã nguồn trong
-   E7-neo-co-goi.html.
+Out-of-scope note (not counted as FAIL for E7, which is scoped to scene-outlines-stream only, but
+recorded for completeness — same root cause the round-1 evidence already flagged):
+  GET /api/persistence/kv/entries/{learner-profile-storage,settings-storage,user-profile-storage}
+  -> 404 "server persistence not configured", repeating on every KV read for the whole session.
+  Root cause: dev_server.start sets NEXT_PUBLIC_PERSISTENCE=1 but .env.local has no DATABASE_URL /
+  PERSISTENCE_DEV_TOKEN, so the account-scope HttpKVStore backend is simply absent — this is a
+  pre-existing environment/config gap, not a scene-outlines-stream (AC-7) regression. It DOES mean
+  the outer Settings-dialog footer "Save" silently no-ops (in-memory state never updates); the inner
+  per-section Learner "Save" button (learner-profile-settings.tsx onSave) still updates the
+  in-memory zustand store correctly (confirmed: "Building for:" picker on the home page reflected
+  "Toán — Cambridge Lower Secondary (English)" right after clicking it), even though it also shows a
+  red "Couldn't save — what you typed is still here. Try again." card, which is correct-by-design
+  given the missing backend, not a bug in AC-7's flow.
 
-NETWORK TRUTH (đúng scope dev_server.url http://localhost:3002, không có api_base riêng khai trong
-config.yaml):
-- Request FAIL-eligible duy nhất trong flow này (POST /api/generate/scene-outlines-stream) -> 200 OK.
-  Không có request app-scope nào lỗi 4xx/5xx trong luồng tạo dàn ý.
-- Ghi chú ngoài luồng (không tính fail): các request GET /api/persistence/kv/entries/* trả 404
-  "PERSISTENCE_NOT_CONFIGURED" trong suốt phiên — do .env.local KHÔNG có DATABASE_URL /
-  PERSISTENCE_DEV_TOKEN dù dev_server.start khai NEXT_PUBLIC_PERSISTENCE=1 (xem outputTail của
-  runner để biết chi tiết). Đây là 404 nhưng route /api/persistence trả nó CÓ CHỦ Ý làm "not
-  configured" (đúng thiết kế theo mã nguồn), không phải app-origin lỗi ngoài dự kiến của route
-  scene-outlines-stream đang được đo — không tính vào FAIL-eligible của phép đo E7 này (E7 chỉ đo
-  đúng route scene-outlines-stream/route.ts theo cột "paths" của eval), nhưng được note lại vì nó
-  chặn đường lưu hồ sơ người học qua UI (workaround: lưu vẫn set state trong bộ nhớ client, đủ để
-  đi hết luồng E7).
-=> networkObserved = app-fail là SAI vì route đang đo (scene-outlines-stream) không fail; nhưng vì
-   phép đo tổng thể vẫn FAIL (do lỗi client-side ở bước hiển thị, không phải network) nên trường
-   networkObserved trong kết quả cuối phản ánh riêng phần network: "clean" cho riêng route
-   scene-outlines-stream, kèm ghi chú 404 persistence not-configured (out of scope cho E7 cụ thể).
+networkObserved = clean (scene-outlines-stream route only; the persistence 404s are a documented,
+known-cause, out-of-scope condition per the config gap above, not an app-origin failure of the
+route being measured for E7).

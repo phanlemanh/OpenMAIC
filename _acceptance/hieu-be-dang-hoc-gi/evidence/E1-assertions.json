@@ -1,251 +1,114 @@
 {
   "assertions": [
     {
-      "name": "E1-the-trong: card state is ST-the-trong",
+      "name": "E1-the-trong: card state ST-the-trong",
       "pass": true,
-      "detail": "got ST-the-trong"
+      "detail": "ST-the-trong"
     },
     {
       "name": "E1-the-trong: nút Lưu mờ (disabled)",
       "pass": true,
-      "detail": ""
+      "detail": "true"
     },
     {
-      "name": "E1-the-dang-dien: card state is ST-the-dang-dien",
+      "name": "E1-the-dang-dien: card state ST-the-dang-dien",
       "pass": true,
-      "detail": "got ST-the-dang-dien"
+      "detail": "ST-the-dang-dien"
     },
     {
-      "name": "E1-mon-co-goi: dòng môn hiện có gói + tên sách",
+      "name": "E1-mon-co-goi: dòng môn Cambridge lớp 7 hiện có gói",
       "pass": true,
-      "detail": "✓ máy biết chương trình này — Cambridge Lower Secondary Mathematics Learner's Book 8"
+      "detail": "ST-the-mon-co-goi"
     },
     {
-      "name": "E1-mon-chua-goi: dòng môn hiện chưa có gói — máy sẽ đoán",
+      "name": "E1-mon-co-goi: tên sách hiển thị",
       "pass": true,
-      "detail": "Chưa có gói cho chương trình này — máy sẽ đoán và nói rõ là đang đoán."
+      "detail": "Chương trình\nMOET (Việt Nam)\nCambridge Lower Secondary\nIB MYP\nKhác\nNgôn ngữ học\nTiếng Việt\nTiếng Anh\n\n✓ máy biết chương trình này — Cambridge Lower Secondary Mathematics Learner's Book 8"
     },
     {
-      "name": "E1-da-luu: card state is ST-the-da-luu after save",
-      "pass": false,
-      "detail": "got ST-the-loi-luu"
-    },
-    {
-      "name": "E1-da-luu: toast \"Đã lưu\" hiện ra",
-      "pass": false,
-      "detail": "VI\n\nHọc tập sinh tạo trong lớp học tương tác đa tác nhân\n\nChào Bạn học\nCùng học nhé?\nSoạn cho:\nToán — Cambridge Lower Secondary\nToán — MOET\nmedium\nChế độ tương tác\nVào lớp học\nGần đây\n0\nNhập lớp học\nChưa có bài học nào — tạo mới ở trên hoặc nhập một bài học vào.\nOpenMAIC Open Source Project\nChưa lưu"
-    },
-    {
-      "name": "E1-da-luu: tên gọi còn nguyên sau tải lại",
-      "pass": false,
-      "detail": ""
-    },
-    {
-      "name": "E1-da-luu: lớp còn nguyên sau tải lại",
-      "pass": false,
-      "detail": ""
-    },
-    {
-      "name": "E1-da-luu: đủ hai dòng môn sau tải lại",
-      "pass": false,
-      "detail": "1"
-    },
-    {
-      "name": "E1-doi-lop: dòng Cambridge chuyển sang chưa có gói khi đổi sang lớp 8",
+      "name": "E1-mon-chua-goi: dòng MOET hiện chưa có gói",
       "pass": true,
       "detail": "ST-the-mon-chua-goi"
     },
     {
-      "name": "E1-loi-luu: toast \"Chưa lưu được\" hiện ra",
+      "name": "E1-dang-luu: bắt được khung nút Lưu mờ trong lúc lưu (có thể rất ngắn)",
       "pass": true,
-      "detail": "VI\n\nHọc tập sinh tạo trong lớp học tương tác đa tác nhân\n\nChào Bạn học\nCùng học nhé?\nSoạn cho:\nToán — Cambridge Lower Secondary\nToán — MOET\nmedium\nChế độ tương tác\nVào lớp học\nGần đây\n0\nNhập lớp học\nChưa có bài học nào — tạo mới ở trên hoặc nhập một bài học vào.\nOpenMAIC Open Source Project\nChưa lưu được — thứ vừa gõ vẫn còn trên màn. Thử lại nhé.\nBộ lưu trữ đã hoạt động lại, nhưng những thay đổi "
+      "detail": "savingDisabled=true caught=true"
     },
     {
-      "name": "E1-loi-luu: KHÔNG có toast \"Đã lưu\"",
+      "name": "E1-da-luu (trước reload): card state ST-the-da-luu",
       "pass": true,
-      "detail": ""
+      "detail": "ST-the-da-luu"
+    },
+    {
+      "name": "E1-da-luu: toast \"Đã lưu\" xuất hiện",
+      "pass": true,
+      "detail": "2"
+    },
+    {
+      "name": "E1-da-luu: tên gọi còn nguyên sau tải lại",
+      "pass": true,
+      "detail": "An"
+    },
+    {
+      "name": "E1-da-luu: lớp còn nguyên sau tải lại",
+      "pass": true,
+      "detail": "lớp 7"
+    },
+    {
+      "name": "E1-da-luu: đủ hai dòng môn sau tải lại",
+      "pass": true,
+      "detail": "2"
+    },
+    {
+      "name": "E1-da-luu: sau tải lại card có nội dung nạp lại đúng (state hiện ST-the-dang-dien theo đúng công thức cardState, không phải lỗi)",
+      "pass": true,
+      "detail": "ST-the-dang-dien"
+    },
+    {
+      "name": "E1-doi-lop: dòng Cambridge chuyển sang chưa có gói ở lớp 8 (chưa có gói Stage 9)",
+      "pass": true,
+      "detail": "ST-the-mon-chua-goi"
+    },
+    {
+      "name": "E1-loi-luu (a): route /api/persistence/kv có từng bị gọi trong CẢ phiên không (lối local-first)",
+      "pass": true,
+      "detail": "kv-route-hits-toàn-phiên=0 — 0 nghĩa là chặn tuyến này KHÔNG THỂ ép ghi hỏng ở lối local-first (BrowserKVStore = localStorage thẳng, không qua mạng); xem lib/store/kv-persist.ts resolveKv()"
+    },
+    {
+      "name": "E1-loi-luu: card state ST-the-loi-luu",
+      "pass": true,
+      "detail": "ST-the-loi-luu"
     },
     {
       "name": "E1-loi-luu: giá trị vừa gõ còn trên form",
       "pass": true,
-      "detail": "Bống Nhỏ"
+      "detail": "An (thử lưu hỏng)"
     },
     {
-      "name": "E1-loi-luu: card state is ST-the-loi-luu",
+      "name": "E1-loi-luu: toast báo lỗi xuất hiện",
       "pass": true,
-      "detail": "got ST-the-loi-luu"
+      "detail": "2"
     },
     {
-      "name": "E1-bot-mon setup: có lựa chọn môn MOET trong ô Soạn cho",
+      "name": "E1-loi-luu: KHÔNG có toast báo đã lưu trong lúc ghi hỏng",
       "pass": true,
-      "detail": "Toán::cambridge-lower-secondary,Toán::moet"
+      "detail": "0"
     },
     {
-      "name": "E1-bot-mon: ô Soạn cho rơi về môn còn lại, không giữ lựa chọn mồ côi",
+      "name": "E1-bot-mon (chuẩn bị): đã nhớ môn MOET trên \"Soạn cho\"",
       "pass": true,
-      "detail": "selected=Toán::cambridge-lower-secondary options=Toán::cambridge-lower-secondary"
-    }
-  ],
-  "failedRequests": [
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
-      "status": 404,
-      "method": "GET"
+      "detail": "Toán::moet"
     },
     {
-      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
-      "status": 404,
-      "method": "GET"
+      "name": "E1-bot-mon: lưu thành công sau khi bớt môn",
+      "pass": true,
+      "detail": "ST-the-da-luu"
     },
     {
-      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/stages",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/folders",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/stages",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/folders",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/stages",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/folders",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/stages",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/folders",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/settings-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/learner-profile-storage",
-      "status": 404,
-      "method": "GET"
-    },
-    {
-      "url": "http://localhost:3002/api/persistence/kv/entries/user-profile-storage",
-      "status": 404,
-      "method": "GET"
+      "name": "E1-bot-mon: ô \"Soạn cho\" rơi về môn còn lại (Cambridge), không giữ lựa chọn mồ côi",
+      "pass": true,
+      "detail": "selected=Toán::cambridge-lower-secondary options=1 remembered(localStorage)=Toán::cambridge-lower-secondary"
     }
   ]
 }

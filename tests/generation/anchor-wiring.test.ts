@@ -60,6 +60,67 @@ describe('câu neo đi trọn đường tới màn', () => {
     expect(thieu, `template nhận thân gói mà không xin câu neo: ${thieu.join(', ')}`).toEqual([]);
   });
 
+  it('khuôn nào xin câu neo thì hình dạng đầu ra PHẢI cho phép nó', () => {
+    // Thước trên chỉ soi «chuỗi có mặt», nên nó xanh cả khi chính khuôn ấy
+    // KHOÁ hình dạng đầu ra vào đúng ba khoá — mô hình khi đó tuân luật mạnh
+    // hơn và nhét câu neo vào TRONG một mục dàn ý. Bằng chứng vòng 2 bắt được
+    // đúng cảnh ấy, và bản sửa chỉ chạy nhờ một biểu thức rút quá rộng.
+    const pairs: Array<[string, string]> = [
+      [
+        'packages/@openmaic/generation/templates/requirements-to-outlines/user.md',
+        'packages/@openmaic/generation/templates/requirements-to-outlines/system.md',
+      ],
+      [
+        'lib/prompts/templates/interactive-outlines/user.md',
+        'lib/prompts/templates/interactive-outlines/system.md',
+      ],
+      [
+        'lib/prompts/templates/task-engine-outlines/user.md',
+        'lib/prompts/templates/task-engine-outlines/system.md',
+      ],
+    ];
+    const mauThuan = pairs
+      .filter(([user]) => read(user).includes('curriculumAnchor'))
+      .filter(([user, system]) =>
+        // Mọi chỗ khai hình dạng — ở khuôn hệ thống lẫn nhắc cuối của khuôn
+        // người dùng — đều phải nói ra khoá thứ tư. Chỗ nào im thì chỗ đó là
+        // luật mà mô hình sẽ theo.
+        [read(system), read(user)].some(
+          (text) => /top-level keys/i.test(text) && !text.includes('curriculumAnchor'),
+        ),
+      )
+      .map(([user]) => user);
+    expect(
+      mauThuan,
+      `khuôn xin câu neo nhưng hình dạng đầu ra không cho phép: ${mauThuan.join(', ')}`,
+    ).toEqual([]);
+  });
+
+  it('câu neo KHÔNG bị cắt bằng trần của tên khoá học', () => {
+    const src = read('app/api/generate/scene-outlines-stream/route.ts');
+    const i = src.indexOf('function extractCurriculumAnchor');
+    expect(i, 'không tìm thấy bộ rút câu neo').toBeGreaterThan(0);
+    // Soi LỜI GỌI, không soi chữ: chính dòng chú thích giải thích vì sao KHÔNG
+    // dùng bộ chuẩn hoá ấy, nên soi chuỗi trần là đỏ oan cho một đoạn mã đúng.
+    const fn = src
+      .slice(i, src.indexOf('\n}', i))
+      .replace(/\/\/[^\n]*/g, '')
+      .replace(/\/\*[\s\S]*?\*\//g, '');
+    expect(fn, 'curriculum anchor is truncated by the course-title normalizer').not.toContain(
+      'normalizeStreamedTitle(',
+    );
+  });
+
+  it('dòng cảnh báo «đang đoán» KHÔNG lộ mã giáo trình cho phụ huynh', () => {
+    const src = read('app/generation-preview/page.tsx');
+    const i = src.indexOf('guessingFor={');
+    expect(i, 'không tìm thấy chỗ truyền giáo trình vào dòng cảnh báo').toBeGreaterThan(0);
+    expect(
+      src.slice(i, i + 900),
+      'the guessing banner renders the raw curriculum slug to the parent',
+    ).toContain('home.learnerInvite.curriculum.');
+  });
+
   it('nhãn ô chọn môn nêu ĐỦ môn — chương trình (ngôn ngữ) như hợp đồng khai', () => {
     const src = read('components/generation/learner-subject-picker.tsx');
     // Soi ĐÚNG chuỗi nhãn, không soi cả tệp: `s.language` cũng có trong bộ lọc

@@ -2,7 +2,7 @@
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
-    <title>E7 evidence — fallback HTML (không có capture.ui khả dụng cho phiên tương tác)</title>
+    <title>E7 evidence — round 2 (fresh verify, independent of doer)</title>
     <style>
       body {
         font:
@@ -11,7 +11,7 @@
         background: #0b0e18;
         color: #e5e7eb;
         padding: 24px;
-        max-width: 800px;
+        max-width: 860px;
         margin: 0 auto;
       }
       .note {
@@ -21,6 +21,10 @@
         padding: 12px 16px;
         margin-bottom: 20px;
         white-space: pre-wrap;
+      }
+      .pass {
+        border-color: rgba(34, 197, 94, 0.5);
+        background: rgba(34, 197, 94, 0.06);
       }
       .frame {
         background: #141726;
@@ -34,16 +38,23 @@
     </style>
   </head>
   <body>
-    <div class="note">
-      FALLBACK EVIDENCE — không dùng được config.yaml capture.ui (scripts/ui-capture.mjs). Lý do:
-      script đó mở một trình duyệt Playwright RIÊNG, điều hướng thẳng tới URL — không mang theo
-      localStorage (hồ sơ người học vừa lưu) lẫn sessionStorage (generationSession đang stream) của
-      phiên tương tác đang chạy trong Browser pane. Không thể tái tạo đúng trạng thái "đã khai hồ sơ
-      Toán Cambridge lớp 7 → Soạn cho → Tạo → xem trước dàn ý" bằng một lần điều hướng lạnh tới URL
-      tĩnh. Vì vậy: lưu DOM sống (outerHTML) của đúng hai khối liên quan — tiêu đề "Scene outline"
-      và dòng neo — chụp trực tiếp từ trang đang chạy tại http://localhost:3002/generation-preview,
-      ngay sau khi luồng SSE báo "done" (11/11 scenes, network log xác nhận sự kiện curriculumAnchor
-      đã đến — xem E7-network.txt). Đây LÀ trạng thái quan sát được thật, không phải suy diễn.
+    <div class="note pass">
+      RE-VERIFIED round 2 (mã nguồn sau commit 409cc620 "fix(hieu-be-dang-hoc-gi): ba lỗi vòng
+      nghiệm thu thứ nhất tìm ra"). Verifier này ĐỘC LẬP với doer, chạy `pnpm dev` thật (PORT=3002),
+      dùng Browser pane để: mở /, mở Settings → Learner, khai hồ sơ (Bé Minh, lớp 7, Toán, Cambridge
+      Lower Secondary, English) → gõ "tỉ lệ và tỉ số" vào ô soạn (ô «Building for:» xác nhận
+      "Toán — Cambridge Lower Secondary (English)") → Enter Classroom → đợi luồng SSE dàn ý hoàn tất
+      (9 scenes) → đọc DOM thật bằng javascript_tool ngay tại màn xem trước dàn ý.
+
+      GHI CHÚ MÔI TRƯỜNG (không phải lỗi AC-7): dev_server.start khai NEXT_PUBLIC_PERSISTENCE=1
+      nhưng .env.local không có DATABASE_URL/PERSISTENCE_DEV_TOKEN, nên KVPersist tự báo "Giving up
+      on recovering ... storage stays read-only" ngay lúc tải trang, và nút Save NGOÀI (footer dialog
+      Settings) không lưu được gì. Nút Save NHỎ bên trong mục Learner (ngay dưới Subjects — gọi
+      onSave() của learner-profile-settings.tsx) vẫn set state ĐÚNG trong bộ nhớ (zustand `set()`
+      chạy trước khi kiểm tra "landed", không phụ thuộc backend), dù card báo đỏ "Couldn't save —
+      what you typed is still here. Try again." — đây là hành vi ĐÚNG THIẾT KẾ của lớp persistence
+      khi backend chưa cấu hình, tách biệt khỏi luồng E7. Sau khi bấm đúng nút Save đó, ô «Building
+      for:» trên trang chủ hiện đúng "Toán — Cambridge Lower Secondary (English)".
     </div>
 
     <div class="frame">
@@ -55,51 +66,49 @@
         </div>
         <h2 style="font-size: 24px; font-weight: 600; margin: 4px 0">Scene outline</h2>
         <p style="color: #9ca3af; font-size: 14px">
-          11 scenes total. You can edit, add, remove, or reorder them before generation starts.
+          9 scenes total. You can edit, add, remove, or reorder them before generation starts.
         </p>
       </div>
       <div style="padding: 0 0 8px">
         <p
-          data-state="ST-neo-dang-doan"
+          data-state="ST-neo-co-goi"
           style="
             display: flex;
+            align-items: flex-start;
             gap: 8px;
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            background: rgba(245, 158, 11, 0.05);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            background: rgba(148, 163, 184, 0.08);
             border-radius: 8px;
             padding: 8px 12px;
             font-size: 14px;
           "
         >
-          ⚠
-          <span
-            >No curriculum pack for cambridge-lower-secondary yet — this is an informed guess, not a
-            checked match.</span
-          >
+          📖
+          <span>Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8.</span>
         </p>
       </div>
     </div>
 
-    <div class="note" style="margin-top: 20px">
-      QUAN SÁT: sau khi luồng SSE hoàn tất (11/11 scenes, sự kiện <code>done</code> đã nhận — xem
-      E7-network.txt), dòng neo VẪN ở trạng thái <code>data-state="ST-neo-dang-doan"</code> (đang
-      đoán), KHÔNG chuyển sang <code>ST-neo-co-goi</code> — mặc dù: (a) hồ sơ có Toán · Cambridge
-      Lower Secondary · lớp 7, gói được nhận diện đúng (packId "cambridge-lower-secondary-maths-8",
-      xác nhận lúc điền form: "✓ this curriculum is covered — Cambridge Lower Secondary Mathematics
-      Learner's Book 8"), và (b) mô hình ĐÃ trả sự kiện SSE <code>curriculumAnchor</code> với nội
-      dung hợp lệ: "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics
-      Learner's Book 8." (tên unit đứng trước, không mã đứng trước, câu tiếng Việt đọc được).
-      sessionStorage.generationSession kiểm tra bằng JS console tại đúng thời điểm này không có
-      field curriculumAnchor (chỉ có previewPhase và requirements.learner...), xác nhận giá trị bị
-      rớt phía client trước khi tới màn hình, không phải do model không trả. NGUYÊN NHÂN (đọc mã
-      nguồn): app/generation-preview/page.tsx dòng ~616-641 parse đúng sự kiện SSE
-      "curriculumAnchor" vào biến cục bộ `anchor` và đưa vào `outlineResult.curriculumAnchor` (dòng
-      640). Nhưng khối dựng `updatedSession` ngay sau đó (dòng ~686-696) liệt kê sceneOutlines,
-      languageDirective, courseTitle, taskEngineMode, previewPhase — KHÔNG có `curriculumAnchor`.
-      Giá trị bị tính xong rồi bỏ, không bao giờ ghi vào session. Khi render dùng
-      `session?.curriculumAnchor` (dòng 1313, 1318) nó luôn undefined, nên CurriculumAnchorLine luôn
-      rơi về nhánh "guessingFor" (ST-neo-dang-doan) hoặc null, không bao giờ tới nhánh
-      ST-neo-co-goi, bất kể model có trả curriculumAnchor hay không.
+    <div class="note pass" style="margin-top: 20px">
+      QUAN SÁT (đọc trực tiếp từ DOM sống bằng
+      <code>document.querySelector('[data-state^="ST-neo"]')</code>, không suy diễn):
+
+      • <code>data-state === "ST-neo-co-goi"</code> — đúng trạng thái "có gói", KHÔNG còn kẹt ở
+      "ST-neo-dang-doan" như vòng 1.
+      • Nội dung dòng neo: "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary
+      Mathematics Learner's Book 8." — TÊN UNIT ("Unit 12 — Ratio and proportion") đứng TRƯỚC, tên
+      sách theo sau, KHÔNG có mã khung (không "Stage", không packId thô) mở đầu câu. Câu đọc được,
+      có nghĩa (không phải chuỗi kỹ thuật).
+      • Đối chiếu với sessionStorage.generationSession.curriculumAnchor tại đúng thời điểm chụp:
+      giá trị KHỚP 100% với dòng hiển thị trên DOM — xác nhận UI không rơi rớt giá trị model trả
+      (khác vòng 1, nơi giá trị bị tính xong rồi bỏ khi dựng updatedSession).
+      • Lặp lại lần 2 với input tiếng Việt thuần (tab riêng, xem E7-network.txt): kết quả anchor
+      "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8,
+      là nơi bài học này bám vào." — cùng cấu trúc (tên unit trước, tên sách sau, không mã), ổn định
+      qua nhiều lượt sinh khác nhau.
+
+      => AC-7 PASS: khung ST-neo-co-goi phủ đúng, đọc được, tên unit đứng trước, không mã đứng
+      trước.
     </div>
   </body>
 </html>

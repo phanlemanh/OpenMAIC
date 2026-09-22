@@ -262,7 +262,13 @@ Your entire response MUST be a single JSON **object** with exactly these three t
 }
 ```
 
-Rules:
+{{#if curriculumContext}}When — and only when — a curriculum framework was supplied in the user message,
+add a FOURTH top-level key `curriculumAnchor` (string) beside the three above.
+It is the only key ever allowed beyond the three, it is top-level, and it is
+never nested inside `outlines` or any scene object. No framework supplied → the
+three keys above are the whole object.
+
+{{/if}}Rules:
 
 - **Never** return a bare array. The top level is an object, not an array.
 - **Never** omit `languageDirective` or `courseTitle`. Both are required even if you think they are obvious.

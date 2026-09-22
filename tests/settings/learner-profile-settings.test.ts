@@ -63,8 +63,22 @@ vi.mock('@/lib/store/learner-profile', async () => {
   const store = Object.assign((sel: (s: Record<string, unknown>) => unknown) => sel(snapshot()), {
     getState: snapshot,
     persist: {
+      /**
+       * Ngăn lưu THẬT của kho. Giả lập đúng hành vi đã làm hai bản sửa trước
+       * thất bại: khi chưa ghi được, `getItem` trả về `null` — KHÔNG phải trả
+       * về giá trị đang nằm trong bộ nhớ. Bản giả lập trước mô phỏng đường
+       * nạp-lại và vì thế lặp lại đúng chỗ mù của zustand (finding t3 vòng 2).
+       */
+      getOptions: () => ({
+        name: 'learner-profile-storage',
+        storage: {
+          getItem: async (_name: string) =>
+            mocks.disk.learner === null ? null : { state: { learner: mocks.disk.learner } },
+        },
+      }),
       rehydrate: async () => {
-        mocks.memory.learner = mocks.disk.learner;
+        // Y HỆT zustand: ngăn lưu rỗng thì trạng thái trong bộ nhớ GIỮ NGUYÊN.
+        if (mocks.disk.learner !== null) mocks.memory.learner = mocks.disk.learner;
       },
     },
   });

@@ -75,7 +75,13 @@ For suitable vocational tasks, this mode is for hands-on procedural training, no
 
 Return exactly one JSON object with these top-level keys:
 
-```json
+{{#if curriculumContext}}When — and only when — a curriculum framework was supplied in the user message,
+add a FOURTH top-level key `curriculumAnchor` (string) beside the three above.
+It is the only key ever allowed beyond the three, it is top-level, and it is
+never nested inside `outlines` or any scene object. No framework supplied → the
+three keys above are the whole object.
+
+{{/if}}```json
 {
   "languageDirective": "<teaching language directive>",
   "courseTitle": "<concise course name, ≤30 chars, in the teaching language>",

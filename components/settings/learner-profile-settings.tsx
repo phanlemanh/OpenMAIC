@@ -130,17 +130,32 @@ export function LearnerProfileSettings() {
     setSave('saving');
     setLearner(learner);
 
-    // ĐỌC LẠI từ chính ngăn lưu trước khi dám nói «đã lưu».
+    // ĐỌC THẲNG NGĂN LƯU trước khi dám nói «đã lưu».
     //
-    // Hỏi cờ sức khoẻ ngay sau khi gọi là KHÔNG đủ: việc ghi bất đồng bộ, nên
-    // lúc ta hỏi thì một lượt ghi hỏng chưa kịp bật cờ và màn báo «đã lưu» cho
-    // một lượt ghi vừa trượt. Hàng đợi ghi theo khoá là tuần tự, nên lượt nạp
-    // lại này xếp SAU lượt ghi và nói về thứ đã xuống ngăn lưu.
-    await useLearnerProfileStore.persist.rehydrate();
-    const stored = useLearnerProfileStore.getState().learner;
-    const landed =
-      !isPersistUnavailable('learner-profile-storage') &&
-      JSON.stringify(stored) === JSON.stringify(learner);
+    // Hai cách làm trước đều sai, và sai theo cùng một kiểu — hỏi một thứ
+    // KHÔNG PHẢI là ngăn lưu:
+    //   1. Hỏi cờ sức khoẻ ngay sau khi gọi: việc ghi bất đồng bộ nên lúc hỏi
+    //      thì một lượt ghi hỏng chưa kịp bật cờ.
+    //   2. Gọi nạp-lại rồi so với trạng thái trong bộ nhớ: khi ngăn lưu trả về
+    //      RỖNG, zustand hoà một giá trị `undefined` vào trạng thái hiện có,
+    //      tức giữ nguyên thứ vừa đặt trong bộ nhớ — nên phép so LUÔN đúng,
+    //      đúng ở ca nó sinh ra để bắt.
+    // Lối duy nhất trả lời được là hỏi chính ngăn lưu mà kho đang dùng: rỗng
+    // là chưa ghi được, và đó là một câu trả lời, không phải một sự vắng mặt.
+    const persistOptions = useLearnerProfileStore.persist.getOptions();
+    const persistName = persistOptions.name ?? 'learner-profile-storage';
+    let landed = false;
+    try {
+      const raw = (await persistOptions.storage?.getItem(persistName)) as
+        | { state?: { learner?: LearnerContext | null } }
+        | null
+        | undefined;
+      landed =
+        !isPersistUnavailable(persistName) &&
+        JSON.stringify(raw?.state?.learner) === JSON.stringify(learner);
+    } catch {
+      landed = false;
+    }
 
     if (!landed) {
       setSave('failed');

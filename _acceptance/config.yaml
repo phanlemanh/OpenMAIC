@@ -19,7 +19,10 @@ executors:
     # cli: repo KHÔNG có CLI người dùng — bỏ trống có chủ đích.
     # Ứng viên gần nhất là scripts/generation-node-smoke.mjs nhưng nó cần server chạy trước.  # cần anh nếu muốn bật
     product_map: "./scripts/with-pinned-node.sh node scripts/product-map.mjs --root . --check"
-    dan_y_mu: ./scripts/with-pinned-node.sh node scripts/gen-dan-y-mu.mjs
+    # Bọc trong with-dev-server.sh: phép đo này đòi một máy chủ đang chạy, và
+    # một phép đo đòi điều kiện mà không tự dựng được nó thì chỉ là một điều
+    # kiện ngầm — lượt nghiệm thu vòng 2 bị chặn đúng vì thế.
+    dan_y_mu: ./scripts/with-dev-server.sh ./scripts/with-pinned-node.sh node scripts/gen-dan-y-mu.mjs
   design:                                                 # repo có web UI (app/, components/)
     gate: "./scripts/with-pinned-node.sh node scripts/design-gate-changed.mjs"   # chấm mọi file giao diện vòng đụng; design-gate.mjs chỉ nhận MỘT file nên không dùng thẳng làm khoá cấp kho được
     ui_check: "scripts/design-scan.js"

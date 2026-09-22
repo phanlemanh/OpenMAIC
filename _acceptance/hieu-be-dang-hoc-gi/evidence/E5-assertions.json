@@ -1,0 +1,55 @@
+{
+  "ranAt": "2026-09-22T13:25:31.124Z",
+  "assertions": [
+    {
+      "name": "ST-chon-moi-khai: hồ sơ trống hiện lời mời, không ô soạn-cho",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "nút Lưu bật khi hồ sơ đủ 5 câu",
+      "pass": true,
+      "detail": "disabled=null"
+    },
+    {
+      "name": "Lưu hồ sơ: toast/trạng thái \"đã lưu\" hiện ra",
+      "pass": true,
+      "detail": "Đã lưu"
+    },
+    {
+      "name": "ST-chon-san-sang: nhãn ô có đủ môn — chương trình (ngôn ngữ)",
+      "pass": true,
+      "detail": "Toán — Cambridge Lower Secondary (tiếng Anh)"
+    },
+    {
+      "name": "Đổi ô sang MOET trước khi tải lại",
+      "pass": true,
+      "detail": "Toán — MOET (tiếng Việt)"
+    },
+    {
+      "name": "ST-chon-san-sang (nhớ lựa chọn): sau tải lại vẫn ở MOET, đủ 3 phần nhãn",
+      "pass": true,
+      "detail": "Toán — MOET (tiếng Việt)"
+    },
+    {
+      "name": "Sau xoá dữ liệu: hồ sơ trống trở lại (lời mời hiện lại)",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "nút gửi bật khi có yêu cầu và có nhà cung cấp mô hình",
+      "pass": true,
+      "detail": "disabled=null"
+    },
+    {
+      "name": "Luồng sinh dàn ý (SSE) trả về OK",
+      "pass": true,
+      "detail": "status=200 url=http://localhost:3004/api/generate/scene-outlines-stream"
+    },
+    {
+      "name": "ST-neo-khong: hồ sơ trống → màn xem trước không có dòng neo nào",
+      "pass": true,
+      "detail": "count=0"
+    }
+  ]
+}

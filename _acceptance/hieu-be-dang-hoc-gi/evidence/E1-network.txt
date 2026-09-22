@@ -1,529 +1,288 @@
-# E1 network log — 2026-09-22T12:25:15.272Z
-200 GET http://localhost:3002/
-200 GET http://localhost:3002/_next/static/chunks/components_workbench_pro-swap_0fanjve.css
-200 GET http://localhost:3002/_next/static/chunks/_0fxhaa0._.css
-200 GET http://localhost:3002/logo-horizontal.png
-200 GET http://localhost:3002/avatars/user.png
-200 GET http://localhost:3002/_next/static/media/Geist_Variable-s.p.38tal-0yzr82m.woff2
-200 GET http://localhost:3002/_next/static/media/GeistMono_Variable.p.42jdkyb02hb3d.woff2
-200 GET http://localhost:3002/avatars/teacher.png
-200 GET http://localhost:3002/avatars/assist.png
-200 GET http://localhost:3002/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_04sqxef._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_02kn0kk._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_react-server-dom-turbopack_1se6jus._.js
-200 GET http://localhost:3002/_next/static/chunks/_1anvha4._.js
-200 GET http://localhost:3002/_next/static/chunks/0zix_%40swc_helpers_cjs_0hi-e47._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_0zx1fdb._.js
-200 GET http://localhost:3002/_next/static/chunks/_219uq1s._.js
-200 GET http://localhost:3002/_next/static/chunks/_0e5tdik._.js
-200 GET http://localhost:3002/_next/static/chunks/turbopack-_0p-qf01._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_1lc50v-._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_next-devtools_index_13kclb3.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_react-dom_116mxh-._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_navigation_1m0wlcl.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_0_h2kp0._.js
-200 GET http://localhost:3002/_next/static/chunks/0qw2_react-i18next_dist_es_0z4v18-._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_client_1tjrvu1._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_crypto-browserify_index_1ngwo95.js
-200 GET http://localhost:3002/_next/static/chunks/1c-x_zod_v3_0ymcaaa._.js
-200 GET http://localhost:3002/_next/static/chunks/_1mr6ozb._.js
-200 GET http://localhost:3002/_next/static/chunks/node_modules__pnpm_15iewkh._.js
-200 GET http://localhost:3002/_next/static/chunks/1f-s_%40ai-sdk_anthropic_dist_index_mjs_06bse3j._.js
-200 GET http://localhost:3002/_next/static/chunks/0zb9_%40ai-sdk_anthropic_dist_internal_index_mjs_07xqi16._.js
-200 GET http://localhost:3002/_next/static/chunks/185g_%40ai-sdk_openai_dist_index_mjs_0vyu-6r._.js
-200 GET http://localhost:3002/_next/static/chunks/1c-x_zod_v4_017qqal._.js
-200 GET http://localhost:3002/_next/static/chunks/1jpv_%40ai-sdk_amazon-bedrock_dist_index_mjs_0mu_0mf._.js
-200 GET http://localhost:3002/_next/static/chunks/185g_%40ai-sdk_openai_dist_internal_index_mjs_0p_bdh9._.js
-200 GET http://localhost:3002/_next/static/chunks/05e__%40ai-sdk_gateway_dist_index_mjs_0fbwvxc._.js
-200 GET http://localhost:3002/_next/static/chunks/090h_%40ai-sdk_google_dist_index_mjs_1kc18mj._.js
-200 GET http://localhost:3002/_next/static/chunks/_1gvp3tu._.js
-200 GET http://localhost:3002/_next/static/chunks/1j0x_framer-motion_dist_es_0ao65-m._.js
-200 GET http://localhost:3002/_next/static/chunks/components_ui_0wyemj9._.js
-200 GET http://localhost:3002/_next/static/media/inter-latin-wght-normal.0gsaq8ukbf34m.woff2
-200 GET http://localhost:3002/_next/static/chunks/components_settings_tts-settings_tsx_15qi7pw._.js
-200 GET http://localhost:3002/_next/static/chunks/1isf_ai_dist_index_mjs_145vmyd._.js
-200 GET http://localhost:3002/_next/static/chunks/1kqi_motion-dom_dist_es_0uj-ibn._.js
-200 GET http://localhost:3002/_next/static/chunks/node_modules__pnpm_143y4ek._.js
-200 GET http://localhost:3002/_next/static/chunks/components_agent_agent-bar_tsx_17b_kut._.js
-200 GET http://localhost:3002/_next/static/chunks/components_settings_index_tsx_1viz-sg._.js
-200 GET http://localhost:3002/_next/static/chunks/components_0epeycx._.js
-200 GET http://localhost:3002/_next/static/chunks/components_generation_0s7l0mr._.js
-200 GET http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js
-200 GET http://localhost:3002/_next/static/chunks/0v4e_lucide-react_dist_esm_icons_05ylm7z._.js
-200 GET http://localhost:3002/_next/static/chunks/0g8k_tailwind-merge_dist_bundle-mjs_mjs_15ho1qz._.js
-200 GET http://localhost:3002/_next/static/chunks/components_settings_041o5w5._.js
-200 GET http://localhost:3002/_next/static/chunks/0dhy_%40radix-ui_react-select_dist_index_mjs_0_diktc._.js
-200 GET http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_model_1ks0_g5._.js
-200 GET http://localhost:3002/_next/static/chunks/packages_%40openmaic_1tk1akb._.js
-200 GET http://localhost:3002/_next/static/chunks/1n9a_dexie_11_wji3._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_core_0e_oq5w._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_util_1vse4s3._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_chart_0gcm4mb._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_coord_09n4a16._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_data_1y-k9go._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_component_0099bq-._.js
-200 GET http://localhost:3002/_next/static/chunks/1h_-_zrender_lib_0gbpe_i._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_1te4qua._.js
-200 GET http://localhost:3002/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js
-200 GET http://localhost:3002/_next/static/chunks/node_modules__pnpm_0-__z14._.js
-200 GET http://localhost:3002/_next/static/chunks/lib_i18n_locales_zh-CN_json_%5Bjson%5D_cjs_12el9pt._.js
-404 GET http://localhost:3002/api/persistence/kv/entries/settings-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:16.395Z] [ERROR] [KVPersist] Could not read "settings-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:16.403Z] [ERROR] [KVPersist] Could not read "learner-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:16.403Z] [ERROR] [KVPersist] Could not read "user-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-404 GET http://localhost:3002/api/persistence/kv/entries/settings-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:16.420Z] [ERROR] [KVPersist] Could not read "settings-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:16.466Z] [ERROR] [KVPersist] Could not read "learner-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:16.467Z] [ERROR] [KVPersist] Could not read "user-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-200 GET http://localhost:3002/api/server-providers
-200 GET http://localhost:3002/__nextjs_font/geist-latin.woff2
-console.error: [2026-09-22T12:25:16.509Z] [ERROR] [KVPersist] Refusing to persist "settings-storage" while its storage is unavailable. Changes made in this session are not being saved.
-200 GET http://localhost:3002/logos/openai.svg
-200 GET http://localhost:3002/api/comfyui-workflows
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-404 GET http://localhost:3002/api/stages
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:16.775Z] [ERROR] [StageStorage] Failed to list stages: Error: Failed to list owner stages: HTTP 404
-    at listOwnerStagesFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18630:15)
-    at async listStages (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18671:20)
-    at async loadClassrooms (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:317:26)
-    at async Promise.all (index 0)
-console.error: [2026-09-22T12:25:16.775Z] [ERROR] [Home] Failed to load classrooms: Error: Failed to list owner stages: HTTP 404
-    at listOwnerStagesFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18630:15)
-    at async listStages (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18671:20)
-    at async loadClassrooms (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:317:26)
-    at async Promise.all (index 0)
-404 GET http://localhost:3002/api/folders
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:16.775Z] [ERROR] [Home] Failed to load folders: Error: Failed to list owner folders: HTTP 404
-    at listOwnerFoldersFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18926:15)
-    at async listFolders (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18936:16)
-    at async loadFolders (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:333:24)
-    at async Promise.all (index 1)
-200 GET http://localhost:3002/api/access-code/status
-200 GET http://localhost:3002/api/server-providers
-200 GET http://localhost:3002/api/comfyui-workflows
-404 GET http://localhost:3002/api/stages
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:16.775Z] [ERROR] [StageStorage] Failed to list stages: Error: Failed to list owner stages: HTTP 404
-    at listOwnerStagesFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18630:15)
-    at async listStages (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18671:20)
-    at async loadClassrooms (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:317:26)
-    at async Promise.all (index 0)
-console.error: [2026-09-22T12:25:16.775Z] [ERROR] [Home] Failed to load classrooms: Error: Failed to list owner stages: HTTP 404
-    at listOwnerStagesFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18630:15)
-    at async listStages (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18671:20)
-    at async loadClassrooms (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:317:26)
-    at async Promise.all (index 0)
-404 GET http://localhost:3002/api/folders
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:16.775Z] [ERROR] [Home] Failed to load folders: Error: Failed to list owner folders: HTTP 404
-    at listOwnerFoldersFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18926:15)
-    at async listFolders (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18936:16)
-    at async loadFolders (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:333:24)
-    at async Promise.all (index 1)
-200 GET http://localhost:3002/api/access-code/status
-404 GET http://localhost:3002/api/persistence/kv/entries/settings-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-200 GET http://localhost:3002/_next/static/chunks/lib_i18n_locales_vi-VN_json_%5Bjson%5D_cjs_1yfpnbr._.js
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-console.error: [2026-09-22T12:25:16.843Z] [ERROR] [KVPersist] Refusing to persist "settings-storage" while its storage is unavailable. Changes made in this session are not being saved.
-200 GET http://localhost:3002/_next/static/media/inter-vietnamese-wght-normal.2kcj5i_8uff48.woff2
-200 GET http://localhost:3002/_next/static/media/inter-latin-ext-wght-normal.3gdi_th3seg1n.woff2
-console.error: [2026-09-22T12:25:16.859Z] [ERROR] [KVPersist] Could not read "settings-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:16.862Z] [ERROR] [KVPersist] Could not read "learner-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:16.862Z] [ERROR] [KVPersist] Could not read "user-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 GET http://localhost:3002/logos/azure.svg
-200 GET http://localhost:3002/logos/claude.svg
-200 GET http://localhost:3002/logos/gemini.svg
-200 GET http://localhost:3002/logos/bedrock.svg
-200 GET http://localhost:3002/logos/glm.svg
-200 GET http://localhost:3002/logos/qwen.svg
-200 GET http://localhost:3002/logos/siliconflow.svg
-200 GET http://localhost:3002/logos/openrouter.svg
-200 GET http://localhost:3002/logos/kimi.png
-200 GET http://localhost:3002/logos/deepseek.svg
-200 GET http://localhost:3002/logos/minimax.svg
-200 GET http://localhost:3002/logos/doubao.svg
-200 GET http://localhost:3002/logos/grok.svg
-200 GET http://localhost:3002/logos/hunyuan.svg
-200 GET http://localhost:3002/logos/tokendance.svg
-200 GET http://localhost:3002/logos/xiaomi.svg
-200 GET http://localhost:3002/logos/lemonade.svg
-200 GET http://localhost:3002/logos/ollama.svg
-200 GET http://localhost:3002/api/curriculum-packs
-200 GET http://localhost:3002/api/curriculum-packs
-404 GET http://localhost:3002/api/persistence/kv/entries/settings-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:17.871Z] [ERROR] [KVPersist] Could not read "settings-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:17.892Z] [ERROR] [KVPersist] Giving up on recovering "settings-storage" after 3 attempts; storage stays read-only until something outside this session changes
-404 GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:17.897Z] [ERROR] [KVPersist] Could not read "learner-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:17.897Z] [ERROR] [KVPersist] Giving up on recovering "learner-profile-storage" after 3 attempts; storage stays read-only until something outside this session changes
-console.error: [2026-09-22T12:25:17.897Z] [ERROR] [KVPersist] Could not read "user-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:17.913Z] [ERROR] [KVPersist] Giving up on recovering "user-profile-storage" after 3 attempts; storage stays read-only until something outside this session changes
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-console.error: [2026-09-22T12:25:19.604Z] [ERROR] [KVPersist] Refusing to persist "learner-profile-storage" while its storage is unavailable. Changes made in this session are not being saved.
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 GET http://localhost:3002/
-200 GET http://localhost:3002/_next/static/media/GeistMono_Variable.p.42jdkyb02hb3d.woff2
-200 GET http://localhost:3002/_next/static/media/Geist_Variable-s.p.38tal-0yzr82m.woff2
-200 GET http://localhost:3002/_next/static/chunks/_0fxhaa0._.css
-304 GET http://localhost:3002/logo-horizontal.png
-304 GET http://localhost:3002/avatars/user.png
-304 GET http://localhost:3002/avatars/teacher.png
-304 GET http://localhost:3002/avatars/assist.png
-200 GET http://localhost:3002/_next/static/chunks/components_workbench_pro-swap_0fanjve.css
-200 GET http://localhost:3002/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_04sqxef._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_react-server-dom-turbopack_1se6jus._.js
-200 GET http://localhost:3002/_next/static/media/inter-vietnamese-wght-normal.2kcj5i_8uff48.woff2
-200 GET http://localhost:3002/_next/static/media/inter-latin-ext-wght-normal.3gdi_th3seg1n.woff2
-200 GET http://localhost:3002/_next/static/media/inter-latin-wght-normal.0gsaq8ukbf34m.woff2
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_02kn0kk._.js
-200 GET http://localhost:3002/_next/static/chunks/_1anvha4._.js
-200 GET http://localhost:3002/_next/static/chunks/0zix_%40swc_helpers_cjs_0hi-e47._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_0zx1fdb._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_react-dom_116mxh-._.js
-200 GET http://localhost:3002/_next/static/chunks/_219uq1s._.js
-200 GET http://localhost:3002/_next/static/chunks/turbopack-_0p-qf01._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_client_1tjrvu1._.js
-200 GET http://localhost:3002/_next/static/chunks/_0e5tdik._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_next-devtools_index_13kclb3.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_navigation_1m0wlcl.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_0_h2kp0._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_1lc50v-._.js
-200 GET http://localhost:3002/_next/static/chunks/0qw2_react-i18next_dist_es_0z4v18-._.js
-200 GET http://localhost:3002/_next/static/chunks/_1mr6ozb._.js
-200 GET http://localhost:3002/_next/static/chunks/0qc4_next_dist_compiled_crypto-browserify_index_1ngwo95.js
-200 GET http://localhost:3002/_next/static/chunks/1c-x_zod_v3_0ymcaaa._.js
-200 GET http://localhost:3002/_next/static/chunks/node_modules__pnpm_15iewkh._.js
-200 GET http://localhost:3002/_next/static/chunks/1f-s_%40ai-sdk_anthropic_dist_index_mjs_06bse3j._.js
-200 GET http://localhost:3002/_next/static/chunks/185g_%40ai-sdk_openai_dist_index_mjs_0vyu-6r._.js
-200 GET http://localhost:3002/_next/static/chunks/185g_%40ai-sdk_openai_dist_internal_index_mjs_0p_bdh9._.js
-200 GET http://localhost:3002/_next/static/chunks/1jpv_%40ai-sdk_amazon-bedrock_dist_index_mjs_0mu_0mf._.js
-200 GET http://localhost:3002/_next/static/chunks/05e__%40ai-sdk_gateway_dist_index_mjs_0fbwvxc._.js
-200 GET http://localhost:3002/_next/static/chunks/090h_%40ai-sdk_google_dist_index_mjs_1kc18mj._.js
-200 GET http://localhost:3002/_next/static/chunks/1c-x_zod_v4_017qqal._.js
-200 GET http://localhost:3002/_next/static/chunks/0zb9_%40ai-sdk_anthropic_dist_internal_index_mjs_07xqi16._.js
-200 GET http://localhost:3002/_next/static/chunks/1isf_ai_dist_index_mjs_145vmyd._.js
-200 GET http://localhost:3002/__nextjs_font/geist-latin.woff2
-200 GET http://localhost:3002/_next/static/chunks/1kqi_motion-dom_dist_es_0uj-ibn._.js
-200 GET http://localhost:3002/_next/static/chunks/_1gvp3tu._.js
-200 GET http://localhost:3002/_next/static/chunks/1j0x_framer-motion_dist_es_0ao65-m._.js
-200 GET http://localhost:3002/_next/static/chunks/components_ui_0wyemj9._.js
-200 GET http://localhost:3002/_next/static/chunks/components_settings_tts-settings_tsx_15qi7pw._.js
-200 GET http://localhost:3002/_next/static/chunks/components_settings_index_tsx_1viz-sg._.js
-200 GET http://localhost:3002/_next/static/chunks/components_agent_agent-bar_tsx_17b_kut._.js
-200 GET http://localhost:3002/_next/static/chunks/components_generation_0s7l0mr._.js
-200 GET http://localhost:3002/_next/static/chunks/node_modules__pnpm_143y4ek._.js
-200 GET http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js
-200 GET http://localhost:3002/_next/static/chunks/components_settings_041o5w5._.js
-200 GET http://localhost:3002/_next/static/chunks/components_0epeycx._.js
-200 GET http://localhost:3002/_next/static/chunks/0v4e_lucide-react_dist_esm_icons_05ylm7z._.js
-200 GET http://localhost:3002/_next/static/chunks/0g8k_tailwind-merge_dist_bundle-mjs_mjs_15ho1qz._.js
-200 GET http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js
-200 GET http://localhost:3002/_next/static/chunks/0dhy_%40radix-ui_react-select_dist_index_mjs_0_diktc._.js
-200 GET http://localhost:3002/_next/static/chunks/packages_%40openmaic_1tk1akb._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_model_1ks0_g5._.js
-200 GET http://localhost:3002/_next/static/chunks/1n9a_dexie_11_wji3._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_core_0e_oq5w._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_data_1y-k9go._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_util_1vse4s3._.js
-200 GET http://localhost:3002/_next/static/chunks/1h_-_zrender_lib_0gbpe_i._.js
-200 GET http://localhost:3002/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_chart_0gcm4mb._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_coord_09n4a16._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_component_0099bq-._.js
-200 GET http://localhost:3002/_next/static/chunks/0xea_echarts_lib_1te4qua._.js
-200 GET http://localhost:3002/_next/static/chunks/lib_i18n_locales_zh-CN_json_%5Bjson%5D_cjs_12el9pt._.js
-200 GET http://localhost:3002/_next/static/chunks/node_modules__pnpm_0-__z14._.js
-404 GET http://localhost:3002/api/persistence/kv/entries/settings-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:21.333Z] [ERROR] [KVPersist] Could not read "settings-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:21.334Z] [ERROR] [KVPersist] Could not read "learner-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:21.341Z] [ERROR] [KVPersist] Could not read "user-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-404 GET http://localhost:3002/api/persistence/kv/entries/settings-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-200 GET http://localhost:3002/api/comfyui-workflows
-200 GET http://localhost:3002/api/server-providers
-404 GET http://localhost:3002/api/stages
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:21.386Z] [ERROR] [StageStorage] Failed to list stages: Error: Failed to list owner stages: HTTP 404
-    at listOwnerStagesFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18630:15)
-    at async listStages (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18671:20)
-    at async loadClassrooms (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:317:26)
-    at async Promise.all (index 0)
-console.error: [2026-09-22T12:25:21.387Z] [ERROR] [Home] Failed to load classrooms: Error: Failed to list owner stages: HTTP 404
-    at listOwnerStagesFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18630:15)
-    at async listStages (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18671:20)
-    at async loadClassrooms (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:317:26)
-    at async Promise.all (index 0)
-404 GET http://localhost:3002/api/folders
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:21.388Z] [ERROR] [Home] Failed to load folders: Error: Failed to list owner folders: HTTP 404
-    at listOwnerFoldersFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18926:15)
-    at async listFolders (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18936:16)
-    at async loadFolders (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:333:24)
-    at async Promise.all (index 1)
-200 GET http://localhost:3002/api/access-code/status
-200 GET http://localhost:3002/api/comfyui-workflows
-200 GET http://localhost:3002/_next/static/chunks/lib_i18n_locales_vi-VN_json_%5Bjson%5D_cjs_1yfpnbr._.js
-200 GET http://localhost:3002/api/server-providers
-404 GET http://localhost:3002/api/stages
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:21.388Z] [ERROR] [StageStorage] Failed to list stages: Error: Failed to list owner stages: HTTP 404
-    at listOwnerStagesFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18630:15)
-    at async listStages (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18671:20)
-    at async loadClassrooms (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:317:26)
-    at async Promise.all (index 0)
-console.error: [2026-09-22T12:25:21.388Z] [ERROR] [Home] Failed to load classrooms: Error: Failed to list owner stages: HTTP 404
-    at listOwnerStagesFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18630:15)
-    at async listStages (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18671:20)
-    at async loadClassrooms (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:317:26)
-    at async Promise.all (index 0)
-404 GET http://localhost:3002/api/folders
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:21.388Z] [ERROR] [Home] Failed to load folders: Error: Failed to list owner folders: HTTP 404
-    at listOwnerFoldersFromServer (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18926:15)
-    at async listFolders (http://localhost:3002/_next/static/chunks/lib_0_dzdiy._.js:18936:16)
-    at async loadFolders (http://localhost:3002/_next/static/chunks/app_page_tsx_1s_43kl._.js:333:24)
-    at async Promise.all (index 1)
-200 GET http://localhost:3002/api/access-code/status
-console.error: [2026-09-22T12:25:21.493Z] [ERROR] [KVPersist] Could not read "settings-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:21.507Z] [ERROR] [KVPersist] Could not read "learner-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:21.507Z] [ERROR] [KVPersist] Could not read "user-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:21.514Z] [ERROR] [KVPersist] Refusing to persist "settings-storage" while its storage is unavailable. Changes made in this session are not being saved.
-304 GET http://localhost:3002/logos/openai.svg
-console.error: [2026-09-22T12:25:21.525Z] [ERROR] [KVPersist] Refusing to persist "settings-storage" while its storage is unavailable. Changes made in this session are not being saved.
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-404 GET http://localhost:3002/api/persistence/kv/entries/settings-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:21.765Z] [ERROR] [KVPersist] Could not read "settings-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-404 GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:21.770Z] [ERROR] [KVPersist] Could not read "learner-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-404 GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:21.771Z] [ERROR] [KVPersist] Could not read "user-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 GET http://localhost:3002/logos/azure.svg
-200 GET http://localhost:3002/logos/claude.svg
-200 GET http://localhost:3002/logos/bedrock.svg
-200 GET http://localhost:3002/logos/gemini.svg
-200 GET http://localhost:3002/logos/glm.svg
-200 GET http://localhost:3002/logos/qwen.svg
-200 GET http://localhost:3002/logos/deepseek.svg
-200 GET http://localhost:3002/logos/kimi.png
-200 GET http://localhost:3002/logos/minimax.svg
-200 GET http://localhost:3002/logos/siliconflow.svg
-200 GET http://localhost:3002/logos/doubao.svg
-200 GET http://localhost:3002/logos/openrouter.svg
-200 GET http://localhost:3002/logos/grok.svg
-200 GET http://localhost:3002/logos/hunyuan.svg
-200 GET http://localhost:3002/logos/xiaomi.svg
-200 GET http://localhost:3002/logos/tokendance.svg
-200 GET http://localhost:3002/logos/ollama.svg
-200 GET http://localhost:3002/logos/lemonade.svg
-404 GET http://localhost:3002/api/persistence/kv/entries/settings-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:22.794Z] [ERROR] [KVPersist] Could not read "settings-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:22.835Z] [ERROR] [KVPersist] Giving up on recovering "settings-storage" after 3 attempts; storage stays read-only until something outside this session changes
-404 GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-404 GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage
-console.error: Failed to load resource: the server responded with a status of 404 (Not Found)
-console.error: [2026-09-22T12:25:22.842Z] [ERROR] [KVPersist] Could not read "learner-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:22.842Z] [ERROR] [KVPersist] Giving up on recovering "learner-profile-storage" after 3 attempts; storage stays read-only until something outside this session changes
-console.error: [2026-09-22T12:25:22.842Z] [ERROR] [KVPersist] Could not read "user-profile-storage" from the KV account scope: HttpKVStoreError: server persistence not configured
-    at HttpAccountKV.request (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15679:19)
-    at async HttpAccountKV.get (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:15700:24)
-    at async Outcome.run (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12372:24)
-    at async load (http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12870:33)
-    at async http://localhost:3002/_next/static/chunks/_1mr6ozb._.js:12852:31
-console.error: [2026-09-22T12:25:22.873Z] [ERROR] [KVPersist] Giving up on recovering "user-profile-storage" after 3 attempts; storage stays read-only until something outside this session changes
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 GET http://localhost:3002/api/curriculum-packs
-200 GET http://localhost:3002/api/curriculum-packs
-console.error: [2026-09-22T12:25:24.969Z] [ERROR] [KVPersist] Refusing to persist "learner-profile-storage" while its storage is unavailable. Changes made in this session are not being saved.
-200 POST http://localhost:3002/__nextjs_original-stack-frames
-200 GET http://localhost:3002/api/curriculum-packs
-200 GET http://localhost:3002/api/curriculum-packs
-console.error: [2026-09-22T12:25:27.952Z] [ERROR] [KVPersist] Refusing to persist "learner-profile-storage" while its storage is unavailable. Changes made in this session are not being saved.
-200 POST http://localhost:3002/__nextjs_original-stack-frames
+{"url":"http://localhost:3010/","method":"GET","status":200,"resourceType":"document"}
+{"url":"http://localhost:3010/_next/static/chunks/components_workbench_pro-swap_0fanjve.css","method":"GET","status":200,"resourceType":"stylesheet"}
+{"url":"http://localhost:3010/_next/static/media/Geist_Variable-s.p.38tal-0yzr82m.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/media/GeistMono_Variable.p.42jdkyb02hb3d.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/avatars/user.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logo-horizontal.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/avatars/assist.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_04sqxef._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/avatars/teacher.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_02kn0kk._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_react-server-dom-turbopack_1se6jus._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_0fxhaa0._.css","method":"GET","status":200,"resourceType":"stylesheet"}
+{"url":"http://localhost:3010/_next/static/chunks/0zix_%40swc_helpers_cjs_0hi-e47._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_1anvha4._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_219uq1s._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_0zx1fdb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_0e5tdik._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/turbopack-_0p-qf01._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_1lc50v-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_react-dom_116mxh-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_next-devtools_index_13kclb3.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_0_h2kp0._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_navigation_1m0wlcl.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/media/inter-latin-wght-normal.0gsaq8ukbf34m.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_client_1tjrvu1._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qw2_react-i18next_dist_es_0z4v18-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_1mr6ozb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_crypto-browserify_index_1ngwo95.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1c-x_zod_v3_0ymcaaa._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/node_modules__pnpm_15iewkh._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0zb9_%40ai-sdk_anthropic_dist_internal_index_mjs_07xqi16._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1f-s_%40ai-sdk_anthropic_dist_index_mjs_06bse3j._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/185g_%40ai-sdk_openai_dist_index_mjs_0vyu-6r._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/185g_%40ai-sdk_openai_dist_internal_index_mjs_0p_bdh9._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1jpv_%40ai-sdk_amazon-bedrock_dist_index_mjs_0mu_0mf._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1c-x_zod_v4_017qqal._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/05e__%40ai-sdk_gateway_dist_index_mjs_0fbwvxc._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/090h_%40ai-sdk_google_dist_index_mjs_1kc18mj._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_1gvp3tu._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1j0x_framer-motion_dist_es_0ao65-m._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_ui_0wyemj9._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1isf_ai_dist_index_mjs_145vmyd._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_settings_tts-settings_tsx_15qi7pw._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_settings_index_tsx_1viz-sg._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1kqi_motion-dom_dist_es_0uj-ibn._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/node_modules__pnpm_143y4ek._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_agent_agent-bar_tsx_17b_kut._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_generation_0s7l0mr._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_0epeycx._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0v4e_lucide-react_dist_esm_icons_05ylm7z._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/app_page_tsx_1s_43kl._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0g8k_tailwind-merge_dist_bundle-mjs_mjs_15ho1qz._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_settings_041o5w5._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0dhy_%40radix-ui_react-select_dist_index_mjs_0_diktc._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/lib_0_dzdiy._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1n9a_dexie_11_wji3._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/packages_%40openmaic_1tk1akb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_model_1ks0_g5._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_util_1vse4s3._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_core_0e_oq5w._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_chart_0gcm4mb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_data_1y-k9go._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_component_0099bq-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1h_-_zrender_lib_0gbpe_i._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_coord_09n4a16._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_1te4qua._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/node_modules__pnpm_0-__z14._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/lib_i18n_locales_zh-CN_json_%5Bjson%5D_cjs_12el9pt._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/api/server-providers","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/logos/openai.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/_next/static/chunks/lib_i18n_locales_vi-VN_json_%5Bjson%5D_cjs_1yfpnbr._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/api/comfyui-workflows","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/access-code/status","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/server-providers","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/comfyui-workflows","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/access-code/status","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/_next/static/media/inter-vietnamese-wght-normal.2kcj5i_8uff48.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/media/inter-latin-ext-wght-normal.3gdi_th3seg1n.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/api/curriculum-packs","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/curriculum-packs","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/_next/static/media/GeistMono_Variable.p.42jdkyb02hb3d.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/media/Geist_Variable-s.p.38tal-0yzr82m.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/","method":"GET","status":200,"resourceType":"document"}
+{"url":"http://localhost:3010/logo-horizontal.png","method":"GET","status":304,"resourceType":"image"}
+{"url":"http://localhost:3010/avatars/user.png","method":"GET","status":304,"resourceType":"image"}
+{"url":"http://localhost:3010/avatars/teacher.png","method":"GET","status":304,"resourceType":"image"}
+{"url":"http://localhost:3010/avatars/assist.png","method":"GET","status":304,"resourceType":"image"}
+{"url":"http://localhost:3010/_next/static/chunks/_0fxhaa0._.css","method":"GET","status":200,"resourceType":"stylesheet"}
+{"url":"http://localhost:3010/_next/static/chunks/components_workbench_pro-swap_0fanjve.css","method":"GET","status":200,"resourceType":"stylesheet"}
+{"url":"http://localhost:3010/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_04sqxef._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_react-server-dom-turbopack_1se6jus._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_02kn0kk._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/media/inter-vietnamese-wght-normal.2kcj5i_8uff48.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/media/inter-latin-ext-wght-normal.3gdi_th3seg1n.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/media/inter-latin-wght-normal.0gsaq8ukbf34m.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/chunks/_1anvha4._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0zix_%40swc_helpers_cjs_0hi-e47._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_0zx1fdb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_react-dom_116mxh-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_client_1tjrvu1._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_next-devtools_index_13kclb3.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_219uq1s._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_0e5tdik._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/turbopack-_0p-qf01._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_1lc50v-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_crypto-browserify_index_1ngwo95.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_navigation_1m0wlcl.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_0_h2kp0._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_1mr6ozb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qw2_react-i18next_dist_es_0z4v18-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1c-x_zod_v3_0ymcaaa._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/node_modules__pnpm_15iewkh._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1c-x_zod_v4_017qqal._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1f-s_%40ai-sdk_anthropic_dist_index_mjs_06bse3j._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/185g_%40ai-sdk_openai_dist_internal_index_mjs_0p_bdh9._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/185g_%40ai-sdk_openai_dist_index_mjs_0vyu-6r._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1jpv_%40ai-sdk_amazon-bedrock_dist_index_mjs_0mu_0mf._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/090h_%40ai-sdk_google_dist_index_mjs_1kc18mj._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0zb9_%40ai-sdk_anthropic_dist_internal_index_mjs_07xqi16._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_1gvp3tu._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/05e__%40ai-sdk_gateway_dist_index_mjs_0fbwvxc._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1j0x_framer-motion_dist_es_0ao65-m._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1isf_ai_dist_index_mjs_145vmyd._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1kqi_motion-dom_dist_es_0uj-ibn._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/node_modules__pnpm_143y4ek._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_ui_0wyemj9._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_settings_index_tsx_1viz-sg._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_settings_tts-settings_tsx_15qi7pw._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_generation_0s7l0mr._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_settings_041o5w5._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_agent_agent-bar_tsx_17b_kut._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_0epeycx._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/lib_0_dzdiy._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/app_page_tsx_1s_43kl._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0v4e_lucide-react_dist_esm_icons_05ylm7z._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0g8k_tailwind-merge_dist_bundle-mjs_mjs_15ho1qz._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/packages_%40openmaic_1tk1akb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0dhy_%40radix-ui_react-select_dist_index_mjs_0_diktc._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_model_1ks0_g5._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1n9a_dexie_11_wji3._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_core_0e_oq5w._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_util_1vse4s3._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_data_1y-k9go._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1h_-_zrender_lib_0gbpe_i._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_chart_0gcm4mb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_coord_09n4a16._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_component_0099bq-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_1te4qua._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/lib_i18n_locales_zh-CN_json_%5Bjson%5D_cjs_12el9pt._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/node_modules__pnpm_0-__z14._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/logos/openai.svg","method":"GET","status":304,"resourceType":"image"}
+{"url":"http://localhost:3010/_next/static/chunks/lib_i18n_locales_vi-VN_json_%5Bjson%5D_cjs_1yfpnbr._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/api/server-providers","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/comfyui-workflows","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/access-code/status","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/server-providers","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/comfyui-workflows","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/access-code/status","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/logos/claude.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/azure.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/glm.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/bedrock.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/qwen.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/gemini.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/siliconflow.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/openrouter.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/kimi.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/deepseek.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/minimax.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/doubao.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/grok.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/hunyuan.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/xiaomi.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/tokendance.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/ollama.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/lemonade.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/api/curriculum-packs","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/curriculum-packs","method":"GET","status":200,"resourceType":"fetch"}
+{"console":"[2026-09-22T13:28:18.378Z] [ERROR] [KVPersist] Could not write \"learner-profile-storage\" to the KV account scope: forced by E1 verifier (local-first substitute for network block)"}
+{"console":"[2026-09-22T13:28:18.382Z] [ERROR] [KVPersist] Could not replay the refused write for \"learner-profile-storage\" to the KV account scope: forced by E1 verifier (local-first substitute for network block)"}
+{"console":"[2026-09-22T13:28:18.454Z] [ERROR] [KVPersist] Could not replay the refused write for \"learner-profile-storage\" to the KV account scope: forced by E1 verifier (local-first substitute for network block)"}
+{"url":"http://localhost:3010/__nextjs_font/geist-latin.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/__nextjs_original-stack-frames","method":"POST","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/__nextjs_original-stack-frames","method":"POST","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/__nextjs_original-stack-frames","method":"POST","status":200,"resourceType":"fetch"}
+{"console":"[2026-09-22T13:28:18.705Z] [ERROR] [KVPersist] Could not replay the refused write for \"learner-profile-storage\" to the KV account scope: forced by E1 verifier (local-first substitute for network block)"}
+{"url":"http://localhost:3010/__nextjs_original-stack-frames","method":"POST","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/_next/static/media/Geist_Variable-s.p.38tal-0yzr82m.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/media/GeistMono_Variable.p.42jdkyb02hb3d.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/chunks/_0fxhaa0._.css","method":"GET","status":200,"resourceType":"stylesheet"}
+{"url":"http://localhost:3010/_next/static/chunks/components_workbench_pro-swap_0fanjve.css","method":"GET","status":200,"resourceType":"stylesheet"}
+{"url":"http://localhost:3010/logo-horizontal.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/avatars/user.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/","method":"GET","status":200,"resourceType":"document"}
+{"url":"http://localhost:3010/avatars/assist.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_04sqxef._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_react-server-dom-turbopack_1se6jus._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/media/inter-latin-wght-normal.0gsaq8ukbf34m.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/avatars/teacher.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_02kn0kk._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_0zx1fdb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_react-dom_116mxh-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_1anvha4._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_219uq1s._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_0e5tdik._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0zix_%40swc_helpers_cjs_0hi-e47._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/turbopack-_0p-qf01._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_next-devtools_index_13kclb3.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_client_1tjrvu1._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_navigation_1m0wlcl.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_0_h2kp0._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qw2_react-i18next_dist_es_0z4v18-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_1lc50v-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_1mr6ozb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0qc4_next_dist_compiled_crypto-browserify_index_1ngwo95.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1c-x_zod_v3_0ymcaaa._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1c-x_zod_v4_017qqal._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/node_modules__pnpm_15iewkh._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/185g_%40ai-sdk_openai_dist_index_mjs_0vyu-6r._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1f-s_%40ai-sdk_anthropic_dist_index_mjs_06bse3j._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/185g_%40ai-sdk_openai_dist_internal_index_mjs_0p_bdh9._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1jpv_%40ai-sdk_amazon-bedrock_dist_index_mjs_0mu_0mf._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/090h_%40ai-sdk_google_dist_index_mjs_1kc18mj._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/05e__%40ai-sdk_gateway_dist_index_mjs_0fbwvxc._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0zb9_%40ai-sdk_anthropic_dist_internal_index_mjs_07xqi16._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/_1gvp3tu._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1isf_ai_dist_index_mjs_145vmyd._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1j0x_framer-motion_dist_es_0ao65-m._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1kqi_motion-dom_dist_es_0uj-ibn._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/node_modules__pnpm_143y4ek._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_ui_0wyemj9._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_settings_index_tsx_1viz-sg._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_agent_agent-bar_tsx_17b_kut._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_settings_tts-settings_tsx_15qi7pw._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_0epeycx._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_generation_0s7l0mr._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/lib_0_dzdiy._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/components_settings_041o5w5._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0v4e_lucide-react_dist_esm_icons_05ylm7z._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0g8k_tailwind-merge_dist_bundle-mjs_mjs_15ho1qz._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0dhy_%40radix-ui_react-select_dist_index_mjs_0_diktc._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/app_page_tsx_1s_43kl._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1n9a_dexie_11_wji3._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/packages_%40openmaic_1tk1akb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_model_1ks0_g5._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_core_0e_oq5w._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_data_1y-k9go._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_component_0099bq-._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_util_1vse4s3._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/1h_-_zrender_lib_0gbpe_i._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_1mojsay._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_chart_0gcm4mb._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/lib_i18n_locales_zh-CN_json_%5Bjson%5D_cjs_12el9pt._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_coord_09n4a16._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/0xea_echarts_lib_1te4qua._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/_next/static/chunks/node_modules__pnpm_0-__z14._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/logos/openai.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/_next/static/chunks/lib_i18n_locales_vi-VN_json_%5Bjson%5D_cjs_1yfpnbr._.js","method":"GET","status":200,"resourceType":"script"}
+{"url":"http://localhost:3010/api/server-providers","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/comfyui-workflows","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/access-code/status","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/server-providers","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/comfyui-workflows","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/access-code/status","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/_next/static/media/inter-vietnamese-wght-normal.2kcj5i_8uff48.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/_next/static/media/inter-latin-ext-wght-normal.3gdi_th3seg1n.woff2","method":"GET","status":200,"resourceType":"font"}
+{"url":"http://localhost:3010/logos/azure.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/claude.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/bedrock.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/gemini.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/glm.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/qwen.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/deepseek.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/kimi.png","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/minimax.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/siliconflow.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/doubao.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/openrouter.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/grok.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/hunyuan.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/xiaomi.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/tokendance.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/ollama.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/logos/lemonade.svg","method":"GET","status":200,"resourceType":"image"}
+{"url":"http://localhost:3010/api/curriculum-packs","method":"GET","status":200,"resourceType":"fetch"}
+{"url":"http://localhost:3010/api/curriculum-packs","method":"GET","status":200,"resourceType":"fetch"}

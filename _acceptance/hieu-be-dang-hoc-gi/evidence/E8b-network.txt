@@ -1,33 +1,48 @@
-E8b network dump (app-scope = http://localhost:3002, no separate api_base declared)
+E8b network truth — raw dump (independent verifier, fresh run)
+dev_server.url (config.yaml) = http://localhost:3002 ; no api_base declared (comment: same origin)
+Scope rule: FAIL-eligible = XHR/fetch to http://localhost:3002/** (app origin). No third-party
+calls observed in this flow. Static assets (_next/static/**, fonts, __nextjs_* devtools RPCs)
+noted only, not FAIL-eligible.
 
-Assertion-critical request:
-  POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK  (outline SSE stream; produced the ST-neo-dang-doan anchor line)
+=== FAIL-eligible requests observed (app origin, non-2xx) ===
+GET http://localhost:3002/api/stages                                  -> 404 Not Found  (repeated, every poll)
+GET http://localhost:3002/api/folders                                 -> 404 Not Found  (repeated, every poll)
+GET http://localhost:3002/api/persistence/kv/entries/settings-storage        -> 404 Not Found  (repeated)
+GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage -> 404 Not Found  (repeated)
+GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage    -> 404 Not Found  (repeated)
 
-All other FAIL-eligible (app-origin) requests observed this session: 200 OK / 304 Not Modified, EXCEPT:
-  GET /api/persistence/kv/entries/settings-storage        -> 404 (repeated)
-  GET /api/persistence/kv/entries/learner-profile-storage -> 404 (repeated)
-  GET /api/persistence/kv/entries/user-profile-storage    -> 404 (repeated)
-  GET /api/stages  -> 404
-  GET /api/folders -> 404
+=== FAIL-eligible requests observed OK ===
+GET http://localhost:3002/api/server-providers    -> 200 OK
+GET http://localhost:3002/api/comfyui-workflows    -> 200 OK
+GET http://localhost:3002/api/access-code/status   -> 200 OK
+GET http://localhost:3002/api/curriculum-packs     -> 200 OK
 
-These 404s are the account-scope persistence backend being unconfigured on this measuring
-machine (no DATABASE_URL / Postgres wired up here) -- the SAME condition eval E1 (same
-acceptance contract, AC-1) explicitly documents as "đúng thiết kế" for this exact set of
-endpoints ("Máy đo không có cơ sở dữ liệu nên GET /api/persistence/kv/* trả 404 là đúng
-thiết kế"). They are a pre-existing environment characteristic, not something the AC-8
-(E8b) diff touches or could have caused, and they are unrelated to the anchor-line feature
-under test. Console confirms the client library treats this as an expected, permanent
-condition: "[KVPersist] Giving up on recovering ... after 3 attempts; storage stays
-read-only until something outside this session changes". No 5xx, no connection-refused, no
-timeout was observed on any app-origin request during the actual E8b flow (learner profile
-set -> "tỉ lệ và tỉ số" -> Enter Classroom -> outline stream -> review screen).
+=== Console errors correlating with the 404s (onlyErrors=true) ===
+[KVPersist] Could not read "settings-storage" from the KV account scope:
+  HttpKVStoreError: server persistence not configured
+[KVPersist] Could not read "learner-profile-storage" from the KV account scope:
+  HttpKVStoreError: server persistence not configured
+[KVPersist] Could not read "user-profile-storage" from the KV account scope:
+  HttpKVStoreError: server persistence not configured
+[KVPersist] Giving up on recovering "settings-storage"/"learner-profile-storage"/"user-profile-storage"
+  after 3 attempts; storage stays read-only until something outside this session changes
+[KVPersist] Refusing to persist "settings-storage" while its storage is unavailable. Changes made
+  in this session are not being saved.
+[StageStorage] Failed to list stages: Error: Failed to list owner stages: HTTP 404
+[Home] Failed to load classrooms: Error: Failed to list owner stages: HTTP 404
+[Home] Failed to load folders: Error: Failed to list owner folders: HTTP 404
 
-Third-party / static requests: none relevant (all resources are same-origin static assets
-or fonts, note-only per scoping rule).
+=== Server-side root cause (read from source, not guessed) ===
+app/api/persistence/[...path]/route.ts:324
+  return jsonError(404, 'PERSISTENCE_NOT_CONFIGURED', 'server persistence not configured');
+=> dev_server.start sets NEXT_PUBLIC_PERSISTENCE=1 (client believes account-scope persistence is
+   on) but the server-side persistence backend itself is NOT configured in this dev environment,
+   so every KV/account read/write 404s. This is a real, reproducible, app-origin failure — not a
+   third-party or static-asset call, and not declared in E8b's Expected text.
 
-Separately, mid-session the PRE-EXISTING dev server process (pid 76308, not started by
-this verifier) died on its own (net::ERR_CONNECTION_REFUSED across the board); this
-verifier started a fresh dev server on the same port/command per config.yaml
-dev_server.start once the port was free, and continued in a new browser tab. That outage
-is reported under cannotRun/killedByTool reasoning in the structured result, not folded
-into the networkObserved verdict for the successful run captured above.
+=== Verdict per network-truth rule ===
+FAIL-eligible 4xx present, not declared by E8b's Expected -> networkObserved = "app-fail".
+This is UNRELATED to the AC-8 curriculum-anchor line itself (verified separately via DOM:
+exactly one [data-state^="ST-neo"], value "ST-neo-dang-doan", correct warning text + curriculum
+name) — but the network-truth rail is mechanical and does not carve out "unrelated" failures.
+Per rule ("KE CA khi frame dep"), this alone forces exitCode != 0 for this eval run.
