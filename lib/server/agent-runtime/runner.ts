@@ -62,6 +62,7 @@ import {
   type SkillPreload,
 } from './skill-preload';
 import { listSessionMaterials, sessionMaterialsPromptBlock } from './session-materials';
+import { learnerPromptBlock, readLearnerSnapshot } from './learner-context';
 import {
   availableSkillsPromptBlock,
   createNativeSkillReadTool,
@@ -1458,6 +1459,18 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
     );
     const askUserLatch = createAskUserTerminateLatch();
     let toolCalls = 0;
+    // Bản chụp hồ sơ đọc từ ngăn của chủ sở hữu, không từ bảng phiên: hồ sơ đi
+    // theo NGƯỜI, nên phiên mở hôm nay và phiên mở tuần sau cùng thấy bản mới
+    // nhất. Đọc hỏng thì không khối nào — bài soạn kém đi, phiên vẫn chạy.
+    let learnerBlock = '';
+    try {
+      learnerBlock = learnerPromptBlock(
+        await readLearnerSnapshot(process.env.DATABASE_URL ?? '', meta.ownerId),
+      );
+    } catch (error) {
+      log.warn(`learner snapshot not read: ${String(error)}`);
+    }
+
     const agent = buildAgent({
       streamFn,
       systemPrompt: buildRunnerCoursePrompt({
@@ -1466,6 +1479,7 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
         ...(search ? { search: searchPromptBlock() } : {}),
         fetch: fetchPromptBlock(),
         untrustedContent: untrustedContentPolicyPromptBlock(),
+        ...(learnerBlock ? { learner: learnerBlock } : {}),
         ...(materials.length ? { materials: sessionMaterialsPromptBlock(materials) } : {}),
         roster: ROSTER_TOOLS_PROMPT,
         voice: voiceCloneToolsPrompt(voiceRegistrationEnabled),

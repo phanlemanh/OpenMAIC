@@ -18,8 +18,17 @@ import {
   SessionMaterialBindingError,
 } from '@/lib/server/agent-runtime/session-materials';
 import { withRequestOwnerId } from '@/lib/server/agent-runtime/with-owner';
+import { createLogger } from '@/lib/logger';
+import {
+  LearnerShapeError,
+  parseLearner,
+  saveLearnerSnapshot,
+} from '@/lib/server/agent-runtime/learner-context';
+import type { LearnerContext } from '@openmaic/generation';
 import { buildRequestOrigin, isValidClassroomId } from '@/lib/server/classroom-storage';
 import { decodeCourseRefs } from '@/lib/workbench/course-refs';
+
+const log = createLogger('agent-sessions');
 
 export const runtime = 'nodejs';
 
@@ -33,6 +42,8 @@ interface CreateSessionBody {
   materialIds?: unknown;
   /** Classrooms named on the opening message. */
   courseRefs?: unknown;
+  /** Hồ sơ người học của client; ghi thành bản chụp vào ngăn của chủ sở hữu. */
+  learner?: unknown;
 }
 
 export async function POST(req: NextRequest) {
@@ -89,6 +100,19 @@ export async function POST(req: NextRequest) {
   if (!decodedCourseRefs.ok) {
     return apiError('INVALID_REQUEST', 400, decodedCourseRefs.error);
   }
+  // Hồ sơ sai hình bị từ chối KÈM TÊN TRƯỜNG: một lời từ chối chung chung buộc
+  // client đoán, và đoán sai thì lặng lẽ gửi đi một hồ sơ rỗng.
+  let learner: LearnerContext | undefined;
+  if (body.learner !== undefined && body.learner !== null) {
+    try {
+      learner = parseLearner(body.learner);
+    } catch (error) {
+      if (error instanceof LearnerShapeError) {
+        return apiError('INVALID_REQUEST', 400, `learner.${error.field} is invalid`);
+      }
+      throw error;
+    }
+  }
 
   return withRequestOwnerId(req, async (ownerId, responseHeaders) => {
     // An EXPLICIT skill — a `?skill=` launch link, not composer UI — is
@@ -136,6 +160,16 @@ export async function POST(req: NextRequest) {
     // ownership validation is deferred until a later slice consumes stageId —
     // the upstream document store has no owner partition yet.
     const store = await getAgentSessionStore();
+    // Bản chụp hồ sơ ghi TRƯỚC khi tạo phiên, và ghi hỏng KHÔNG chặn mở phiên:
+    // thiếu bối cảnh người học thì bài soạn kém đi, mất phiên thì mất việc.
+    if (learner) {
+      try {
+        await saveLearnerSnapshot(process.env.DATABASE_URL ?? '', ownerId, learner);
+      } catch (error) {
+        log.warn(`learner snapshot not saved for owner: ${String(error)}`);
+      }
+    }
+
     const hasOpeningContext = materialIds.length > 0 || decodedCourseRefs.refs.length > 0;
     const meta = await store.createSession({
       ownerId,
