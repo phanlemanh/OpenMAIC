@@ -11,7 +11,17 @@
   },
   "home": {
     "slogan": "多智能體互動課室中的生成式學習",
-    "greetingWithName": "嗨，{{name}}"
+    "greetingWithName": "嗨，{{name}}",
+    "learnerInvite": {
+      "prompt": "為孩子備課？回答五個問題",
+      "composeFor": "備課對象：",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "其他"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "解析器",
@@ -1891,6 +1901,35 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "本机已共享另一台设备已有的设置；它从未设置过的内容保持不变。"
+    },
+    "learnerProfile": {
+      "nav": "學習者",
+      "title": "學習者",
+      "description": "填一次孩子在學什麼，之後產生的每堂課都會跟著走。",
+      "nickname": "孩子的稱呼",
+      "nicknamePlaceholder": "家裡怎麼稱呼？",
+      "grade": "年級",
+      "gradePlaceholder": "選擇年級",
+      "school": "學校（選填）",
+      "schoolPlaceholder": "例如 Emasi",
+      "subjects": "科目",
+      "subjectPlaceholder": "科目，例如數學",
+      "curriculumPlaceholder": "課程體系",
+      "languagePlaceholder": "授課語言",
+      "textbookPlaceholder": "教材（選填）",
+      "addSubject": "新增科目",
+      "removeSubject": "移除",
+      "packFound": "✓ 已支援該課程體系",
+      "packMissing": "該課程體系尚無框架包 —— 課程會依常識推測，並會明確說明。",
+      "save": "儲存",
+      "saved": "已儲存",
+      "saveFailed": "儲存失敗 —— 剛才填的內容還在，請重試。",
+      "curriculumMoet": "MOET（越南）",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "其他",
+      "langVi": "越南語",
+      "langEn": "英語"
     }
   },
   "workspace": {
@@ -2062,6 +2101,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ {{curriculum}} 尚無課程框架包 —— 這是依常識的推測，並非已核對的對應關係。"
     }
   }
 }

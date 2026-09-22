@@ -11,7 +11,17 @@
   },
   "home": {
     "slogan": "Generatives Lernen im interaktiven Lernraum mit mehreren KI-Agenten",
-    "greetingWithName": "Hallo, {{name}}"
+    "greetingWithName": "Hallo, {{name}}",
+    "learnerInvite": {
+      "prompt": "Für Ihr Kind? Fünf Fragen beantworten",
+      "composeFor": "Erstellen für:",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "Andere"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "Parser",
@@ -1906,6 +1916,35 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "This machine now shares the choices the other machine had. Anything it never set was left as it is."
+    },
+    "learnerProfile": {
+      "nav": "Lernende:r",
+      "title": "Lernende:r",
+      "description": "Einmal eintragen, was Ihr Kind lernt — jede erstellte Stunde richtet sich danach.",
+      "nickname": "Rufname des Kindes",
+      "nicknamePlaceholder": "Wie nennen Sie es?",
+      "grade": "Klasse",
+      "gradePlaceholder": "Klasse wählen",
+      "school": "Schule (optional)",
+      "schoolPlaceholder": "z. B. Emasi",
+      "subjects": "Fächer",
+      "subjectPlaceholder": "Fach, z. B. Mathematik",
+      "curriculumPlaceholder": "Lehrplan",
+      "languagePlaceholder": "Unterrichtssprache",
+      "textbookPlaceholder": "Lehrbuch (optional)",
+      "addSubject": "Fach hinzufügen",
+      "removeSubject": "Entfernen",
+      "packFound": "✓ dieser Lehrplan wird unterstützt",
+      "packMissing": "Für diesen Lehrplan gibt es noch kein Paket — die Stunden sind eine begründete Schätzung und sagen das auch.",
+      "save": "Speichern",
+      "saved": "Gespeichert",
+      "saveFailed": "Konnte nicht gespeichert werden — Ihre Eingaben sind noch da. Bitte erneut versuchen.",
+      "curriculumMoet": "MOET (Vietnam)",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "Andere",
+      "langVi": "Vietnamesisch",
+      "langEn": "Englisch"
     }
   },
   "workspace": {
@@ -2062,6 +2101,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ Für {{curriculum}} gibt es noch kein Lehrplanpaket — das ist eine Schätzung, keine geprüfte Zuordnung."
     }
   }
 }

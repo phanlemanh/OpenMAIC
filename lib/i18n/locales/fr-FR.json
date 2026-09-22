@@ -11,7 +11,17 @@
   },
   "home": {
     "slogan": "L’apprentissage génératif en classe interactive multi-agents",
-    "greetingWithName": "Bonjour, {{name}}"
+    "greetingWithName": "Bonjour, {{name}}",
+    "learnerInvite": {
+      "prompt": "Pour votre enfant ? Répondez à cinq questions",
+      "composeFor": "Cours pour :",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "Autre"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "Analyseur",
@@ -1906,6 +1916,35 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "This machine now shares the choices the other machine had. Anything it never set was left as it is."
+    },
+    "learnerProfile": {
+      "nav": "Apprenant",
+      "title": "Apprenant",
+      "description": "Indiquez une fois ce que votre enfant étudie : chaque cours généré s'y conformera.",
+      "nickname": "Prénom usuel",
+      "nicknamePlaceholder": "Comment l’appelez-vous ?",
+      "grade": "Classe",
+      "gradePlaceholder": "Choisir une classe",
+      "school": "École (facultatif)",
+      "schoolPlaceholder": "ex. Emasi",
+      "subjects": "Matières",
+      "subjectPlaceholder": "Matière, ex. Mathématiques",
+      "curriculumPlaceholder": "Programme",
+      "languagePlaceholder": "Langue",
+      "textbookPlaceholder": "Manuel (facultatif)",
+      "addSubject": "Ajouter une matière",
+      "removeSubject": "Retirer",
+      "packFound": "✓ ce programme est couvert",
+      "packMissing": "Pas encore de pack pour ce programme — les cours seront une estimation, et le diront.",
+      "save": "Enregistrer",
+      "saved": "Enregistré",
+      "saveFailed": "Échec de l'enregistrement — ce que vous avez saisi est toujours là. Réessayez.",
+      "curriculumMoet": "MOET (Vietnam)",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "Autre",
+      "langVi": "Vietnamien",
+      "langEn": "Anglais"
     }
   },
   "workspace": {
@@ -2062,6 +2101,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ Pas encore de pack pour {{curriculum}} — ceci est une estimation, pas une correspondance vérifiée."
     }
   }
 }

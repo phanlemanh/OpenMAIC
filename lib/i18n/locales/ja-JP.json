@@ -11,7 +11,17 @@
   },
   "home": {
     "slogan": "マルチエージェント対話型教室で生成的に学ぶ",
-    "greetingWithName": "こんにちは、{{name}}さん"
+    "greetingWithName": "こんにちは、{{name}}さん",
+    "learnerInvite": {
+      "prompt": "お子さん向けに作りますか？5つの質問に回答",
+      "composeFor": "作成対象：",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "その他"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "パーサー",
@@ -1906,6 +1916,35 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "This machine now shares the choices the other machine had. Anything it never set was left as it is."
+    },
+    "learnerProfile": {
+      "nav": "学習者",
+      "title": "学習者",
+      "description": "お子さんが何を学んでいるかを一度登録すると、以降の教材づくりがそれに沿います。",
+      "nickname": "お子さんの呼び名",
+      "nicknamePlaceholder": "ご家庭での呼び方",
+      "grade": "学年",
+      "gradePlaceholder": "学年を選ぶ",
+      "school": "学校（任意）",
+      "schoolPlaceholder": "例：Emasi",
+      "subjects": "科目",
+      "subjectPlaceholder": "科目（例：算数）",
+      "curriculumPlaceholder": "カリキュラム",
+      "languagePlaceholder": "学習言語",
+      "textbookPlaceholder": "教科書（任意）",
+      "addSubject": "科目を追加",
+      "removeSubject": "削除",
+      "packFound": "✓ このカリキュラムに対応済み",
+      "packMissing": "このカリキュラムのパックはまだありません。推測で作成し、その旨を明示します。",
+      "save": "保存",
+      "saved": "保存しました",
+      "saveFailed": "保存できませんでした。入力内容は残っています。もう一度お試しください。",
+      "curriculumMoet": "MOET（ベトナム）",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "その他",
+      "langVi": "ベトナム語",
+      "langEn": "英語"
     }
   },
   "workspace": {
@@ -2062,6 +2101,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ {{curriculum}} のカリキュラムパックがまだありません。これは推測であり、照合済みの対応ではありません。"
     }
   }
 }

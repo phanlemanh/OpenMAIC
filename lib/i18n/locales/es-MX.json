@@ -11,7 +11,17 @@
   },
   "home": {
     "slogan": "Aprendizaje generativo en un aula interactiva multiagente",
-    "greetingWithName": "Hola, {{name}}"
+    "greetingWithName": "Hola, {{name}}",
+    "learnerInvite": {
+      "prompt": "¿Para tu hijo o hija? Responde cinco preguntas",
+      "composeFor": "Creando para:",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "Otro"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "Analizador",
@@ -1906,6 +1916,35 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "This machine now shares the choices the other machine had. Anything it never set was left as it is."
+    },
+    "learnerProfile": {
+      "nav": "Estudiante",
+      "title": "Estudiante",
+      "description": "Registra una vez qué estudia tu hijo o hija: cada lección que generes lo seguirá.",
+      "nickname": "Nombre del niño o niña",
+      "nicknamePlaceholder": "¿Cómo le dicen en casa?",
+      "grade": "Grado",
+      "gradePlaceholder": "Elige un grado",
+      "school": "Escuela (opcional)",
+      "schoolPlaceholder": "p. ej. Emasi",
+      "subjects": "Materias",
+      "subjectPlaceholder": "Materia, p. ej. Matemáticas",
+      "curriculumPlaceholder": "Plan de estudios",
+      "languagePlaceholder": "Idioma",
+      "textbookPlaceholder": "Libro de texto (opcional)",
+      "addSubject": "Agregar materia",
+      "removeSubject": "Quitar",
+      "packFound": "✓ este plan de estudios está cubierto",
+      "packMissing": "Aún no hay paquete para este plan — las lecciones serán una estimación y lo dirán.",
+      "save": "Guardar",
+      "saved": "Guardado",
+      "saveFailed": "No se pudo guardar — lo que escribiste sigue aquí. Inténtalo de nuevo.",
+      "curriculumMoet": "MOET (Vietnam)",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "Otro",
+      "langVi": "Vietnamita",
+      "langEn": "Inglés"
     }
   },
   "workspace": {
@@ -2062,6 +2101,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ Aún no hay paquete para {{curriculum}} — esto es una estimación, no una correspondencia verificada."
     }
   }
 }
