@@ -40,8 +40,67 @@ try {
   process.exit(2);
 }
 
+// ── Trạng thái thứ bảy: REALITY ĐÃ CHẤM (hồ sơ nhan-trang-thai-va-reality, AC-10) ──────
+// Hợp đồng cùng thư mục khai `da-cham-boi-thuc-te` → CÙNG hàm checkThucTe với lưới
+// trước-merge. Dòng hợp lệ → NOTE, không chấm bằng chứng (reality là cuối); thiếu vế /
+// bản dựng lạ / thước đổi sau dòng quan sát → đỏ; dòng vắng hoặc đã mở lại → luật cũ.
+{
+  const dir = path.dirname(path.resolve(reportPath));
+  let st = '';
+  try { st = String(core.frontmatterField(fs.readFileSync(path.join(dir, 'contract.md'), 'utf8'), 'status') || '').trim().toLowerCase(); } catch { st = ''; }
+  let wr = null;
+  try { wr = require(path.join(__dirname, '..', 'lib', 'workspace-record.cjs')); } catch { wr = null; }
+  if (wr && typeof wr.checkThucTe === 'function' && Array.isArray(wr.DA_DONG_THUC_TE) && wr.DA_DONG_THUC_TE.includes(st)) {
+    const r = wr.checkThucTe(path.dirname(path.dirname(dir)), path.basename(dir));
+    if (r.code === 0) { process.stderr.write(`recheck-evidence: NOTE ${reportPath} — đã chấm bởi thực tế: ${r.out.replace(/^OK /, '')}\n`); process.exit(0); }
+    if (r.code !== 2) { process.stderr.write(`recheck-evidence: ${reportPath} — đã chấm bởi thực tế nhưng ${r.out}\n`); process.exit(1); }
+  }
+}
+
+// ── Ký trên CẠNH GÃY có tên (hồ sơ nhan-trang-thai-va-reality, AC-8) ────────────
+// Báo cáo BLOCKED mang chữ ký người là bằng chứng hợp lệ CHỈ khi thẻ đã mở ô ký trên cạnh gãy
+// (bàn đo / hệ thống chết đã thử lại) và MỖI mục chặn có dòng sổ `revisit` đúng khuôn. MỘT
+// vị từ với lưới trước-merge và thẻ: lib/nhan-canh-gay.cjs. Lib vắng → đi tiếp như cũ (bản
+// lib cũ hơn luật; lưới trước-merge vẫn đóng BLOCKED).
+{
+  const vm = payload.match(/^verdict:\s*([^\s#]+)/m);
+  const verdict = vm ? vm[1].replace(/["']/g, '').toUpperCase() : '';
+  let ncg = null;
+  try { ncg = require(path.join(__dirname, '..', 'lib', 'nhan-canh-gay.cjs')); } catch { ncg = null; }
+  const ky = core.frontmatterField ? String(core.frontmatterField(payload, 'human_signoff') || '').trim() : '';
+  if (ncg && verdict === 'BLOCKED' && ky) {
+    const dir = path.dirname(path.resolve(reportPath));
+    const r = ncg.checkHoSo(path.dirname(path.dirname(dir)), path.basename(dir));
+    if (r.code === 0) { process.stderr.write(`recheck-evidence: NOTE ${reportPath} — ký trên cạnh gãy có tên: ${r.out.replace(/^OK /, '')}\n`); process.exit(0); }
+    if (r.code === 1) { process.stderr.write(`recheck-evidence: ${reportPath} — ký trên cạnh gãy thiếu dòng sổ revisit cho ${r.out.replace(/^THIEU /, '')}\n`); process.exit(1); }
+    process.stderr.write(`recheck-evidence: ${reportPath} — báo cáo BLOCKED mang chữ ký nhưng không phải cạnh gãy mở ký được (${r.out.replace(/^KHONG /, '')})\n`);
+    process.exit(1);
+  }
+}
+
 // Only a PASS-family verdict carries an evidence bar to re-check.
 if (!core.determineEnforce(payload)) process.exit(0);
+
+// ── Hồ sơ NGHỈ ───────────────────────────────────────────────────────────────
+// Pin của một hồ sơ đã cho nghỉ là SỬ LIỆU, không phải một lời hứa đang sống:
+// tiền đề nó đo đã chết, hoặc vật đã cố ý đổi sau chữ ký, nên «ghim lại» không
+// phải một việc ai làm được. MỘT nguồn luật với lưới trước-merge và bộ quét:
+// hoSoNghi trong lib/workspace-record.cjs. Không có hàm (bản lib cũ hơn luật)
+// → đi tiếp như chưa có luật, đúng đường đọc-cũ.
+{
+  const wr = require(path.join(__dirname, '..', 'lib', 'workspace-record.cjs'));
+  if (typeof wr.hoSoNghi === 'function') {
+    const dir = path.dirname(path.resolve(reportPath));
+    const slug = path.basename(dir);
+    let ledger = null;
+    try { ledger = fs.readFileSync(path.join(dir, 'decisions.jsonl'), 'utf8'); } catch { /* vắng: bình thường */ }
+    const n = wr.hoSoNghi({ ledgerText: ledger, reportText: payload, contractAtRoot: true, suLieuContract: false });
+    if (n && n.kieu === 'dong-so') {
+      console.log(`NOTE [${slug}]: hồ sơ nghỉ — ${n.by} ${n.at}: ${n.ly_do}; bỏ kiểm lại, chữ ký giữ làm sử liệu`);
+      process.exit(0);
+    }
+  }
+}
 
 // ── Re-pin provenance (delta-verify-repin, additive rule) ────────────────────
 // New-form "### Re-pin" sections cite a run_id on its own line; the lane that

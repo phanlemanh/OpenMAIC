@@ -32,6 +32,9 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const { frontmatterField, vetoGateState } = require(path.join(__dirname, '..', 'lib', 'evidence-core.cjs'));
 const { section } = require(path.join(__dirname, '..', 'lib', 'md-section.cjs'));
+// Nạp LƯỜI: chỉ khi hồ sơ có tệp phát hiện — cùng luật với bản bash (tệp vắng → vế này im,
+// không cần lib). Kho tiêu thụ chép thiếu lib thì chỉ hồ sơ CÓ tệp phát hiện nổ có tên.
+const mucChuaDinhTuyen = (f, l) => require(path.join(__dirname, '..', 'lib', 'out-of-contract.cjs')).mucChuaDinhTuyen(f, l);
 
 // Cùng regex với bash: grep -qiE '(^|[^a-z])UNCERTAIN([^a-z]|$)' trên TRỌN file.
 const UNCERTAIN_RE = /(^|[^a-z])UNCERTAIN([^a-z]|$)/i;
@@ -49,7 +52,12 @@ function sectionState(txt, heading) {
 
 // Sáu điều kiện xanh-sạch, CÙNG THỨ TỰ với xanh_sach_check để `why` nêu cùng
 // điều kiện trượt đầu tiên. Trả { clean, why }.
-export function xanhSach(contractTxt, evidenceTxt) {
+// `ctx` BẮT BUỘC (hồ sơ ho-so-khep-thoi-hoi AC-4/AC-8): `{ findings, ledger }` = văn bản
+// review-findings.md và decisions.jsonl cạnh báo cáo, `null` khi tệp vắng. Bên gọi quên
+// truyền thì NỔ có tên — vế «tệp vắng → im» không được là chỗ một bên gọi lặng lẽ mù.
+export function xanhSach(contractTxt, evidenceTxt, ctx) {
+  if (!ctx || typeof ctx !== 'object' || !('findings' in ctx) || !('ledger' in ctx))
+    throw new Error('xanhSach: thiếu ngữ cảnh { findings, ledger } — bên gọi phải đọc review-findings.md và decisions.jsonl cạnh báo cáo (null khi tệp vắng)');
   if (evidenceTxt == null) return { clean: false, why: 'không có evidence-report.md' };
   const v = (frontmatterField(evidenceTxt, 'verdict') || '').trim();
   // KCN-PASS: chỉ PASS mới sạch.
@@ -68,6 +76,12 @@ export function xanhSach(contractTxt, evidenceTxt) {
     if (st === 'vang') return { clean: false, why: `mục «${h}» VẮNG khỏi báo cáo (vắng ≠ rỗng)` };
     if (st === 'co') return { clean: false, why: `mục «${h}» có nội dung` };
   }
+  // Vế hai của điều kiện «Ngoài hợp đồng»: báo cáo do tác tử tổng hợp viết, tệp phát hiện do
+  // workflow viết từ triage — hai tệp trôi nhau được (crm khai-lang-gioi-thieu, 22/09). Mục
+  // nào chưa có dòng sổ gate2 của người → còn cần người. CÙNG hàm xanh_sach_check gọi.
+  const m = ctx.findings == null ? { chua: [], suspect: false } : mucChuaDinhTuyen(ctx.findings, ctx.ledger);
+  if (m.suspect) return { clean: false, why: 'review-findings.md có chữ trong mục «Ngoài hợp đồng» nhưng không đọc ra mục nào (sai khuôn OOC-ITEM-TEMPLATE)' };
+  if (m.chua.length) return { clean: false, why: `review-findings.md có ${m.chua.length} mục ngoài hợp đồng chưa người định tuyến: ${m.chua.join(', ')}` };
   return { clean: true, why: '' };
 }
 
@@ -78,12 +92,12 @@ export function xanhSach(contractTxt, evidenceTxt) {
 //   'xanh-sach' — không có cửa veto: người đóng/miễn Cổng 1, Cổng 2 xanh-sạch
 // Thứ tự nhánh tường minh (AC-4): da-veto cắt trước → chữ ký (bên gọi xử) →
 // Cổng 1 → Cổng 2.
-export function khongCanNguoi(contractTxt, evidenceTxt) {
+export function khongCanNguoi(contractTxt, evidenceTxt, ctx) {
   const veto = vetoGateState(contractTxt);
   // KCN-VETO: veto là phát ngôn của người — không bao giờ «đã giao».
   if (veto.present && veto.state === 'da-veto') return null;
   // KCN-SACH: Cổng 2 — sáu điều kiện.
-  if (!xanhSach(contractTxt, evidenceTxt).clean) return null;
+  if (!xanhSach(contractTxt, evidenceTxt, ctx).clean) return null;
   // Cổng 1 — người duyệt, hay máy đóng đúng vết.
   const approvedBy = (frontmatterField(contractTxt, 'approved_by') || '').trim();
   // KCN-SKIP: người chủ động miễn Cổng 1 — lưới chỉ NOTE, không chặn (cùng luật với
@@ -113,11 +127,13 @@ if (_isMain) {
   let contract, evidence;
   try { contract = fs.readFileSync(cp, 'utf8'); } catch { console.error(`khong-can-nguoi: không đọc được ${cp}`); process.exit(3); }
   try { evidence = fs.readFileSync(ep, 'utf8'); } catch { evidence = null; }
+  const docCanh = f => { try { return fs.readFileSync(path.join(root, '_acceptance', slug, f), 'utf8'); } catch { return null; } };
+  const ctx = { findings: docCanh('review-findings.md'), ledger: docCanh('decisions.jsonl') };
   const status = (frontmatterField(contract, 'status') || '').trim().toLowerCase();
   const tier = (frontmatterField(contract, 'risk_tier') || '').trim().toUpperCase();
   const why = status !== 'verified' ? `status ${status || '(rỗng)'} (chỉ verified)`
     : tier !== 'T2' ? `hạng ${tier || '(rỗng)'} (chỉ T2)`
-    : (khongCanNguoi(contract, evidence) == null ? (xanhSach(contract, evidence).why || 'còn cần người') : '');
+    : (khongCanNguoi(contract, evidence, ctx) == null ? (xanhSach(contract, evidence, ctx).why || 'còn cần người') : '');
   if (why) { console.error(`chưa đủ: ${why}`); process.exit(2); }
   // Dòng status của khuôn hợp đồng mang comment đuôi (`status: verified   # draft | approved | …`) —
   // giữ nguyên phần comment, chỉ thay giá trị (S4-r2 finding: regex đòi hết dòng làm cửa ghi
