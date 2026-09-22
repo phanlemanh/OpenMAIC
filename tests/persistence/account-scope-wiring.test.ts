@@ -63,8 +63,21 @@ describe('mọi kho phạm vi account đều được nạp lại khi nhận', (
         /createKVPersistStorage[^(]*\(\s*'account'/.test(readFileSync(join(dir, f), 'utf8')),
       )
       .map((f) => f.replace(/\.ts$/, ''));
-    const registry = readFileSync(join(dir, 'account-stores.ts'), 'utf8');
-    const missing = declared.filter((name) => !registry.includes(`/store/${name}'`));
+    // Mỗi kho khai phạm vi account mang một tên lưu bền trong `persist`. Rút
+    // tên ấy ra để đối chiếu với sổ đăng ký THẬT — không khớp chuỗi con trong
+    // tệp: một dòng `import` trơ cũng làm phép so chuỗi xanh, trong khi kho
+    // vẫn đứng ngoài sổ và vì thế đứng ngoài cả việc nhận lẫn việc xoá.
+    const persistNameOf = (file: string): string | null =>
+      readFileSync(join(dir, `${file}.ts`), 'utf8').match(/\n\s*name:\s*'([^']+)'/)?.[1] ?? null;
+    const declaredNames = declared.map((f) => ({ file: f, persistName: persistNameOf(f) }));
+    const unnamed = declaredNames.filter((d) => !d.persistName).map((d) => d.file);
+    expect(unnamed, `account-scope store without a persist name: ${unnamed.join(', ')}`).toEqual([]);
+
+    const { ACCOUNT_SCOPE_STORES } = await import('@/lib/store/account-stores');
+    const registered = new Set(Object.values(ACCOUNT_SCOPE_STORES).map((s) => s.persistName));
+    const missing = declaredNames
+      .filter((d) => !registered.has(d.persistName as string))
+      .map((d) => d.file);
     expect(
       missing,
       `account key set drifted from the declared scope: ${missing.join(', ')}`,
