@@ -8,7 +8,7 @@ decision: build
 decided_by: Manh Phan
 decided_at: 2026-09-22T00:00:00Z
 prototype:
-  base_commit:
+  base_commit: 40f1cf954f5d2a5b6593e5d1dfe0ef85a05b26f9
   disposition: archive
 ---
 
@@ -68,7 +68,7 @@ tầng 3 để vòng sau (xem Out of scope).
 - Câu hỏi phép đo trả lời: Phụ huynh đã khai hồ sơ bé **một lần**, tuần sau ngồi xuống soạn bài — bài ra có bám đúng thứ bé đang học ở trường mà không phải kể lại bối cảnh không?
 - Kết quả nào là SỐNG: trong 2 tuần dùng thật, ít nhất 4 trên 5 bài soạn ra dùng được cho bé mà không gõ lại lớp / trường / sách lần nào, VÀ trong phép thử mù (giả định 1) phụ huynh nhận ra bài có khung đúng ít nhất 2 trên 3 lần
 - Kết quả nào là CHẾT: vẫn phải kể lại bối cảnh từ 2 bài trở lên trong một tuần, HOẶC phép thử mù không phân biệt được bài có khung với bài «toán lớp 7» chung
-- Timebox: 3 ngày dựng, 2 tuần chờ tín hiệu — hai tuần vì con trỏ tuần phải dịch ít nhất hai lần mới đo được giả định 2
+- Timebox: [SUPERSEDED 2026-09-22 — chủ kho quyết không dùng timebox cho vòng này, sau khi persona rõ là phụ huynh non-tech và phạm vi lên A đầy đủ] bản gốc: 3 ngày dựng, 2 tuần chờ tín hiệu — hai tuần vì con trỏ tuần phải dịch ít nhất hai lần mới đo được giả định 2
 
 ## Kết quả prototype
 

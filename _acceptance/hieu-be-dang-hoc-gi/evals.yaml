@@ -1,0 +1,206 @@
+schema_version: 1
+feature_slug: hieu-be-dang-hoc-gi
+evals:
+  - id: E1
+    criterion: AC-1
+    executor: ui-check
+    layer: ui-observed
+    steps:
+      - "Dựng máy chủ phát triển theo config dev_server.start"
+      - "Mở {url} với hồ sơ trống → Cài đặt → mục «Người học» → chụp evidence/E1-the-trong.png (nút Lưu mờ)"
+      - "Điền tên gọi, chọn lớp 7, thêm dòng môn Toán · Cambridge Lower Secondary · tiếng Anh → chụp evidence/E1-the-dang-dien.png"
+      - "Quan sát dòng môn hiện «có gói khung» kèm tên sách → chụp evidence/E1-mon-co-goi.png"
+      - "Thêm dòng môn Toán · MOET · tiếng Việt → dòng hiện «chưa có gói — máy sẽ đoán» → chụp evidence/E1-mon-chua-goi.png"
+      - "Bấm Lưu → toast đã lưu, tải lại trang, mở lại mục → giá trị còn nguyên → chụp evidence/E1-da-luu.png"
+      - "Trên hồ sơ ĐÃ LƯU: đổi lớp 7 → lớp 8 trên dòng Cambridge → dòng chuyển sang «chưa có gói» (chưa có gói Stage 9) → chụp evidence/E1-doi-lop.png; trả lại lớp 7"
+      - "Ép ghi hỏng: chặn tuyến /api/persistence/kv trả 500 bằng công cụ trình duyệt → đổi một giá trị → Lưu → chụp evidence/E1-loi-luu.png (toast «chưa lưu được — giá trị vẫn giữ trên màn» VÀ giá trị vừa gõ còn trên form, KHÔNG có toast đã lưu)"
+      - "Bớt dòng môn đang được ô «Soạn cho» nhớ → về trang chủ → ô rơi về môn còn lại, không giữ lựa chọn mồ côi → chụp evidence/E1-bot-mon.png"
+      - "MỌI khung phải là chụp SỐNG; khung nào không dựng được thì khai thẳng."
+    expected: "exit 0; đủ BẢY khung sống — ST-the-trong, ST-the-dang-dien, ST-the-mon-co-goi, ST-the-mon-chua-goi, ST-the-da-luu, ST-the-loi-luu, cộng khung đổi-lớp; và khung bớt-môn cho AC-5. LUẬT PHỦ KHUNG: mỗi dòng ST-the-* trong bảng trạng thái của design-doc phải có ít nhất một khung ở phép đo này (sáu dòng); hai khung đổi-lớp và bớt-môn là khung hành vi, chụp thêm chứ không thay dòng nào; thiếu một dòng → đỏ nêu ĐÍCH DANH tên dòng thiếu. Sau tải lại giá trị còn nguyên. Máy đo không có cơ sở dữ liệu nên GET /api/persistence/kv/* trả 404 là đúng thiết kế; 500 ở tuyến kv trong bước ép-ghi-hỏng là do chính người đo dựng, cũng đúng thiết kế; mọi 4xx/5xx khác trên cùng origin là đỏ. Chiều đỏ: (a) thiếu một khung → đỏ nêu tên dòng; (b) dòng môn Cambridge lớp 7 KHÔNG hiện «có gói» → đỏ; (c) lúc ghi hỏng mà màn báo đã lưu → đỏ ghim 'save reported success while the write failed'."
+    paths: ["components/settings/learner-profile-settings.tsx", "components/settings/index.tsx", "lib/store/learner-profile.ts", "app/api/curriculum-packs/**", "app/page.tsx"]
+    evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
+
+  - id: E1b
+    criterion: AC-1
+    executor: test
+    cmd: config:executors.test.api
+    expected: "exit 0; chốt máy cho việc lưu hồ sơ, không qua giao diện: kho hồ sơ người học nhận một hồ sơ hợp lệ (tên gọi, lớp, hai dòng môn) → đọc lại sau khi nạp lại kho trả đúng giá trị đã ghi; hồ sơ thiếu tên gọi, thiếu lớp, hoặc không dòng môn nào đủ ba trường thì bị coi là CHƯA hợp lệ (cờ hợp-lệ tắt), tức nút Lưu không có gì để bật. Trạng thái gói của từng dòng môn tính bằng bộ đăng ký, không lưu cứng. Chiều đỏ trên cùng fixture: cho trạng thái gói ghi cứng vào hồ sơ lúc lưu → đỏ ghim 'pack match frozen into the stored profile'."
+    paths: ["lib/store/learner-profile.ts", "lib/server/curriculum-packs.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E2
+    criterion: AC-2
+    executor: test
+    cmd: config:executors.test.api
+    expected: "exit 0; bộ đăng ký gói với fixture hai gói giả (Toán Cambridge stage 8 khai grades.vn ['lớp 7'], Toán Cambridge stage 9 khai ['lớp 8']): (Toán, cambridge-lower-secondary, 'lớp 7') → gói stage 8; đổi 'lớp 8' → gói stage 9; (Toán, moet, 'lớp 7') → null; gói JSON hỏng bị bỏ qua kèm cảnh báo có tên tệp, hai gói lành vẫn nạp. Chiều đỏ trên cùng fixture: bỏ bộ lọc lớp → đỏ với thông điệp ghim 'pack matched without grade equivalence'."
+    paths: ["lib/server/curriculum-packs.ts", "skills/agent-runtime/*/curriculum-pack.json"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E3
+    criterion: AC-3
+    executor: test
+    layer: backend-effect
+    cmd: config:executors.test.api
+    expected: "exit 0; tập kho phạm vi account rút từ khai báo (bài kiểm ma trận toàn phần sẵn có) nay gồm learner-profile-storage; phiên thứ hai của cùng chủ sở hữu đọc được hồ sơ phiên một đã ghi. Chiều đỏ trên cùng fixture: bỏ dòng đăng ký kho hồ sơ khỏi account-stores → đỏ với thông điệp ghim 'account key set drifted from the declared scope: learner-profile-storage'."
+    paths: ["lib/store/account-stores.ts", "lib/store/learner-profile.ts", "lib/store/kv-persist.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E4
+    criterion: AC-4
+    executor: test
+    cmd: config:executors.test.api
+    expected: "exit 0; «xoá bộ nhớ đệm» gọi clearPersistedStore cho đủ mọi kho phạm vi account, danh sách rút từ account-stores — kho hồ sơ người học có trong đó. Chiều đỏ: bỏ kho hồ sơ khỏi danh sách xoá → đỏ với thông điệp ghim 'clear-cache skipped an account store: learner-profile-storage'."
+    paths: ["components/settings/general-settings.tsx", "lib/store/account-stores.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E5
+    criterion: AC-5
+    executor: ui-check
+    layer: ui-observed
+    steps:
+      - "Dựng máy chủ phát triển theo config dev_server.start"
+      - "Mở {url} với hồ sơ trống → dưới lời chào có dòng mời khai, KHÔNG có ô «Soạn cho» → chụp evidence/E5-moi-khai.png"
+      - "Khai hồ sơ có hai môn (Toán Cambridge, Toán MOET) → về trang chủ → ô «Soạn cho: Toán — Cambridge (tiếng Anh) ▾» → chụp evidence/E5-san-sang.png"
+      - "Đổi sang Toán — MOET, tải lại trang → ô vẫn ở MOET (nhớ lựa chọn) → chụp evidence/E5-nho-lua-chon.png"
+      - "Xoá hồ sơ đi, soạn một dàn ý bất kỳ → màn xem trước KHÔNG có dòng neo nào → chụp evidence/E5-neo-khong.png"
+    expected: "exit 0; bốn khung sống phủ ST-chon-moi-khai (không ô), ST-chon-san-sang (ô đúng nhãn môn — chương trình (ngôn ngữ)), lựa chọn nhớ qua tải lại, và ST-neo-khong (hồ sơ trống → màn xem trước không dòng neo, y như trước vòng). LUẬT PHỦ KHUNG: ba dòng ST-chon-moi-khai, ST-chon-san-sang và ST-neo-khong mỗi dòng phải có ít nhất một khung ở phép đo này; thiếu một dòng → đỏ nêu ĐÍCH DANH tên dòng. Chiều đỏ: ô hiện khi hồ sơ trống, nhãn thiếu chương trình, hoặc hồ sơ trống mà vẫn có dòng neo → đỏ nêu đích danh khung."
+    paths: ["app/page.tsx", "lib/store/learner-profile.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
+
+  - id: E5b
+    criterion: AC-5
+    executor: test
+    cmd: config:executors.test.api
+    expected: "exit 0; chốt máy cho bộ chọn môn, hàm thuần: hồ sơ trống → không môn nào chọn được (ô không dựng); hồ sơ một môn → chọn chính môn đó; hồ sơ nhiều môn và có lựa chọn nhớ hợp lệ → giữ lựa chọn nhớ; lựa chọn nhớ trỏ một môn ĐÃ BỊ XOÁ → rơi về môn đầu còn lại, không trả mã mồ côi; hồ sơ trống sau khi từng có → xoá luôn lựa chọn nhớ. Bốn nhánh, bốn assert. Chiều đỏ trên cùng fixture: trả thẳng lựa chọn nhớ không kiểm còn tồn tại → đỏ ghim 'remembered subject survived its own deletion'."
+    paths: ["app/page.tsx", "lib/store/learner-profile.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E6
+    criterion: AC-6
+    executor: test
+    layer: backend-effect
+    cmd: config:executors.test.generation
+    expected: "exit 0; với UserRequirements.learner có môn Toán Cambridge kèm thân gói fixture, buildOutlinePrompt cho ra prompt chứa khối hồ sơ đúng bản vàng của formatLearnerContext VÀ thân gói ở vị trí {{curriculumContext}}; không còn chuỗi '{{' nào trong system lẫn user prompt; kiểm bằng grep mã nguồn rằng ba bản chép tay cũ (outline-generator, scene-outlines-stream, generation-preview) không còn — chỉ một hàm định dạng. Chiều đỏ trên cùng fixture: (a) thêm một ô {{ghost}} vào template → đỏ với thông điệp ghim 'unresolved template variable: {{ghost}}'; (b) đổi một chữ trong bản vàng → đỏ nêu diff."
+    paths: ["packages/@openmaic/generation/src/prompt-formatters.ts", "packages/@openmaic/generation/src/outline-generator.ts", "packages/@openmaic/generation/templates/requirements-to-outlines/**", "packages/@openmaic/generation/src/prompts/loader.ts", "app/api/generate/scene-outlines-stream/route.ts", "lib/prompts/templates/**"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E7
+    criterion: AC-7
+    executor: ui-check
+    layer: ui-observed
+    steps:
+      - "Dựng máy chủ phát triển theo config dev_server.start (cần khoá mô hình phía máy chủ; không có → khai thẳng, hạ về khung HTML tĩnh của dòng neo với dữ liệu giả và nói rõ)"
+      - "Hồ sơ có Toán Cambridge lớp 7; ô «Soạn cho» ở Toán — Cambridge; gõ «tỉ lệ và tỉ số» → Tạo → màn xem trước"
+      - "Dòng neo hiện trên đầu dàn ý: tên unit + tên sách, mã (nếu có) in nhỏ phía sau → chụp evidence/E7-neo-co-goi.png"
+      - "Ghi evidence/E7-network.txt: sự kiện SSE curriculumAnchor có mặt trong luồng dàn ý"
+    expected: "exit 0; MỘT khung sống phủ dòng ST-neo-co-goi (luật phủ khung); khung ST-neo-co-goi với dòng neo đọc được bằng ngôn ngữ người học, tên unit đứng trước, không mã đứng trước; luồng SSE có sự kiện curriculumAnchor. Chiều đỏ: dàn ý sinh xong mà không dòng neo dù mô hình đã trả curriculumAnchor, hoặc dòng neo mở đầu bằng mã → đỏ nêu đích danh."
+    paths: ["app/generation-preview/page.tsx", "components/generation/outlines-editor.tsx", "app/api/generate/scene-outlines-stream/route.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
+
+  - id: E7b
+    criterion: AC-7
+    executor: test
+    layer: backend-effect
+    cmd: config:executors.test.api
+    expected: "exit 0; phép đo ĐẦU-CUỐI qua chính tuyến HTTP, mô hình giả ghi lại prompt nó nhận: POST /api/generate/scene-outlines-stream với thân yêu cầu chứa learner (môn Toán · cambridge-lower-secondary · lớp 7) và KHÔNG chứa thân gói — route phải tự tra bộ đăng ký, đọc thân gói, đặt vào ô curriculumContext. Ba assert trên cùng một lượt gọi: (a) prompt mô hình giả nhận được CHỨA thân gói fixture tại đúng ô; (b) prompt chứa khối hồ sơ do bộ định dạng chung sinh; (c) route phát sự kiện {type:'curriculumAnchor', data:<chuỗi>} khi mô hình giả trả curriculumAnchor, đi cùng khuôn với courseTitle, và không phát khi mô hình không trả. Đây là phép đo DUY NHẤT bắt nhịp yêu cầu → route → tra gói → prompt; E7 (chụp sống) KHÔNG được thay thế nó. Ba chiều đỏ trên cùng fixture: (a) bỏ dòng tra gói trong route → đỏ ghim 'learner dropped between request and outline prompt'; (b) route chuyển learner sang bộ dựng prompt nhưng bỏ thân gói → đỏ ghim 'curriculum pack body missing from outline prompt'; (c) bỏ nhánh phát sự kiện → đỏ ghim 'curriculumAnchor event missing from outline stream'."
+    paths: ["app/api/generate/scene-outlines-stream/route.ts", "packages/@openmaic/generation/src/outline-generator.ts", "lib/server/curriculum-packs.ts", "packages/@openmaic/generation/src/prompt-formatters.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E8
+    criterion: AC-8
+    executor: test
+    cmd: config:executors.test.generation
+    expected: "exit 0; formatLearnerContext với dòng môn có curriculum 'moet' và không packId cho ra khối chứa đúng câu khai «chưa có gói khung» + «neo chưa kiểm chứng» (bản vàng); learnerPromptBlock phía agent GỌI chính hàm đó nên cho cùng câu — assert bằng cách so chuỗi con, không so hai bản vàng riêng. Chiều đỏ trên cùng fixture: xoá câu khai → đỏ với thông điệp ghim 'guess mode not declared for subject without pack'."
+    paths: ["packages/@openmaic/generation/src/prompt-formatters.ts", "lib/server/agent-runtime/learner-context.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E8b
+    criterion: AC-8
+    executor: ui-check
+    layer: ui-observed
+    steps:
+      - "Như E7 nhưng ô «Soạn cho» ở Toán — MOET (chưa có gói) → màn xem trước"
+      - "Dòng neo mang cảnh báo đang đoán → chụp evidence/E8-neo-dang-doan.png"
+    expected: "exit 0; MỘT khung sống phủ dòng ST-neo-dang-doan (luật phủ khung); khung ST-neo-dang-doan có chữ cảnh báo và tên chương trình chưa có gói. Chiều đỏ: dòng neo đọc như có gói, hoặc không có dòng nào → đỏ nêu đích danh."
+    paths: ["app/generation-preview/page.tsx", "components/generation/outlines-editor.tsx"]
+    evidence_required: [run_id, exit_code, verifier, verified_at, screenshot]
+
+  - id: E9
+    criterion: AC-9
+    executor: test
+    cmd: config:executors.test.generation
+    expected: "exit 0; ảnh chụp prompt nền GHIM COMMIT: tệp nền sinh bằng lệnh chạy TRÊN commit nền 40f1cf954f5d2a5b6593e5d1dfe0ef85a05b26f9 (điểm cắt nhánh, khai ở opportunity.prototype.base_commit), tên tệp mang bảy ký tự đầu của hash; với UserRequirements KHÔNG có learner, prompt dàn ý / slide / quiz / lời giảng BẰNG TỪNG BYTE với tệp nền đó; courseSystemPrompt không có khối learner khi không truyền. Hai chiều đỏ trên cùng fixture: (a) để ô {{curriculumContext}} không có mặc định → đỏ nêu diff đúng dòng có ô sót; (b) tệp nền mang hash KHÁC commit nền đã khai, hoặc được sinh sau commit nền → đỏ ghim 'baseline snapshot postdates the round'."
+    paths: ["packages/@openmaic/generation/src/**", "packages/@openmaic/generation/templates/**", "lib/server/agent-runtime/course-tools.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E10
+    criterion: AC-10
+    executor: test
+    cmd: config:executors.test.generation
+    expected: "exit 0; generateSlideContent, generateQuizContent (qua SceneContentOptions.userRequirements.learner) và generateSceneActions (qua userProfile) đều nhận khối từ cùng formatLearnerContext — so bằng bản vàng trên cùng fixture. Chiều đỏ: cho một trong ba dùng chuỗi tự ghép → đỏ với thông điệp ghim 'learner context diverged from the shared formatter: <tên hàm>'."
+    paths: ["packages/@openmaic/generation/src/scene-generator.ts", "packages/@openmaic/generation/templates/slide-content/**", "packages/@openmaic/generation/templates/quiz-content/**", "packages/@openmaic/generation/templates/slide-actions/**"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E11
+    criterion: AC-11
+    executor: test
+    layer: backend-effect
+    cmd: config:executors.test.api
+    expected: "exit 0; POST /api/agent/sessions với learner sai hình (subjects không phải mảng; tên > 40 ký tự; curriculum không phải chuỗi) → 400 nêu tên trường; đúng hình → 201 và KV chủ sở hữu (fixture PGlite) có khoá learner-profile.snapshot đúng nội dung; bảng phiên không có cột mới. Chiều đỏ trên cùng fixture: bỏ kiểm hình → đỏ với thông điệp ghim 'malformed learner accepted'."
+    paths: ["app/api/agent/sessions/route.ts", "app/api/agent/sessions/[id]/messages/route.ts", "lib/server/agent-runtime/learner-context.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E12
+    criterion: AC-12
+    executor: test
+    layer: backend-effect
+    cmd: config:executors.test.api
+    expected: "exit 0; với bản chụp trong KV chủ sở hữu (fixture) và bộ đăng ký gói fixture, khối learner trong courseSystemPrompt nêu tên bé, các môn, và dòng «đọc skill <tên gói> trước khi soạn môn Toán»; bản chụp vắng → không khối. Chiều đỏ trên cùng fixture: xoá dòng trỏ tên skill → đỏ với thông điệp ghim 'learner block does not name the curriculum pack skill'."
+    paths: ["lib/server/agent-runtime/learner-context.ts", "lib/server/agent-runtime/course-tools.ts", "lib/server/agent-runtime/runner.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]
+
+  - id: E13gen
+    criterion: AC-13
+    executor: script
+    cmd: config:executors.script.dan_y_mu
+    expected: "exit 0; sinh HAI dàn ý từ chính tuyến soạn thật, cùng đề «tỉ lệ và tỉ số», cùng hồ sơ bé lớp 7 — một lượt CÓ gói Cambridge, một lượt KHÔNG — ghi ra evidence/E13-dan-y-A.md và evidence/E13-dan-y-B.md với mã lượt chạy ở dòng đầu mỗi tệp và thứ tự A/B xáo ngẫu nhiên (bản ghi nào là bản nào nằm ở evidence/E13-khoa.txt, hội đồng KHÔNG đọc tệp khoá). Chiều đỏ: cho cả hai lượt cùng đi đường không-gói → đỏ ghim 'both outlines generated without a curriculum pack'."
+    paths: ["scripts/gen-dan-y-mu.mjs", "lib/server/curriculum-packs.ts", "app/api/generate/scene-outlines-stream/route.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at, output]
+
+  - id: E13
+    criterion: AC-13
+    executor: judgment
+    question: "Hai dàn ý cùng đề «tỉ lệ và tỉ số» cho bé lớp 7, một sinh có gói Cambridge Stage 8 Toán, một không, không đánh dấu. Đặt cạnh mục lục Cambridge Lower Secondary Mathematics Learner's Book 8. Hai tệp do E13-gen sinh từ tuyến thật, mỗi tệp mang mã lượt chạy ở dòng đầu — tệp không có mã thì KHÔNG chấm, trả UNCERTAIN. Câu hỏi: bài nào có gói — và người đọc nói được VÌ SAO qua tên unit, từ vựng, ký hiệu — hay hai bài giống nhau tới mức chỉ đoán?"
+    inputs:
+      - _acceptance/hieu-be-dang-hoc-gi/contract.md
+      - _acceptance/hieu-be-dang-hoc-gi/evidence/E13-dan-y-A.md
+      - _acceptance/hieu-be-dang-hoc-gi/evidence/E13-dan-y-B.md
+      - skills/agent-runtime/cambridge-lower-secondary-maths-8/SKILL.md
+    evidence_required: [judged_by, verdict, rationale, run_id]
+
+  - id: E14
+    criterion: AC-14
+    executor: judgment
+    question: "Một phụ huynh không chuyên sư phạm, không kỹ thuật, nhìn thẻ 5 câu và dòng neo. Câu hỏi: người ấy hiểu phải điền gì và bài neo vào đâu — hay gặp từ kỹ thuật, mã khung, chữ «Stage» ở chỗ không giải thích?"
+    inputs:
+      - _acceptance/hieu-be-dang-hoc-gi/design.md
+      - _acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-dang-dien.png
+      - _acceptance/hieu-be-dang-hoc-gi/evidence/E7-neo-co-goi.png
+    evidence_required: [judged_by, verdict, rationale]
+
+  - id: E15
+    criterion: AC-15
+    executor: script
+    cmd: config:executors.design.gate
+    expected: "exit 0; sàn thẩm mỹ P0 của kho đạt trên các file giao diện vòng đụng (thẻ 5 câu, ô chọn môn, dòng neo): tương phản, tiêu điểm, bàn phím, trạng thái trống/đang tải/lỗi. Chiều đỏ: hạ tương phản một nhãn dưới ngưỡng → đỏ với thông điệp ghim tên phép đo bị trượt."
+    paths: ["components/settings/learner-profile-settings.tsx", "app/page.tsx", "components/generation/outlines-editor.tsx"]
+    evidence_required: [run_id, exit_code, verifier, verified_at, output]
+
+  - id: E16
+    criterion: AC-16
+    executor: test
+    layer: backend-effect
+    cmd: config:executors.test.api
+    expected: "exit 0; khi lớp lưu bền trả lỗi ghi, kho hồ sơ người học KHÔNG coi là đã ghi: giá trị trong kho giữ nguyên bản đang có, kênh sức khoẻ lưu bền phát trạng thái mất-thay-đổi, và không đường nào báo thành công. Chiều đỏ trên cùng fixture: cho bên ghi nuốt lỗi và trả thành công → đỏ ghim 'store dropped value on persist failure'."
+    paths: ["lib/store/learner-profile.ts", "lib/store/kv-persist.ts", "lib/store/persist-health.ts"]
+    evidence_required: [run_id, exit_code, verifier, verified_at]

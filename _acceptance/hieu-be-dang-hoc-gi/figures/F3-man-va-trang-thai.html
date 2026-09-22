@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ba màn, mười một trạng thái — thứ phụ huynh sẽ thấy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Lora:ital,wght@0,400;1,400&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper:   #f5f5f5;
+      --color-ink:     #2d3142;
+      --color-muted:   #4f5d75;
+      --color-accent:  #eb6c36;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Lora', 'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+    }
+    .frame { max-width: 1280px; width: 100%; }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.4vw + 0.75rem, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 0.5rem;
+    }
+    .sub {
+      font-size: 0.875rem;
+      color: var(--color-muted);
+      margin-bottom: 1.5rem;
+      max-width: 72ch;
+    }
+    svg { width: 100%; min-width: 960px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <p class="eyebrow">Wireflow · F3 · hiểu bé đang học gì</p>
+    <h1>Ba màn, mười một trạng thái — thứ phụ huynh sẽ thấy</h1>
+    <p class="sub">Đường suôn sẻ đi theo ba mũi tên đánh số: dòng mời trên trang chủ mở thẻ, Lưu đưa về trang chủ đã có ô «Soạn cho», Tạo mở màn xem trước với dòng neo. Mỗi màn kê đủ các trạng thái bên dưới, chữ đúng như phụ huynh sẽ đọc.</p>
+
+    <svg viewBox="0 0 1280 864" xmlns="http://www.w3.org/2000/svg" font-family="'Geist', sans-serif">
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#eb6c36"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#2e5aa8"/></marker>
+      </defs>
+
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+      <!-- ===== Journey arrows (drawn first, behind the frames) ===== -->
+      <!-- 1 · dòng mời (Trang chủ) → Thẻ 5 câu — same y, straight -->
+      <path d="M 472 164 L 376 164" fill="none" stroke="#4f5d75" stroke-width="1" marker-end="url(#arrow)"/>
+      <rect x="388" y="140" width="72" height="16" rx="2" fill="#f5f5f5"/>
+      <text x="424" y="152" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">1 · MỞ THẺ</text>
+
+      <!-- 2 · Lưu (Thẻ) → ô «Soạn cho» (Trang chủ) — r=8 elbows -->
+      <path d="M 376 332 L 388 332 A 8 8 0 0 0 396 324 L 396 224 A 8 8 0 0 1 404 216 L 472 216" fill="none" stroke="#4f5d75" stroke-width="1" marker-end="url(#arrow)"/>
+      <rect x="408" y="264" width="52" height="16" rx="2" fill="#f5f5f5"/>
+      <text x="434" y="276" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">2 · LƯU</text>
+
+      <!-- 3 · Tạo (Trang chủ) → dòng neo (Màn xem trước) — r=8 elbows -->
+      <path d="M 808 332 L 820 332 A 8 8 0 0 0 828 324 L 828 144 A 8 8 0 0 1 836 136 L 904 136" fill="none" stroke="#4f5d75" stroke-width="1" marker-end="url(#arrow)"/>
+      <rect x="840" y="228" width="52" height="16" rx="2" fill="#f5f5f5"/>
+      <text x="866" y="240" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">3 · TẠO</text>
+
+      <!-- ===== Screen 1 — Thẻ 5 câu ===== -->
+      <rect x="40" y="72" width="336" height="300" rx="6" fill="#f5f5f5"/>
+      <rect x="40" y="72" width="336" height="300" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <path d="M 40 100 L 40 78 A 6 6 0 0 1 46 72 L 370 72 A 6 6 0 0 1 376 78 L 376 100 Z" fill="#ececec"/>
+      <line x1="40" y1="100" x2="376" y2="100" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="52" y="90" fill="#2d3142" font-size="12" font-weight="600">Thẻ 5 câu</text>
+      <text x="364" y="90" fill="#636b80" font-size="10" text-anchor="end">Cài đặt › Người học</text>
+
+      <rect x="52" y="112" width="312" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="60" y="128" fill="#636b80" font-size="10">Bé tên gì?</text>
+
+      <rect x="52" y="144" width="96" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="60" y="160" fill="#636b80" font-size="10">Lớp ▾</text>
+      <rect x="156" y="144" width="208" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="164" y="160" fill="#636b80" font-size="10">Trường</text>
+
+      <!-- dòng môn 1 — có gói -->
+      <rect x="52" y="180" width="60" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="60" y="196" fill="#2d3142" font-size="10">Toán ▾</text>
+      <rect x="120" y="180" width="88" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="128" y="196" fill="#2d3142" font-size="10">Cambridge ▾</text>
+      <rect x="216" y="180" width="80" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="224" y="196" fill="#2d3142" font-size="10">Tiếng Anh ▾</text>
+      <rect x="304" y="180" width="60" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="312" y="196" fill="#636b80" font-size="10">Sách</text>
+      <text x="52" y="216" fill="#4f5d75" font-size="10">✓ có gói khung — Cambridge Lower Secondary Mathematics,</text>
+      <text x="52" y="228" fill="#4f5d75" font-size="10">Learner's Book 8</text>
+      <rect x="284" y="218" width="80" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="324" y="230" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MÔN CÓ GÓI</text>
+
+      <!-- dòng môn 2 — chưa có gói -->
+      <rect x="52" y="240" width="60" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="60" y="256" fill="#2d3142" font-size="10">Toán ▾</text>
+      <rect x="120" y="240" width="88" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="128" y="256" fill="#2d3142" font-size="10">MOET ▾</text>
+      <rect x="216" y="240" width="80" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="224" y="256" fill="#2d3142" font-size="10">Tiếng Việt ▾</text>
+      <rect x="304" y="240" width="60" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="312" y="256" fill="#636b80" font-size="10">Sách</text>
+      <text x="52" y="276" fill="#4f5d75" font-size="10">chưa có gói cho chương trình này — máy sẽ đoán</text>
+      <text x="52" y="288" fill="#4f5d75" font-size="10">và nói rõ</text>
+      <rect x="256" y="278" width="108" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="310" y="290" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MÔN CHƯA CÓ GÓI</text>
+
+      <text x="52" y="304" fill="#2d3142" font-size="10">+ thêm môn</text>
+
+      <rect x="268" y="320" width="96" height="24" rx="4" fill="#2d3142"/>
+      <text x="316" y="336" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">Lưu</text>
+
+      <!-- ===== Screen 2 — Trang chủ ===== -->
+      <rect x="472" y="72" width="336" height="300" rx="6" fill="#f5f5f5"/>
+      <rect x="472" y="72" width="336" height="300" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <path d="M 472 100 L 472 78 A 6 6 0 0 1 478 72 L 802 72 A 6 6 0 0 1 808 78 L 808 100 Z" fill="#ececec"/>
+      <line x1="472" y1="100" x2="808" y2="100" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="484" y="90" fill="#2d3142" font-size="12" font-weight="600">Trang chủ</text>
+      <text x="796" y="90" fill="#636b80" font-size="10" text-anchor="end">nơi soạn bài mỗi ngày</text>
+
+      <!-- lời chào (khung xương) -->
+      <rect x="484" y="116" width="160" height="8" rx="2" fill="rgba(45,49,66,0.12)"/>
+      <rect x="484" y="132" width="96" height="4" rx="2" fill="rgba(45,49,66,0.12)"/>
+
+      <!-- trạng thái chưa khai: dòng mời -->
+      <text x="484" y="168" fill="#2d3142" font-size="12">Soạn cho bé nhà mình? Khai 5 câu →</text>
+      <rect x="724" y="152" width="72" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="760" y="164" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CHƯA KHAI</text>
+
+      <line x1="484" y1="188" x2="796" y2="188" stroke="rgba(45,49,66,0.20)" stroke-width="0.8" stroke-dasharray="4,3"/>
+
+      <!-- trạng thái sẵn sàng: ô Soạn cho + công tắc -->
+      <rect x="484" y="204" width="256" height="24" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="492" y="220" fill="#2d3142" font-size="11">Soạn cho: Toán — Cambridge (tiếng Anh) ▾</text>
+      <rect x="752" y="206" width="40" height="20" rx="10" fill="rgba(45,49,66,0.12)"/>
+      <circle cx="782" cy="216" r="7" fill="#ffffff" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <rect x="732" y="236" width="64" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="764" y="248" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SẴN SÀNG</text>
+
+      <rect x="484" y="264" width="312" height="40" rx="2" fill="none" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="492" y="280" fill="#636b80" font-size="10">Chủ đề bài học</text>
+
+      <rect x="716" y="320" width="80" height="24" rx="4" fill="#eb6c36"/>
+      <text x="756" y="336" fill="#ffffff" font-size="12" font-weight="600" text-anchor="middle">Tạo</text>
+
+      <!-- ===== Screen 3 — Màn xem trước dàn ý (focal) ===== -->
+      <rect x="904" y="72" width="336" height="300" rx="6" fill="#f5f5f5"/>
+      <rect x="904" y="72" width="336" height="300" rx="6" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.4"/>
+      <path d="M 904 100 L 904 78 A 6 6 0 0 1 910 72 L 1234 72 A 6 6 0 0 1 1240 78 L 1240 100 Z" fill="#ececec"/>
+      <line x1="904" y1="100" x2="1240" y2="100" stroke="rgba(45,49,66,0.20)" stroke-width="0.8"/>
+      <text x="916" y="90" fill="#2d3142" font-size="12" font-weight="600">Màn xem trước dàn ý</text>
+      <text x="1228" y="90" fill="#636b80" font-size="10" text-anchor="end">trước khi vào lớp</text>
+
+      <!-- dòng neo — có gói -->
+      <rect x="916" y="120" width="312" height="32" rx="4" fill="#ffffff" stroke="#2d3142" stroke-width="1.2"/>
+      <text x="924" y="134" fill="#2d3142" font-size="11">Bài này theo Unit 3 — Tỉ lệ và tỉ số</text>
+      <text x="924" y="146" fill="#4f5d75" font-size="10">Cambridge · Learner's Book 8</text>
+      <rect x="1164" y="128" width="56" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="1192" y="140" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CÓ GÓI</text>
+
+      <text x="916" y="166" fill="#4f5d75" font-size="11" font-family="'Lora', 'Instrument Serif', serif" font-style="italic">hoặc</text>
+
+      <!-- dòng neo — đang đoán -->
+      <rect x="916" y="172" width="312" height="32" rx="4" fill="#ffffff" stroke="rgba(45,49,66,0.50)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="924" y="186" fill="#2d3142" font-size="11">⚠ chưa có gói khung cho MOET lớp 7 —</text>
+      <text x="924" y="198" fill="#4f5d75" font-size="10">máy đang đoán theo hiểu biết chung</text>
+      <rect x="1148" y="180" width="72" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="1184" y="192" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ĐANG ĐOÁN</text>
+
+      <text x="916" y="222" fill="#4f5d75" font-size="11" font-family="'Lora', 'Instrument Serif', serif" font-style="italic">hoặc không có dòng neo (hồ sơ trống) — y như hôm nay</text>
+
+      <!-- dàn ý (khung xương) -->
+      <rect x="916" y="244" width="280" height="8" rx="2" fill="rgba(45,49,66,0.12)"/>
+      <rect x="916" y="260" width="232" height="8" rx="2" fill="rgba(45,49,66,0.12)"/>
+      <rect x="916" y="276" width="264" height="8" rx="2" fill="rgba(45,49,66,0.12)"/>
+      <rect x="916" y="292" width="200" height="8" rx="2" fill="rgba(45,49,66,0.12)"/>
+
+      <rect x="916" y="320" width="96" height="24" rx="4" fill="none" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
+      <rect x="1132" y="320" width="96" height="24" rx="4" fill="#2d3142"/>
+
+      <!-- ===== State rows ===== -->
+      <!-- Column 1 — Thẻ 5 câu (6) -->
+      <text x="40" y="400" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.14em">6 TRẠNG THÁI · THẺ 5 CÂU</text>
+
+      <rect x="40" y="416" width="48" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="64" y="428" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TRỐNG</text>
+      <text x="376" y="428" fill="#4f5d75" font-size="10" text-anchor="end">→ điền tên, lớp, ít nhất 1 môn</text>
+      <text x="40" y="448" fill="#2d3142" font-size="12">5 câu trống, nút Lưu mờ, gợi ý «Bé tên gì?»</text>
+      <line x1="40" y1="456" x2="376" y2="456" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+
+      <rect x="40" y="464" width="72" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="76" y="476" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ĐANG ĐIỀN</text>
+      <text x="376" y="476" fill="#4f5d75" font-size="10" text-anchor="end">→ điền tiếp / Lưu</text>
+      <text x="40" y="496" fill="#2d3142" font-size="12">Các ô đang điền; dropdown lớp 1–12; dòng môn:</text>
+      <text x="40" y="510" fill="#2d3142" font-size="12">môn ▾ · chương trình ▾ · ngôn ngữ ▾ · sách;</text>
+      <text x="40" y="524" fill="#2d3142" font-size="12">«+ thêm môn»</text>
+      <line x1="40" y1="536" x2="376" y2="536" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+
+      <rect x="40" y="544" width="80" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="80" y="556" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MÔN CÓ GÓI</text>
+      <text x="376" y="556" fill="#4f5d75" font-size="10" text-anchor="end">→ không cần làm gì</text>
+      <text x="40" y="576" fill="#2d3142" font-size="12">«✓ có gói khung — Cambridge Lower Secondary</text>
+      <text x="40" y="590" fill="#2d3142" font-size="12">Mathematics, Learner's Book 8»</text>
+      <line x1="40" y1="600" x2="376" y2="600" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+
+      <rect x="40" y="608" width="108" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="94" y="620" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MÔN CHƯA CÓ GÓI</text>
+      <text x="376" y="620" fill="#4f5d75" font-size="10" text-anchor="end">→ chấp nhận hoặc đổi chương trình</text>
+      <text x="40" y="640" fill="#2d3142" font-size="12">«chưa có gói cho chương trình này —</text>
+      <text x="40" y="654" fill="#2d3142" font-size="12">máy sẽ đoán và nói rõ»</text>
+      <line x1="40" y1="664" x2="376" y2="664" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+
+      <rect x="40" y="672" width="56" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="68" y="684" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ĐÃ LƯU</text>
+      <text x="376" y="684" fill="#4f5d75" font-size="10" text-anchor="end">→ về trang chủ</text>
+      <text x="40" y="704" fill="#2d3142" font-size="12">Toast «đã lưu», nút Lưu mờ lại</text>
+      <line x1="40" y1="712" x2="376" y2="712" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+
+      <rect x="40" y="720" width="96" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="88" y="732" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CHƯA LƯU ĐƯỢC</text>
+      <text x="376" y="732" fill="#4f5d75" font-size="10" text-anchor="end">→ Lưu lại</text>
+      <text x="40" y="752" fill="#2d3142" font-size="12">Toast «chưa lưu được — giá trị vẫn giữ</text>
+      <text x="40" y="766" fill="#2d3142" font-size="12">trên màn»</text>
+
+      <!-- Column 2 — Trang chủ (2) -->
+      <text x="472" y="400" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.14em">2 TRẠNG THÁI · TRANG CHỦ</text>
+
+      <rect x="472" y="416" width="72" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="508" y="428" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CHƯA KHAI</text>
+      <text x="808" y="428" fill="#4f5d75" font-size="10" text-anchor="end">→ bấm mở thẻ</text>
+      <text x="472" y="448" fill="#2d3142" font-size="12">Dòng mời «Soạn cho bé nhà mình? Khai 5 câu →»</text>
+      <text x="472" y="462" fill="#2d3142" font-size="12">dưới lời chào</text>
+      <line x1="472" y1="472" x2="808" y2="472" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+
+      <rect x="472" y="480" width="64" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="504" y="492" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SẴN SÀNG</text>
+      <text x="808" y="492" fill="#4f5d75" font-size="10" text-anchor="end">→ chọn môn / gõ chủ đề</text>
+      <text x="472" y="512" fill="#2d3142" font-size="12">Ô «Soạn cho: Toán — Cambridge (tiếng Anh) ▾»</text>
+      <text x="472" y="526" fill="#2d3142" font-size="12">cạnh các công tắc</text>
+
+      <!-- Column 3 — Màn xem trước (3) -->
+      <text x="904" y="400" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.14em">3 TRẠNG THÁI · MÀN XEM TRƯỚC</text>
+
+      <rect x="904" y="416" width="56" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="932" y="428" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CÓ GÓI</text>
+      <text x="1240" y="428" fill="#4f5d75" font-size="10" text-anchor="end">→ gật, hoặc sửa dàn ý</text>
+      <text x="904" y="448" fill="#2d3142" font-size="12">«Bài này theo Unit 3 — Tỉ lệ và tỉ số ·</text>
+      <text x="904" y="462" fill="#2d3142" font-size="12">Cambridge · Learner's Book 8»</text>
+      <line x1="904" y1="472" x2="1240" y2="472" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+
+      <rect x="904" y="480" width="72" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="940" y="492" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ĐANG ĐOÁN</text>
+      <text x="1240" y="492" fill="#4f5d75" font-size="10" text-anchor="end">→ gật với dè dặt, hoặc đổi môn</text>
+      <text x="904" y="512" fill="#2d3142" font-size="12">«⚠ chưa có gói khung cho MOET lớp 7 —</text>
+      <text x="904" y="526" fill="#2d3142" font-size="12">máy đang đoán theo hiểu biết chung»</text>
+      <line x1="904" y1="536" x2="1240" y2="536" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+
+      <rect x="904" y="544" width="104" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="956" y="556" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">KHÔNG DÒNG NEO</text>
+      <text x="1240" y="556" fill="#4f5d75" font-size="10" text-anchor="end">→ như hôm nay</text>
+      <text x="904" y="576" fill="#2d3142" font-size="12">Không dòng neo (hồ sơ trống) — y như hôm nay</text>
+
+      <!-- ===== Legend ===== -->
+      <line x1="40" y1="800" x2="1240" y2="800" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <text x="40" y="816" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" letter-spacing="0.18em">CHÚ GIẢI</text>
+
+      <rect x="40" y="828" width="24" height="16" rx="2" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+      <path d="M 40 833 L 40 830 A 2 2 0 0 1 42 828 L 62 828 A 2 2 0 0 1 64 830 L 64 833 Z" fill="#ececec"/>
+      <text x="72" y="840" fill="#4f5d75" font-size="10">Màn hình</text>
+
+      <line x1="160" y1="836" x2="188" y2="836" stroke="#4f5d75" stroke-width="1" marker-end="url(#arrow)"/>
+      <text x="196" y="840" fill="#4f5d75" font-size="10">Thao tác của phụ huynh, theo số</text>
+
+      <rect x="376" y="828" width="24" height="16" rx="2" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1.4"/>
+      <text x="408" y="840" fill="#4f5d75" font-size="10">Màn đích — nơi dòng neo xuất hiện</text>
+
+      <rect x="616" y="828" width="24" height="16" rx="4" fill="#eb6c36"/>
+      <text x="648" y="840" fill="#4f5d75" font-size="10">Nút mở màn đích</text>
+
+      <rect x="760" y="828" width="48" height="16" rx="2" fill="transparent" stroke="rgba(79,93,117,0.40)" stroke-width="0.8"/>
+      <text x="784" y="840" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">NHÃN</text>
+      <text x="816" y="840" fill="#4f5d75" font-size="10">Trạng thái (11 nhãn)</text>
+
+      <rect x="952" y="828" width="24" height="16" rx="2" fill="#ffffff" stroke="rgba(45,49,66,0.50)" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="984" y="840" fill="#4f5d75" font-size="10">Biến thể thay nhau trên cùng màn</text>
+    </svg>
+  </div>
+</body>
+</html>
