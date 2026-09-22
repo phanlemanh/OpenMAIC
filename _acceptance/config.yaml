@@ -33,6 +33,24 @@ risk_tiers:
     # Thiếu dòng này thì chính commit chữ ký làm evidence stale → vòng không thoát (ADR 0007).
     # Miễn trừ CHỈ an toàn vì executors.script.product_map chạy trong CI của repo (xem bước CI bên dưới).
     - "PRODUCT-MAP.md"
+    # Bộ cổng vendored theo INIT-CI-COPY-LIST (đường dẫn ĐÍCH DANH, không glob):
+    # đây là THƯỚC ĐO, không phải product code — nâng chính cái thước không được
+    # làm hết hạn bằng chứng đã ghim, và không được tự chặn lượt nâng nó.
+    - "scripts/pre-merge-check.sh"
+    - "scripts/recheck-evidence.cjs"
+    - "scripts/product-map.mjs"
+    - "scripts/trang-thai-ho-so.cjs"
+    - "scripts/khong-can-nguoi.mjs"
+    - "lib/evidence-core.cjs"
+    - "lib/gap-probe.cjs"
+    - "lib/workspace-record.cjs"
+    - "lib/ac-line.cjs"
+    - "lib/md-section.cjs"
+    - "lib/eval-yaml.cjs"
+    - "lib/lop-nhin-thay.cjs"
+    - "lib/nhan-canh-gay.cjs"
+    - "lib/nguong-o-co-hoi.cjs"
+    - "lib/out-of-contract.cjs"
   t3_paths:
     - "middleware.ts"                 # suy từ: cổng ACCESS_CODE + gate /workbench
     - "lib/server/access-token.ts"    # suy từ: HMAC access token
