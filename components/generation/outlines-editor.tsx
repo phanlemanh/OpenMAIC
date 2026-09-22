@@ -1,6 +1,14 @@
 'use client';
 
-import { Fragment, useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import {
+  Fragment,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type ReactNode,
+} from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   Check,
@@ -45,6 +53,8 @@ interface OutlinesEditorProps {
   isStreaming?: boolean;
   /** Collapse the editor back to the preview surface (small streaming card / outline-ready). */
   onCollapse?: () => void;
+  /** Dòng neo: bài học bám vào unit nào. Vắng = không có hồ sơ hoặc không có gói. */
+  anchorLine?: ReactNode;
 }
 
 const SCENE_TYPES: SceneType[] = ['slide', 'quiz', 'interactive', 'pbl'];
@@ -118,6 +128,7 @@ export function OutlinesEditor({
   isLoading = false,
   isStreaming = false,
   onCollapse,
+  anchorLine,
 }: OutlinesEditorProps) {
   const { t } = useI18n();
   const sceneTypeLabel = useSceneTypeLabel();
@@ -286,6 +297,11 @@ export function OutlinesEditor({
           </button>
         )}
       </div>
+
+      {/* Dòng neo: đặt NGOÀI danh sách để nó hiện ngay khi biết, kể cả lúc dàn
+          ý còn đang chảy về — nó trả lời «bài này bám vào đâu», không phải một
+          mục của dàn ý. */}
+      {anchorLine ? <div className="px-3 pb-2 md:px-6">{anchorLine}</div> : null}
 
       {/* Scene list */}
       <div className="relative max-h-[64vh] overflow-y-auto px-3 pb-2 md:px-6">

@@ -18,7 +18,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import type { LearnerContext } from '@openmaic/generation';
+
 import { createKVPersistStorage, purgeLegacyPersistKey } from '@/lib/store/kv-persist';
+
+export type { LearnerContext, LearnerSubject } from '@openmaic/generation';
 
 /**
  * Bound after the store exists; see `onWriteRefused` for why it is not inlined.
@@ -26,34 +30,6 @@ import { createKVPersistStorage, purgeLegacyPersistKey } from '@/lib/store/kv-pe
  * the store would put the store back in its own definition.
  */
 const recovery: { rehydrate?: () => void | Promise<void> } = {};
-
-/**
- * Một môn bé đang học, kèm giáo trình và ngôn ngữ học môn đó.
- *
- * TẠM khai cục bộ: kiểu chuẩn `LearnerSubject`/`LearnerContext` sống ở
- * `@openmaic/generation` (task kiểu + bộ định dạng dùng chung, đang làm song
- * song). Sau khi hợp nhánh, file này nhập từ `@openmaic/generation` và xoá hai
- * khai báo dưới đây — hình dạng đã khớp đúng từng trường.
- */
-export interface LearnerSubject {
-  subject: string;
-  /** Mã giáo trình, vd 'cambridge-lower-secondary' | 'moet'. */
-  curriculum: string;
-  /** BCP-47 của ngôn ngữ học môn này, vd 'vi-VN' | 'en-US'. */
-  language: string;
-  textbook?: string;
-  /** Gói khung đã khớp. Vắng = chưa có gói → chế độ đoán. */
-  packId?: string;
-}
-
-/** Bối cảnh người học. Một bé, nhiều môn (trường tích hợp dạy song song). */
-export interface LearnerContext {
-  nickname: string;
-  /** Nhãn lớp theo hệ người dùng khai, vd 'lớp 7'. Quy đổi stage là việc của gói. */
-  gradeLabel: string;
-  school?: string;
-  subjects: LearnerSubject[];
-}
 
 /**
  * Hồ sơ đã đủ để bám giáo trình chưa.

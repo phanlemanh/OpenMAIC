@@ -335,12 +335,10 @@ export async function POST(req: NextRequest) {
       ? formatLearnerContext(requirements.learner)
       : formatLegacyProfile(requirements.userNickname, requirements.userBio);
 
-    // Thân gói khung: route TỰ tra từ hồ sơ, client không gửi. Môn đang soạn là
-    // môn đầu nếu client không nêu — hồ sơ một môn là ca thường.
-    const chosenSubject =
-      requirements.learner?.subjects?.[
-        typeof body?.subjectIndex === 'number' ? body.subjectIndex : 0
-      ];
+    // Thân gói khung: route TỰ tra từ hồ sơ, client không gửi mã gói. Môn đang
+    // soạn là môn ĐẦU danh sách — client đưa lựa chọn của người lên đầu, nên
+    // không có trường «chỉ số môn» nào để hai bên lệch nhau.
+    const chosenSubject = requirements.learner?.subjects?.[0];
     const pack =
       chosenSubject && requirements.learner
         ? findPack(chosenSubject.subject, chosenSubject.curriculum, requirements.learner.gradeLabel)

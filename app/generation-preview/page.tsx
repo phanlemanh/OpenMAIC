@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { OutlinesEditor } from '@/components/generation/outlines-editor';
+import { CurriculumAnchorLine } from '@/components/generation/curriculum-anchor-line';
 import { cn } from '@/lib/utils';
 import { useStageStore } from '@/lib/store/stage';
 import { useSettingsStore } from '@/lib/store/settings';
@@ -1307,6 +1308,19 @@ function GenerationPreviewContent() {
               isLoading={isConfirmingOutlines}
               isStreaming={isOutlineStreaming}
               onCollapse={handleCollapseEditor}
+              anchorLine={
+                <CurriculumAnchorLine
+                  anchor={session?.curriculumAnchor}
+                  guessingFor={
+                    // Chỉ nói «đang đoán» khi hồ sơ CÓ khai giáo trình mà mô
+                    // hình không trả câu neo — tức thật sự thiếu gói. Hồ sơ
+                    // trống thì không dòng nào, y như trước vòng này.
+                    !session?.curriculumAnchor && session?.requirements?.learner?.subjects?.[0]
+                      ? session.requirements.learner.subjects[0].curriculum
+                      : undefined
+                  }
+                />
+              }
             />
           </motion.div>
         </div>
