@@ -100,6 +100,7 @@ export {
   formatImageDescription,
   formatImagePlaceholder,
   formatLearnerContext,
+  formatLegacyProfile,
   formatTeacherPersonaForPrompt,
 } from './prompt-formatters.js';
 export * from './learner-types.js';

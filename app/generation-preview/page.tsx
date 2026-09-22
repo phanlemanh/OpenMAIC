@@ -25,7 +25,7 @@ import {
   fetchSceneContent,
   generateTTSForScene,
 } from '@/lib/hooks/use-scene-generator';
-import { isAbortError } from '@openmaic/generation';
+import { isAbortError, formatLearnerContext, formatLegacyProfile } from '@openmaic/generation';
 import { FOREGROUND_SCENE_RETRY_OPTIONS } from './foreground-retry';
 import {
   loadImageMapping,
@@ -559,11 +559,13 @@ function GenerationPreviewContent() {
           outlines: SceneOutline[];
           languageDirective: string;
           courseTitle?: string;
+          curriculumAnchor?: string;
           taskEngineMode: boolean;
         }>((resolve, reject) => {
           const collected: SceneOutline[] = [];
           let directive: string | undefined;
           let title: string | undefined;
+          let anchor: string | undefined;
 
           fetch('/api/generate/scene-outlines-stream', {
             method: 'POST',
@@ -610,6 +612,8 @@ function GenerationPreviewContent() {
                           directive = evt.data;
                         } else if (evt.type === 'courseTitle') {
                           title = evt.data;
+                        } else if (evt.type === 'curriculumAnchor') {
+                          anchor = evt.data;
                         } else if (evt.type === 'outline') {
                           collected.push(evt.data);
                           setStreamingOutlines([...collected]);
@@ -621,6 +625,7 @@ function GenerationPreviewContent() {
                           // inherit the previous attempt's stale values.
                           directive = undefined;
                           title = undefined;
+                          anchor = undefined;
                           setStreamingOutlines([]);
                           setStatusMessage(t('generation.outlineRetrying'));
                         } else if (evt.type === 'done') {
@@ -631,6 +636,7 @@ function GenerationPreviewContent() {
                               directive ||
                               'Teach in the language that matches the user requirement.',
                             courseTitle: evt.courseTitle || title,
+                            curriculumAnchor: anchor,
                             taskEngineMode: resolveTaskEngineModeFromOutlineDoneEvent(evt),
                           });
                           return;
@@ -955,10 +961,16 @@ function GenerationPreviewContent() {
         style: stage.style,
       };
 
+      // Khối hồ sơ cho lời giảng đến từ CÙNG bộ định dạng với prompt dàn ý và
+      // nội dung — trước vòng này chỗ đây tự ghép một dạng chữ thứ ba, nên ba
+      // đường nói ba kiểu về cùng một đứa trẻ.
       const userProfile =
-        currentSession.requirements.userNickname || currentSession.requirements.userBio
-          ? `Student: ${currentSession.requirements.userNickname || 'Unknown'}${currentSession.requirements.userBio ? ` — ${currentSession.requirements.userBio}` : ''}`
-          : undefined;
+        (currentSession.requirements.learner
+          ? formatLearnerContext(currentSession.requirements.learner)
+          : formatLegacyProfile(
+              currentSession.requirements.userNickname,
+              currentSession.requirements.userBio,
+            )) || undefined;
 
       // Generate ONLY the first scene
       store.setGeneratingOutlines(outlines);

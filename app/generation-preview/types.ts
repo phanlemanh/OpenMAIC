@@ -38,6 +38,8 @@ export interface GenerationSessionState {
   languageDirective?: string;
   // Concise course title inferred from outline generation (used as the stage name)
   courseTitle?: string;
+  /** Câu neo bằng ngôn ngữ người học: bài bám vào unit nào của gói khung. */
+  curriculumAnchor?: string;
   // Server-effective vocational mode from the outline generation done event.
   taskEngineMode?: boolean;
 }

@@ -54,6 +54,7 @@ import type {
 import { useSettingsStore } from '@/lib/store/settings';
 import { hasUsableLLMProvider } from '@/lib/store/settings-validation';
 import { useUserProfileStore, AVATAR_OPTIONS } from '@/lib/store/user-profile';
+import { useLearnerProfileStore } from '@/lib/store/learner-profile';
 import {
   StageListItem,
   listStages,
@@ -605,8 +606,12 @@ function HomePage() {
     setPreparingGenerate(true);
     try {
       const userProfile = useUserProfileStore.getState();
+      // Hồ sơ người học đi THEO YÊU CẦU: route tự tra gói khung từ nó. Vắng hồ
+      // sơ thì đường biệt-danh-và-giới-thiệu cũ chạy nguyên như trước vòng này.
+      const learner = useLearnerProfileStore.getState().learner ?? undefined;
       const requirements: UserRequirements = {
         requirement: form.requirement,
+        ...(learner ? { learner } : {}),
         userNickname: userProfile.nickname || undefined,
         userBio: userProfile.bio || undefined,
         webSearch: form.webSearch || undefined,

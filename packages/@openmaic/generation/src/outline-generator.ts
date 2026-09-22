@@ -15,6 +15,7 @@ import {
 import { uniquifyMediaElementIds } from './outline-media.js';
 import type { ImageMapping, PdfImage, SceneOutline, UserRequirements } from './outline-types.js';
 import type { AICallFn, GenerationResult } from './pipeline-types.js';
+import { formatLearnerContext, formatLegacyProfile } from './prompt-formatters.js';
 import { buildPrompt, PROMPT_IDS } from './prompts/index.js';
 
 export const DEFAULT_LANGUAGE_DIRECTIVE =
@@ -29,6 +30,8 @@ export interface OutlinePromptContext {
   videoGenerationEnabled?: boolean;
   researchContext?: string;
   teacherContext?: string;
+  /** Thân gói khung giáo trình của môn đang soạn. Rỗng = không neo vào gói nào. */
+  curriculumContext?: string;
 }
 
 export interface OutlineGenerationOptions extends Omit<
@@ -86,10 +89,11 @@ export function buildOutlinePrompt(
   const { pdfText, pdfImages } = context;
   const { availableImagesText } = buildAvailableImages(pdfImages, context);
 
-  const userProfileText =
-    requirements.userNickname || requirements.userBio
-      ? `## Student Profile\n\nStudent: ${requirements.userNickname || 'Unknown'}${requirements.userBio ? ` — ${requirements.userBio}` : ''}\n\nConsider this student's background when designing the course. Adapt difficulty, examples, and teaching approach accordingly.\n\n---`
-      : '';
+  // MỘT nguồn cho khối hồ sơ. Hồ sơ có cấu trúc thắng; vắng nó thì đường
+  // biệt-danh-và-giới-thiệu cũ vẫn chạy nguyên để không vỡ người dùng hôm nay.
+  const userProfileText = requirements.learner
+    ? formatLearnerContext(requirements.learner)
+    : formatLegacyProfile(requirements.userNickname, requirements.userBio);
 
   const imageEnabled = context.imageGenerationEnabled ?? false;
   const videoEnabled = context.videoGenerationEnabled ?? false;
@@ -101,6 +105,7 @@ export function buildOutlinePrompt(
     pdfContent: pdfText ? pdfText.substring(0, MAX_PDF_CONTENT_CHARS) : 'None',
     availableImages: availableImagesText,
     userProfile: userProfileText,
+    curriculumContext: context.curriculumContext || '',
     hasSourceImages,
     imageEnabled,
     videoEnabled,
@@ -124,7 +129,12 @@ export async function generateSceneOutlinesFromRequirements(
   aiCall: AICallFn,
   options?: OutlineGenerationOptions,
 ): Promise<
-  GenerationResult<{ languageDirective: string; courseTitle?: string; outlines: SceneOutline[] }>
+  GenerationResult<{
+    languageDirective: string;
+    courseTitle?: string;
+    curriculumAnchor?: string;
+    outlines: SceneOutline[];
+  }>
 > {
   const logger = options?.logger ?? noopGenerationLogger;
   const context: OutlinePromptContext = { ...options, pdfText, pdfImages };
@@ -144,11 +154,18 @@ export async function generateSceneOutlinesFromRequirements(
   try {
     const response = await aiCall(prompts.system, prompts.user, visionImages);
     const parsed = parseJsonResponse<
-      { languageDirective: string; courseTitle?: string; outlines: SceneOutline[] } | SceneOutline[]
+      | {
+          languageDirective: string;
+          courseTitle?: string;
+          curriculumAnchor?: string;
+          outlines: SceneOutline[];
+        }
+      | SceneOutline[]
     >(response, { logger });
 
     let languageDirective: string;
     let courseTitle: string | undefined;
+    let curriculumAnchor: string | undefined;
     let rawOutlines: SceneOutline[];
 
     if (Array.isArray(parsed)) {
@@ -159,6 +176,11 @@ export async function generateSceneOutlinesFromRequirements(
       const rawTitle = parsed.courseTitle;
       courseTitle =
         typeof rawTitle === 'string' && rawTitle.trim() ? rawTitle.trim().slice(0, 120) : undefined;
+      const rawAnchor = parsed.curriculumAnchor;
+      curriculumAnchor =
+        typeof rawAnchor === 'string' && rawAnchor.trim()
+          ? rawAnchor.trim().slice(0, 200)
+          : undefined;
       rawOutlines = parsed.outlines;
     } else {
       return { success: false, error: 'Failed to parse scene outlines response' };
@@ -179,7 +201,10 @@ export async function generateSceneOutlinesFromRequirements(
 
     const result = uniquifyMediaElementIds(enriched);
 
-    return { success: true, data: { languageDirective, courseTitle, outlines: result } };
+    return {
+      success: true,
+      data: { languageDirective, courseTitle, curriculumAnchor, outlines: result },
+    };
   } catch (error) {
     return { success: false, error: String(error) };
   }

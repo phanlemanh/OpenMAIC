@@ -140,9 +140,8 @@ describe('thứ máy kia chưa từng đặt thì để nguyên, và không bị
         return noEntry();
       }),
     );
-    const { ACCOUNT_SCOPE_STORES, reloadAccountStoresAndConfirm } = await import(
-      '@/lib/store/account-stores'
-    );
+    const { ACCOUNT_SCOPE_STORES, reloadAccountStoresAndConfirm } =
+      await import('@/lib/store/account-stores');
     const scope = await reloadAccountStoresAndConfirm();
     expect(scope.replaced, 'adoption claimed a key the other machine never wrote').toEqual([
       'settings',

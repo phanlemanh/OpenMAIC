@@ -173,3 +173,14 @@ export function formatLearnerContext(learner?: LearnerContext, packBody?: string
   const pack = packBody?.trim() ? `\n\n### Khung giáo trình\n\n${packBody.trim()}` : '';
   return `${head}\n\n${lines.join('\n')}${pack}\n\n---`;
 }
+
+/**
+ * Đường biệt-danh-và-giới-thiệu có từ TRƯỚC vòng hồ sơ người học. Sống ở đây
+ * cùng `formatLearnerContext` vì một module phải sở hữu MỌI cách dựng khối hồ
+ * sơ — ba bản chép tay rải khắp đường soạn là lý do vòng này tồn tại. Giữ
+ * nguyên TỪNG CHỮ: bài kiểm không-hồi-quy so nó với ảnh chụp trên commit nền.
+ */
+export function formatLegacyProfile(nickname?: string, bio?: string): string {
+  if (!nickname && !bio) return '';
+  return `## Student Profile\n\nStudent: ${nickname || 'Unknown'}${bio ? ` — ${bio}` : ''}\n\nConsider this student's background when designing the course. Adapt difficulty, examples, and teaching approach accordingly.\n\n---`;
+}

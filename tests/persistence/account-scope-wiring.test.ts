@@ -71,7 +71,9 @@ describe('mọi kho phạm vi account đều được nạp lại khi nhận', (
       readFileSync(join(dir, `${file}.ts`), 'utf8').match(/\n\s*name:\s*'([^']+)'/)?.[1] ?? null;
     const declaredNames = declared.map((f) => ({ file: f, persistName: persistNameOf(f) }));
     const unnamed = declaredNames.filter((d) => !d.persistName).map((d) => d.file);
-    expect(unnamed, `account-scope store without a persist name: ${unnamed.join(', ')}`).toEqual([]);
+    expect(unnamed, `account-scope store without a persist name: ${unnamed.join(', ')}`).toEqual(
+      [],
+    );
 
     const { ACCOUNT_SCOPE_STORES } = await import('@/lib/store/account-stores');
     const registered = new Set(Object.values(ACCOUNT_SCOPE_STORES).map((s) => s.persistName));

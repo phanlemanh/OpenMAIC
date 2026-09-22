@@ -1,3 +1,4 @@
+import type { LearnerContext } from '@openmaic/generation';
 /**
  * Generation Types - Two-Stage Content Generation System
  *
@@ -98,8 +99,15 @@ export interface UploadedDocument {
  * Simplified user requirements for course generation
  * All details (topic, duration, style, etc.) should be included in the requirement text
  */
+
 export interface UserRequirements {
   requirement: string; // Single free-form text for all user input
+  /**
+   * Bối cảnh người học có cấu trúc. Gương của `LearnerContext` trong
+   * @openmaic/generation — kho giữ HAI bản kiểu song song cho cùng một hợp
+   * đồng, nên trường nào thêm ở một bên phải thêm cả bên kia.
+   */
+  learner?: LearnerContext;
   userNickname?: string; // Student nickname for personalization
   userBio?: string; // Student background for personalization
   webSearch?: boolean; // Enable web search for richer context
