@@ -1,80 +1,83 @@
 E7 — network evidence for AC-7 (curriculumAnchor SSE event in the outline stream)
-RE-VERIFIED round 2, independent verifier session, 2026-09-22.
-Repo sha at test time: 409cc620 (post round-1 fixes) + uncommitted _acceptance/.../s4-args.json only.
-Dev server: `pnpm dev` (config.yaml dev_server.start, unmodified) on http://localhost:3002.
+RE-VERIFIED round 3, independent verifier session, 2026-09-22.
+Repo sha at test time: 09acf1dc "fix(hieu-be-dang-hoc-gi): bốn lỗi vòng nghiệm thu thứ hai,
+và gỡ điều kiện ngầm" (working tree also has the unrelated, pre-existing uncommitted diff
+in _acceptance/hieu-be-dang-hoc-gi/s4-args.json only — no product code touched).
+Dev server: `pnpm dev` (config.yaml dev_server.start, unmodified: PORT=3002,
+NEXT_PUBLIC_MAIC_EDITOR_ENABLED=true, NEXT_PUBLIC_PI_CHAT_ENABLED=true,
+NEXT_PUBLIC_COURSEWARE_REFERENCE_ENABLED=true, NEXT_PUBLIC_PERSISTENCE=1) on
+http://localhost:3002. Model key present server-side via .env.local ANTHROPIC_API_KEY /
+OPENAI_API_KEY (model used: openai:gpt-5.6, per server log "[Agent Profiles API] ...
+[model=openai:gpt-5.6]" and the outline system prompt run).
 Driver: Claude Browser pane, mcp__Claude_Browser__read_network_requests(requestId=<the POST>).
 
-=== Run A (profile: Bé Minh, lớp 7, Toán, Cambridge Lower Secondary, English; prompt "tỉ lệ và tỉ số") ===
+=== Setup note ===
+Before this run, verifier cleared this origin's localStorage/sessionStorage and deleted the
+"MAIC-Database" IndexedDB database (via javascript_tool), then reloaded. This was necessary
+because KVPersist's own "restore last saved version" behavior (a pre-existing consequence of
+dev_server.start's NEXT_PUBLIC_PERSISTENCE=1 flag with no DATABASE_URL/PERSISTENCE_DEV_TOKEN
+configured — see config.yaml comment on that flag) had, earlier in this same verifier session,
+overwritten an in-progress Cambridge profile with a stale MOET profile left over from an
+earlier acceptance round (E1) that used the same browser origin. After the clear, the profile
+setup (Bé Minh, lớp 7, Toán, Cambridge Lower Secondary, English) held correctly through to
+generation. This is an environment/config-gap workaround, not a change to product code.
+
+=== Run (profile: Bé Minh, lớp 7, Toán, Cambridge Lower Secondary, English;
+     prompt "tỉ lệ và tỉ số"; outline review opened early via "Tap to review") ===
 Request: POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK
-Full raw SSE body fetched via read_network_requests after the stream reached "done".
+Full raw SSE body fetched via read_network_requests(requestId) once
+sessionStorage.generationSession.previewPhase confirmed "review" with a non-null
+curriculumAnchor (i.e. once the stream had reached "done").
 
-Relevant lines (exact bytes as the tool returned them — the tool's own transport re-encodes
-non-ASCII as mojibake, e.g. "â€”" = "—", "Ã¡" = "á"; the browser's own DOM and
-sessionStorage — queried separately via javascript_tool, which is NOT subject to this transport
-bug — show the correctly-rendered UTF-8 string, quoted clean below):
+Exact event sequence in the SSE body (types only, in order):
+  languageDirective (English-primary, Cambridge terms kept in English)
+  courseTitle: "Ratio and Proportion"
+  outline x10 (scene_1 .. scene_10, each event's own "data.title"/"data.description"/etc.)
+  curriculumAnchor  <-- dedicated top-level SSE event type, distinct from the per-scene fields
+  done (outlines: [...10 scenes...])
 
-  data: {"type":"languageDirective","data":"Deliver the course primarily in clear ... English ..."}
-  data: {"type":"courseTitle","data":"Ratio and Proportion"}
-  data: {"type":"outline","data":{"id":"scene_1",...,"curriculumAnchor":"Unit 12 â€” Ratio and
-    proportion, sÃ¡ch Cambridge Lower Secondary Mathematics Learner's Book 8."},"index":0}
-  ... (8 more "outline" events, scene_2..scene_9) ...
-  data: {"type":"curriculumAnchor","data":"Unit 12 â€” Ratio and proportion, sÃ¡ch Cambridge Lower
-    Secondary Mathematics Learner's Book 8."}
-  data: {"type":"done","outlines":[... 9 outlines ...]}
+Raw bytes for the curriculumAnchor line (the tool's own transport re-encodes non-ASCII as
+mojibake, e.g. "â€”" = "—", "sÃ¡ch" = "sách" — confirmed clean via sessionStorage/DOM below):
 
-Clean value (read from sessionStorage.generationSession.curriculumAnchor in the live tab right
-after "done", i.e. what the UI actually renders — this is the value asserted in E7-neo-co-goi.html,
-data-state="ST-neo-co-goi"):
+  data: {"type":"curriculumAnchor","data":"Unit 12 â€” Ratio and proportion, sÃ¡ch Cambridge
+  Lower Secondary Mathematics Learner's Book 8."}
+
+Clean value (read from sessionStorage.generationSession.curriculumAnchor via javascript_tool,
+i.e. exactly what the UI renders — this is the value asserted in E7-neo-co-goi.html,
+data-state="ST-neo-co-goi", and it matches the live DOM's <span> text byte-for-byte):
   "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8."
 
-=== Run B (same profile; prompt again "tỉ lệ và tỉ số", separate tab, separate generation) ===
-Request: POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK
-This run's languageDirective happened to pick primarily-Vietnamese delivery (model's own choice for
-a grade-7 VN-context learner) — 10 scenes, courseTitle "Tỉ số và tỉ lệ". Full raw body captured
-(response body was available this time because the request had just completed):
-
-  data: {"type":"languageDirective","data":"Giảng dạy chủ yếu bằng tiếng Việt ... (mojibake in raw
-    capture, decoded via sessionStorage below)"}
-  data: {"type":"courseTitle","data":"Tỉ số và tỉ lệ"}
-  data: {"type":"outline","data":{"id":"scene_1","type":"slide","title":"Pha nước theo đúng vị",
-    ...,"curriculumAnchor":"Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary
-    Mathematics Learner's Book 8, là nơi bài học này bám vào."},"index":0}
-  ... (9 more "outline" events, scene_2..scene_10) ...
-  data: {"type":"curriculumAnchor","data":"Unit 12 — Ratio and proportion, sách Cambridge Lower
-    Secondary Mathematics Learner's Book 8, là nơi bài học này bám vào."}
-  data: {"type":"done","outlines":[... 10 outlines ...]}
-
-Clean value (sessionStorage.generationSession.curriculumAnchor, exact UTF-8, no transport mangling):
-  "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8, là
-  nơi bài học này bám vào."
-
 === ASSERTION ===
-A dedicated SSE event of type "curriculumAnchor" (distinct from the per-scene "outline" events,
-which also embed the same string in each scene's own curriculumAnchor field) IS present in the
-outline stream, in BOTH independent runs.
-Content check: unit name ("Unit 12 — Ratio and proportion") stands FIRST in both runs; book name
-follows; NO framework code (no "Stage", no raw packId "cambridge-lower-secondary-maths-8") opens
-the sentence; both sentences are grammatical, human-readable.
+A dedicated SSE event of type "curriculumAnchor" (distinct from the per-scene "outline" events)
+IS present in the outline stream.
+Content check: unit name ("Unit 12 — Ratio and proportion") stands FIRST; book name follows;
+NO framework code (no "Stage", no raw packId "cambridge-lower-secondary-maths-8") opens the
+sentence; the sentence is grammatical and human-readable, matching the learner's language
+(English, per languageDirective for this run).
 => PASS.
 
 === NETWORK TRUTH (scope: dev_server.url http://localhost:3002, no api_base declared) ===
-FAIL-eligible request in this flow (POST /api/generate/scene-outlines-stream, both runs) -> 200 OK.
-No 4xx/5xx on this route in either run.
+FAIL-eligible request in this flow: POST /api/generate/scene-outlines-stream -> 200 OK.
+No 4xx/5xx on this route in the run whose body is quoted above.
 
-Out-of-scope note (not counted as FAIL for E7, which is scoped to scene-outlines-stream only, but
-recorded for completeness — same root cause the round-1 evidence already flagged):
-  GET /api/persistence/kv/entries/{learner-profile-storage,settings-storage,user-profile-storage}
-  -> 404 "server persistence not configured", repeating on every KV read for the whole session.
-  Root cause: dev_server.start sets NEXT_PUBLIC_PERSISTENCE=1 but .env.local has no DATABASE_URL /
-  PERSISTENCE_DEV_TOKEN, so the account-scope HttpKVStore backend is simply absent — this is a
-  pre-existing environment/config gap, not a scene-outlines-stream (AC-7) regression. It DOES mean
-  the outer Settings-dialog footer "Save" silently no-ops (in-memory state never updates); the inner
-  per-section Learner "Save" button (learner-profile-settings.tsx onSave) still updates the
-  in-memory zustand store correctly (confirmed: "Building for:" picker on the home page reflected
-  "Toán — Cambridge Lower Secondary (English)" right after clicking it), even though it also shows a
-  red "Couldn't save — what you typed is still here. Try again." card, which is correct-by-design
-  given the missing backend, not a bug in AC-7's flow.
+Out-of-scope notes (not counted as FAIL for E7, which is scoped to scene-outlines-stream;
+recorded for completeness, same root cause round 1/2 evidence already flagged):
+  - GET /api/persistence/kv/entries/{learner-profile-storage,settings-storage,
+    user-profile-storage} -> 404 "server persistence not configured", repeating throughout
+    the session. Root cause: dev_server.start sets NEXT_PUBLIC_PERSISTENCE=1 but .env.local
+    has no DATABASE_URL/PERSISTENCE_DEV_TOKEN, so the account-scope HttpKVStore backend is
+    absent — pre-existing environment/config gap, not a scene-outlines-stream (AC-7)
+    regression.
+  - GET /api/persistence/documents/<id> -> 404 and GET /api/stages, /api/folders -> 404: same
+    root cause, hit only by the DOWNSTREAM classroom-save/listing code paths (after outline
+    confirmation), not by the outline-stream route this eval measures.
+  - Earlier attempts in this same verifier session (before the profile mix-up above was
+    diagnosed and the storage was cleared) show one net::ERR_ABORTED scene-outlines-stream
+    request — that is this verifier's OWN abort (component unmount / re-navigation during
+    diagnosis, via the app's "abort in-flight request on unmount" cleanup at
+    app/generation-preview/page.tsx), not a server-side failure, and it is superseded by the
+    clean 200 OK run quoted above.
 
-networkObserved = clean (scene-outlines-stream route only; the persistence 404s are a documented,
-known-cause, out-of-scope condition per the config gap above, not an app-origin failure of the
-route being measured for E7).
+networkObserved = clean (scene-outlines-stream route only; the persistence 404s are a
+documented, known-cause, out-of-scope condition per the config gap above, not an app-origin
+failure of the route being measured for E7).

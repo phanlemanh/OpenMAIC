@@ -1,48 +1,61 @@
-E8b network truth — raw dump (independent verifier, fresh run)
+E8b network truth — raw dump (independent verifier, round 3, fresh run)
 dev_server.url (config.yaml) = http://localhost:3002 ; no api_base declared (comment: same origin)
 Scope rule: FAIL-eligible = XHR/fetch to http://localhost:3002/** (app origin). No third-party
-calls observed in this flow. Static assets (_next/static/**, fonts, __nextjs_* devtools RPCs)
-noted only, not FAIL-eligible.
+calls observed in this flow. Static assets (_next/static/**, fonts, favicon, __nextjs_* devtools
+RPCs) noted only, not FAIL-eligible.
 
-=== FAIL-eligible requests observed (app origin, non-2xx) ===
-GET http://localhost:3002/api/stages                                  -> 404 Not Found  (repeated, every poll)
-GET http://localhost:3002/api/folders                                 -> 404 Not Found  (repeated, every poll)
-GET http://localhost:3002/api/persistence/kv/entries/settings-storage        -> 404 Not Found  (repeated)
-GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage -> 404 Not Found  (repeated)
-GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage    -> 404 Not Found  (repeated)
+Server: pre-existing `next dev` process already listening on :3002 (port had a server; reused per
+rule, not started/stopped by this verification run). Confirmed via the UI's own toasts and via
+console errors that this instance has NEXT_PUBLIC_PERSISTENCE=1 set client-side (same as
+dev_server.start in config.yaml), matching the flags this eval's steps call for.
+
+=== FAIL-eligible requests observed (app origin, non-2xx), repeated throughout the flow ===
+GET http://localhost:3002/api/stages                                          -> 404 Not Found
+GET http://localhost:3002/api/folders                                         -> 404 Not Found
+GET http://localhost:3002/api/persistence/kv/entries/settings-storage         -> 404 Not Found
+GET http://localhost:3002/api/persistence/kv/entries/learner-profile-storage  -> 404 Not Found
+GET http://localhost:3002/api/persistence/kv/entries/user-profile-storage     -> 404 Not Found
 
 === FAIL-eligible requests observed OK ===
-GET http://localhost:3002/api/server-providers    -> 200 OK
-GET http://localhost:3002/api/comfyui-workflows    -> 200 OK
-GET http://localhost:3002/api/access-code/status   -> 200 OK
-GET http://localhost:3002/api/curriculum-packs     -> 200 OK
+GET  http://localhost:3002/api/server-providers      -> 200 OK
+GET  http://localhost:3002/api/comfyui-workflows      -> 200 OK
+GET  http://localhost:3002/api/access-code/status     -> 200 OK
+GET  http://localhost:3002/api/curriculum-packs       -> 200 OK (fixture: only Toán/cambridge-lower-secondary — confirms MOET genuinely has no pack)
+POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK (the call this eval exercises)
 
-=== Console errors correlating with the 404s (onlyErrors=true) ===
-[KVPersist] Could not read "settings-storage" from the KV account scope:
-  HttpKVStoreError: server persistence not configured
-[KVPersist] Could not read "learner-profile-storage" from the KV account scope:
-  HttpKVStoreError: server persistence not configured
-[KVPersist] Could not read "user-profile-storage" from the KV account scope:
-  HttpKVStoreError: server persistence not configured
-[KVPersist] Giving up on recovering "settings-storage"/"learner-profile-storage"/"user-profile-storage"
-  after 3 attempts; storage stays read-only until something outside this session changes
-[KVPersist] Refusing to persist "settings-storage" while its storage is unavailable. Changes made
-  in this session are not being saved.
-[StageStorage] Failed to list stages: Error: Failed to list owner stages: HTTP 404
-[Home] Failed to load classrooms: Error: Failed to list owner stages: HTTP 404
-[Home] Failed to load folders: Error: Failed to list owner folders: HTTP 404
+=== Console errors correlating with the 404s (onlyErrors=true), captured during this run ===
+[KVPersist] Could not read "settings-storage"/"learner-profile-storage"/"user-profile-storage"
+  from the KV account scope: HttpKVStoreError: server persistence not configured
+[KVPersist] Giving up on recovering "<key>" after 3 attempts; storage stays read-only until
+  something outside this session changes
+[KVPersist] Refusing to persist "learner-profile-storage" while its storage is unavailable.
+  Changes made in this session are not being saved.
+(StageStorage/Home "Failed to list stages"/"Failed to load folders" also observed earlier in this
+  same session on the home route, same HTTP 404 root cause.)
 
 === Server-side root cause (read from source, not guessed) ===
 app/api/persistence/[...path]/route.ts:324
   return jsonError(404, 'PERSISTENCE_NOT_CONFIGURED', 'server persistence not configured');
 => dev_server.start sets NEXT_PUBLIC_PERSISTENCE=1 (client believes account-scope persistence is
    on) but the server-side persistence backend itself is NOT configured in this dev environment,
-   so every KV/account read/write 404s. This is a real, reproducible, app-origin failure — not a
-   third-party or static-asset call, and not declared in E8b's Expected text.
+   so every KV/account read/write 404s, and /api/stages, /api/folders (which read through the same
+   owner-scoped path) 404 too. This is unchanged from round 2 (see the fix commit 09acf1dc's
+   message, which lists four fixes — none of them touch app/api/persistence/[...path]/route.ts or
+   dev_server.start's env flags): a real, reproducible, app-origin failure, not a third-party or
+   static-asset call, and not declared anywhere in E8b's Expected text.
+
+Side effect observed this round: the periodic KV recovery/rehydrate loop this failure triggers
+intermittently overwrites the in-memory learner profile with the (empty) "last known good" server
+state mid-session — required redoing the Settings > Learner save + Enter Classroom sequence
+several times before one run's generation call landed before the next rehydrate fired. The
+eventual capture (evidence/E8b-step2.html) is from a run where the POST to
+/api/generate/scene-outlines-stream carried the correct Toán/moet/vi-VN learner and rendered the
+anchor before any subsequent rehydrate could disturb it.
 
 === Verdict per network-truth rule ===
-FAIL-eligible 4xx present, not declared by E8b's Expected -> networkObserved = "app-fail".
-This is UNRELATED to the AC-8 curriculum-anchor line itself (verified separately via DOM:
-exactly one [data-state^="ST-neo"], value "ST-neo-dang-doan", correct warning text + curriculum
-name) — but the network-truth rail is mechanical and does not carve out "unrelated" failures.
-Per rule ("KE CA khi frame dep"), this alone forces exitCode != 0 for this eval run.
+FAIL-eligible 4xx present (stages/folders/persistence-kv, all app-origin), not declared by E8b's
+Expected -> networkObserved = "app-fail". This is UNRELATED to the AC-8 curriculum-anchor line
+itself (verified separately via DOM: exactly one [data-state^="ST-neo"], value
+"ST-neo-dang-doan", correct warning text + curriculum name "MOET") — but the network-truth rail is
+mechanical and does not carve out "unrelated" failures. Per rule ("KE CA khi frame dep"), this
+alone forces exitCode != 0 for this eval run, same as round 2's independent finding.

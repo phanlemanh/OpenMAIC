@@ -2,7 +2,7 @@
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
-    <title>E7 evidence — round 2 (fresh verify, independent of doer)</title>
+    <title>E7 evidence — round 3 (fresh verify, independent of doer)</title>
     <style>
       body {
         font:
@@ -26,6 +26,10 @@
         border-color: rgba(34, 197, 94, 0.5);
         background: rgba(34, 197, 94, 0.06);
       }
+      .warn {
+        border-color: rgba(234, 179, 8, 0.5);
+        background: rgba(234, 179, 8, 0.06);
+      }
       .frame {
         background: #141726;
         border: 1px solid #2a2e42;
@@ -39,22 +43,40 @@
   </head>
   <body>
     <div class="note pass">
-      RE-VERIFIED round 2 (mã nguồn sau commit 409cc620 "fix(hieu-be-dang-hoc-gi): ba lỗi vòng
-      nghiệm thu thứ nhất tìm ra"). Verifier này ĐỘC LẬP với doer, chạy `pnpm dev` thật (PORT=3002),
-      dùng Browser pane để: mở /, mở Settings → Learner, khai hồ sơ (Bé Minh, lớp 7, Toán, Cambridge
-      Lower Secondary, English) → gõ "tỉ lệ và tỉ số" vào ô soạn (ô «Building for:» xác nhận
-      "Toán — Cambridge Lower Secondary (English)") → Enter Classroom → đợi luồng SSE dàn ý hoàn tất
-      (9 scenes) → đọc DOM thật bằng javascript_tool ngay tại màn xem trước dàn ý.
+      RE-VERIFIED round 3, independent verifier session, 2026-09-22, mã nguồn tại
+      09acf1dc "fix(hieu-be-dang-hoc-gi): bốn lỗi vòng nghiệm thu thứ hai, và gỡ điều
+      kiện ngầm" (bao gồm sửa CURRICULUM_ANCHOR_MAX / bỏ normalizeStreamedTitle cắt
+      cụt câu neo, và hệ thống prompt khai rõ khoá curriculumAnchor thứ tư).
+      Verifier ĐỘC LẬP với doer, chạy `pnpm dev` thật (PORT=3002, dev_server.start
+      trong config.yaml, KHÔNG sửa), dùng Browser pane để: xoá sạch
+      localStorage/IndexedDB của origin (tránh hồ sơ MOET còn sót từ các phép đo E1
+      trước đó rò vào phiên mới qua "khôi phục theo bản đã lưu cuối" của
+      KVPersist — xem GHI CHÚ MÔI TRƯỜNG bên dưới) → tải lại trang sạch → mở Settings
+      → Learner, khai hồ sơ (Bé Minh, lớp 7, Toán, Cambridge Lower Secondary, English)
+      → ô «Building for:» xác nhận đúng "Toán — Cambridge Lower Secondary (English)"
+      → gõ "tỉ lệ và tỉ số" vào ô soạn → Enter Classroom → bấm "Tap to review" giữa
+      lúc dàn ý đang stream (mở màn xem trước sớm) → đợi luồng SSE dàn ý hoàn tất
+      (10 scenes, previewPhase vẫn "review", CHƯA điều hướng đi đâu) → đọc DOM thật
+      bằng javascript_tool NGAY tại màn xem trước dàn ý, đồng thời đọc thân SSE thô
+      qua read_network_requests(requestId).
 
-      GHI CHÚ MÔI TRƯỜNG (không phải lỗi AC-7): dev_server.start khai NEXT_PUBLIC_PERSISTENCE=1
-      nhưng .env.local không có DATABASE_URL/PERSISTENCE_DEV_TOKEN, nên KVPersist tự báo "Giving up
-      on recovering ... storage stays read-only" ngay lúc tải trang, và nút Save NGOÀI (footer dialog
-      Settings) không lưu được gì. Nút Save NHỎ bên trong mục Learner (ngay dưới Subjects — gọi
-      onSave() của learner-profile-settings.tsx) vẫn set state ĐÚNG trong bộ nhớ (zustand `set()`
-      chạy trước khi kiểm tra "landed", không phụ thuộc backend), dù card báo đỏ "Couldn't save —
-      what you typed is still here. Try again." — đây là hành vi ĐÚNG THIẾT KẾ của lớp persistence
-      khi backend chưa cấu hình, tách biệt khỏi luồng E7. Sau khi bấm đúng nút Save đó, ô «Building
-      for:» trên trang chủ hiện đúng "Toán — Cambridge Lower Secondary (English)".
+      GHI CHÚ MÔI TRƯỜNG (không phải lỗi AC-7, đã ghi từ vòng 1 và 2):
+      dev_server.start khai NEXT_PUBLIC_PERSISTENCE=1 nhưng .env.local không có
+      DATABASE_URL/PERSISTENCE_DEV_TOKEN nên backend KV phía account không tồn tại
+      — mọi đọc/ghi KVPersist 404 "server persistence not configured", nút Save
+      NGOÀI báo đỏ "Couldn't save", và trang GET /api/persistence/kv/... liên tục
+      404. Quan sát MỚI ở vòng 3 (không phải hồi quy của bản sửa E7): với cấu hình
+      NÀY, KVPersist thỉnh thoảng tự "khôi phục theo bản đã lưu cuối" giữa phiên
+      (toast "Storage is working again... replaced by the last saved version"),
+      và nếu trình duyệt còn dữ liệu IndexedDB/localStorage từ MỘT phép đo TRƯỚC đó
+      trên cùng origin (vd hồ sơ MOET của E1), bản khôi phục ấy có thể ghi đè hồ sơ
+      đang gõ giữa chừng, hoặc kèm một lượt điều hướng về Home. Đây là hệ quả của
+      cấu hình backend thiếu (đã khai trong config.yaml), không phải của mã
+      scene-outlines-stream / generation-preview mà AC-7 chấm — verifier tránh nó
+      bằng cách xoá sạch storage trước khi đo (localStorage.clear() +
+      indexedDB.deleteDatabase cho "MAIC-Database"), và sau khi xoá, phiên đo chạy
+      ổn định: previewPhase ở "review" xuyên suốt từ lúc mở màn xem trước tới lúc
+      đọc DOM/network dưới đây, không bị đá về Home.
     </div>
 
     <div class="frame">
@@ -62,30 +84,18 @@
         <div
           style="text-transform: uppercase; letter-spacing: 0.2em; font-size: 11px; color: #9ca3af"
         >
-          ✨ AI-generated outline
+          ✨ AI-GENERATED OUTLINE
         </div>
         <h2 style="font-size: 24px; font-weight: 600; margin: 4px 0">Scene outline</h2>
         <p style="color: #9ca3af; font-size: 14px">
-          9 scenes total. You can edit, add, remove, or reorder them before generation starts.
+          10 scenes total. You can edit, add, remove, or reorder them before generation starts.
         </p>
       </div>
       <div style="padding: 0 0 8px">
-        <p
-          data-state="ST-neo-co-goi"
-          style="
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            border: 1px solid rgba(148, 163, 184, 0.25);
-            background: rgba(148, 163, 184, 0.08);
-            border-radius: 8px;
-            padding: 8px 12px;
-            font-size: 14px;
-          "
-        >
-          📖
-          <span>Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8.</span>
-        </p>
+        <!-- outerHTML below is copy-pasted VERBATIM from
+             document.querySelector('[data-state^="ST-neo"]').outerHTML,
+             read live via javascript_tool at the moment captured above. -->
+        <p data-state="ST-neo-co-goi" class="flex items-start gap-2 rounded-md border bg-muted/40 px-3 py-2 text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true"><path d="M12 7v14"></path><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path></svg><span>Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8.</span></p>
       </div>
     </div>
 
@@ -93,22 +103,21 @@
       QUAN SÁT (đọc trực tiếp từ DOM sống bằng
       <code>document.querySelector('[data-state^="ST-neo"]')</code>, không suy diễn):
 
-      • <code>data-state === "ST-neo-co-goi"</code> — đúng trạng thái "có gói", KHÔNG còn kẹt ở
-      "ST-neo-dang-doan" như vòng 1.
-      • Nội dung dòng neo: "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary
-      Mathematics Learner's Book 8." — TÊN UNIT ("Unit 12 — Ratio and proportion") đứng TRƯỚC, tên
-      sách theo sau, KHÔNG có mã khung (không "Stage", không packId thô) mở đầu câu. Câu đọc được,
-      có nghĩa (không phải chuỗi kỹ thuật).
-      • Đối chiếu với sessionStorage.generationSession.curriculumAnchor tại đúng thời điểm chụp:
-      giá trị KHỚP 100% với dòng hiển thị trên DOM — xác nhận UI không rơi rớt giá trị model trả
-      (khác vòng 1, nơi giá trị bị tính xong rồi bỏ khi dựng updatedSession).
-      • Lặp lại lần 2 với input tiếng Việt thuần (tab riêng, xem E7-network.txt): kết quả anchor
-      "Unit 12 — Ratio and proportion, sách Cambridge Lower Secondary Mathematics Learner's Book 8,
-      là nơi bài học này bám vào." — cùng cấu trúc (tên unit trước, tên sách sau, không mã), ổn định
-      qua nhiều lượt sinh khác nhau.
-
-      => AC-7 PASS: khung ST-neo-co-goi phủ đúng, đọc được, tên unit đứng trước, không mã đứng
-      trước.
+      • <code>data-state === "ST-neo-co-goi"</code> — đúng trạng thái "có gói".
+      • Nội dung dòng neo: "Unit 12 — Ratio and proportion, sách Cambridge Lower
+      Secondary Mathematics Learner's Book 8." — TÊN UNIT ("Unit 12 — Ratio and
+      proportion") đứng TRƯỚC, tên sách theo sau, KHÔNG có mã khung (không
+      "Stage", không packId thô "cambridge-lower-secondary-maths-8") mở đầu câu.
+      Câu đọc được bằng ngôn ngữ người học (tiếng Anh + "sách" tiếng Việt cho tên
+      sách), đúng luật "tên unit đứng trước, không mã đứng trước".
+      • Dòng neo nằm ở ĐẦU khối dàn ý, ngay dưới tiêu đề "Scene outline" / "10
+      scenes total..." — đúng vị trí kỳ vọng.
+      • sessionStorage.generationSession.curriculumAnchor (đọc qua javascript_tool
+      ngay lúc luồng SSE báo "done", KHÔNG lấy từ trí nhớ) khớp CHÍNH XÁC với chuỗi
+      hiển thị trên DOM ở trên — không có lệch giữa dữ liệu và màn.
+      • previewPhase vẫn "review" tại thời điểm đọc — outline đã sinh xong VÀ dòng
+      neo đã hiện, đúng chiều PASS của luật "dàn ý sinh xong mà không dòng neo dù
+      mô hình đã trả curriculumAnchor" — ở đây dòng neo CÓ hiện.
     </div>
   </body>
 </html>

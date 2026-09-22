@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-22T13:01:00Z",
-  "generated_sha": "409cc620cfa9bbebd15838cc95db83dd324c6c54",
+  "generated_at": "2026-09-22T13:57:54Z",
+  "generated_sha": "09acf1dca699b8b086f90646be66cc2796671447",
   "mainBranchInfo": {
     "branch": "main",
     "source": "remote"
   },
   "slug": "hieu-be-dang-hoc-gi",
-  "round": 2,
+  "round": 3,
   "riskTier": "T2",
   "evals": [
     {
@@ -359,7 +359,7 @@
     {
       "id": "E13gen",
       "criterion": "AC-13",
-      "cmd": "./scripts/with-pinned-node.sh node scripts/gen-dan-y-mu.mjs",
+      "cmd": "./scripts/with-dev-server.sh ./scripts/with-pinned-node.sh node scripts/gen-dan-y-mu.mjs",
       "expected": "\"exit 0; CẦN một máy chủ đang chạy đã khai khoá nhà cung cấp (mặc định http://localhost:3002, khớp dev_server.url); không có thì script thoát 2 và nói rõ thiếu gì, không dựng dữ liệu giả. Sinh HAI dàn ý bằng cách gọi CHÍNH tuyến HTTP mà trang chủ gọi — nên nó chứng luôn cả đường route tra gói khung, cùng đề «tỉ lệ và tỉ số», cùng hồ sơ bé lớp 7 — một lượt CÓ gói Cambridge, một lượt KHÔNG — ghi ra evidence/E13-dan-y-A.md và evidence/E13-dan-y-B.md với mã lượt chạy ở dòng đầu mỗi tệp và thứ tự A/B xáo ngẫu nhiên (bản ghi nào là bản nào nằm ở evidence/E13-khoa.txt, hội đồng KHÔNG đọc tệp khoá). Chiều đỏ: cho cả hai lượt cùng đi đường không-gói → đỏ ghim 'both outlines generated without a curriculum pack'.\"",
       "executor": "script",
       "expectedExit": 0,
@@ -395,7 +395,7 @@
         "rationale",
         "run_id"
       ],
-      "inputsHash": "5a9d484be1967cb7a58d86643d6141aa277d2d057db4f3a2fb6de901b0c08b52"
+      "inputsHash": "13231e005fe37c644e6f25b0568fa98cef50fb2c2ef10c60364f142cfb880a54"
     },
     {
       "id": "E14",
@@ -413,7 +413,7 @@
         "verdict",
         "rationale"
       ],
-      "inputsHash": "8ede4c5fa6658c4f980475622216819d01a00510046061bc68099f93888956c4"
+      "inputsHash": "1817ba8ca700121721763f041502721f037cd42bf21becbdc84e95911d5af2eb"
     },
     {
       "id": "E15",
@@ -467,8 +467,8 @@
   "templatePath": "/Users/manhphan/.claude/plugins/cache/acceptance-gate-kit/acceptance-gate/2.18.1/skills/acceptance/references/evidence-report-template.md",
   "toolKillRule": "# TOOL-KILL-RULE — lệnh bị công cụ ngắt KHÔNG phải lệnh fail\n\n**Nguồn duy nhất** của luật «hết giờ không phải trượt» cho MỌI đường chạy lệnh\nkiểm của kit. Hai đường tiêu thụ, cùng đọc khối marker dưới đây, không chép tay:\n\n- **Vòng lặp tính năng** (plugin feature-loop): skill `feature-loop` đọc file này\n  (resolve qua `resolve-plugin.mjs --require skills/acceptance/references/tool-kill-rule.md`)\n  và truyền NGUYÊN VĂN vào `args.toolKillRule` của workflow\n  `acceptance-verify.js`; workflow rút khối marker và nội suy vào prompt của mọi\n  agent chạy lệnh (machine · ui-check · baseline). Thiếu args hoặc không rút\n  được marker → workflow trả BLOCKED có tên, không chạy không luật.\n- **Đường VERIFY độc lập** (skill `acceptance` Phase 3): phiên điều phối chép khối\n  marker VERBATIM vào prompt của phiên tươi VERIFY, cùng nếp «Network truth».\n\nVì sao có luật: verifier chạy lệnh qua Bash tool có trần thời gian mặc định\n(~120 s) NGẮN hơn nhiều suite; lệnh bị công cụ giết trả exit code CỦA CÔNG CỤ,\nkhông phải của lệnh (vấp thật release-2-2-0 S4 r5: suite 108 s đơn lẻ, dưới tải\nbị giết ở 118 s → REJECT giả 4 eval). Nhận diện là việc AGENT (nó thấy tool\nresult thật); phần máy chỉ phòng thủ trên field cấu trúc `killedByTool` —\nKHÔNG grep nội dung output trong engine (chuỗi tổng kết là của suite từng repo).\n\n<!-- <<<TOOL-KILL-RULE -->\nTRAN THOI GIAN CONG CU: khi goi Bash chay lenh, LUON dat tham so timeout >= 600000 (ms) — tran mac dinh cua cong cu (~120s) NGAN hon nhieu suite; lenh vuot tran se bi CONG CU giet va exit code luc do la cua cong cu, KHONG phai cua lenh. Neu lenh van bi cong cu dung (tool result bao timeout/killed, hoac output bi CAT giua chung truoc dong tong ket cuoi cua lenh) → DO KHONG PHAI ket qua that: khai cannotRun=true + killedByTool=true + reason \"bi cong cu giet o <so giay> giay\" kem dau hieu (timeout tool / output cat). TUYET DOI khong bao exitCode nhu the lenh tu fail va khong doan PASS/FAIL tu output cut.\n<!-- TOOL-KILL-RULE>>> -->\n\n## Hồ sơ cho lượt bị ngắt (đường độc lập)\n\nPhiên tươi VERIFY gặp lệnh bị công cụ ngắt thì:\n\n- dòng run-log của eval đó: `\"exit_code\": null, \"killed_by_tool\": true` (không\n  ghi mã thoát của công cụ như mã thoát của lệnh);\n- verdict báo cáo `BLOCKED`, `reason: bi cong cu giet o <so giay> giay — <eval ids>`\n  (kèm dấu hiệu: timeout tool / output cắt trước dòng tổng kết); `failed_evals`\n  rỗng — người đọc hồ sơ thấy đây là sự cố hạ tầng, chữa bằng chạy lại với trần\n  công cụ đủ dài, không phải sửa sản phẩm.\n",
   "contractPath": "/Users/manhphan/dev/OpenMAIC/_acceptance/hieu-be-dang-hoc-gi/contract.md",
-  "invokedAt": "2026-09-22T13:01:00Z",
-  "invokedSha": "409cc620cfa9bbebd15838cc95db83dd324c6c54",
+  "invokedAt": "2026-09-22T13:57:54Z",
+  "invokedSha": "09acf1dca699b8b086f90646be66cc2796671447",
   "vungVat": [
     ".prettierignore",
     "_acceptance/config.yaml",
@@ -476,6 +476,7 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-bot-mon.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-doi-lop.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-loi-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-mon-chua-goi.png",
@@ -483,6 +484,7 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-dang-dien.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-trong.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-moi-khai.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-neo-khong.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-network.txt",
@@ -530,7 +532,9 @@
     "lib/i18n/locales/zh-TW.json",
     "lib/i18n/workbench.ts",
     "lib/prompts/loader.ts",
+    "lib/prompts/templates/interactive-outlines/system.md",
     "lib/prompts/templates/interactive-outlines/user.md",
+    "lib/prompts/templates/task-engine-outlines/system.md",
     "lib/prompts/templates/task-engine-outlines/user.md",
     "lib/server/agent-runtime/course-tools.ts",
     "lib/server/agent-runtime/learner-context.ts",
@@ -550,6 +554,7 @@
     "packages/@openmaic/generation/src/prompts/loader.ts",
     "packages/@openmaic/generation/src/scene-generator.ts",
     "packages/@openmaic/generation/templates/quiz-content/user.md",
+    "packages/@openmaic/generation/templates/requirements-to-outlines/system.md",
     "packages/@openmaic/generation/templates/requirements-to-outlines/user.md",
     "packages/@openmaic/generation/templates/slide-content/user.md",
     "packages/@openmaic/generation/test/__baseline__/prompts-40f1cf9.json",
@@ -559,6 +564,7 @@
     "packages/@openmaic/generation/test/no-regression-prompt.test.ts",
     "scripts/gen-dan-y-mu.mjs",
     "scripts/pin-prompt-baseline.mjs",
+    "scripts/with-dev-server.sh",
     "skills/agent-runtime/cambridge-lower-secondary-maths-8/SKILL.md",
     "skills/agent-runtime/cambridge-lower-secondary-maths-8/curriculum-pack.json",
     "tests/agent-runtime/learner-context.test.ts",
@@ -625,6 +631,7 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-bot-mon.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-doi-lop.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-loi-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-mon-chua-goi.png",
@@ -632,6 +639,7 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-dang-dien.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-trong.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-moi-khai.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-neo-khong.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-network.txt",
@@ -685,7 +693,9 @@
     "lib/i18n/locales/zh-TW.json",
     "lib/i18n/workbench.ts",
     "lib/prompts/loader.ts",
+    "lib/prompts/templates/interactive-outlines/system.md",
     "lib/prompts/templates/interactive-outlines/user.md",
+    "lib/prompts/templates/task-engine-outlines/system.md",
     "lib/prompts/templates/task-engine-outlines/user.md",
     "lib/server/agent-runtime/course-tools.ts",
     "lib/server/agent-runtime/learner-context.ts",
@@ -705,6 +715,7 @@
     "packages/@openmaic/generation/src/prompts/loader.ts",
     "packages/@openmaic/generation/src/scene-generator.ts",
     "packages/@openmaic/generation/templates/quiz-content/user.md",
+    "packages/@openmaic/generation/templates/requirements-to-outlines/system.md",
     "packages/@openmaic/generation/templates/requirements-to-outlines/user.md",
     "packages/@openmaic/generation/templates/slide-content/user.md",
     "packages/@openmaic/generation/test/__baseline__/prompts-40f1cf9.json",
@@ -714,6 +725,7 @@
     "packages/@openmaic/generation/test/no-regression-prompt.test.ts",
     "scripts/gen-dan-y-mu.mjs",
     "scripts/pin-prompt-baseline.mjs",
+    "scripts/with-dev-server.sh",
     "skills/agent-runtime/cambridge-lower-secondary-maths-8/SKILL.md",
     "skills/agent-runtime/cambridge-lower-secondary-maths-8/curriculum-pack.json",
     "tests/agent-runtime/learner-context.test.ts",
@@ -733,6 +745,7 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-bot-mon.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-doi-lop.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-loi-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-mon-chua-goi.png",
@@ -740,6 +753,7 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-dang-dien.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-trong.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-moi-khai.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-neo-khong.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-network.txt",
@@ -770,7 +784,9 @@
     "components/settings/general-settings.tsx",
     "components/settings/index.tsx",
     "components/settings/learner-profile-settings.tsx",
+    "lib/prompts/templates/interactive-outlines/system.md",
     "lib/prompts/templates/interactive-outlines/user.md",
+    "lib/prompts/templates/task-engine-outlines/system.md",
     "lib/prompts/templates/task-engine-outlines/user.md",
     "lib/server/agent-runtime/course-tools.ts",
     "lib/server/agent-runtime/learner-context.ts",
@@ -786,6 +802,7 @@
     "packages/@openmaic/generation/src/prompts/loader.ts",
     "packages/@openmaic/generation/src/scene-generator.ts",
     "packages/@openmaic/generation/templates/quiz-content/user.md",
+    "packages/@openmaic/generation/templates/requirements-to-outlines/system.md",
     "packages/@openmaic/generation/templates/requirements-to-outlines/user.md",
     "packages/@openmaic/generation/templates/slide-content/user.md",
     "packages/@openmaic/generation/test/learner-context.test.ts",
@@ -815,7 +832,9 @@
     "components/settings/general-settings.tsx",
     "components/settings/index.tsx",
     "components/settings/learner-profile-settings.tsx",
+    "lib/prompts/templates/interactive-outlines/system.md",
     "lib/prompts/templates/interactive-outlines/user.md",
+    "lib/prompts/templates/task-engine-outlines/system.md",
     "lib/prompts/templates/task-engine-outlines/user.md",
     "lib/server/agent-runtime/course-tools.ts",
     "lib/server/agent-runtime/learner-context.ts",
@@ -831,6 +850,7 @@
     "packages/@openmaic/generation/src/prompts/loader.ts",
     "packages/@openmaic/generation/src/scene-generator.ts",
     "packages/@openmaic/generation/templates/quiz-content/user.md",
+    "packages/@openmaic/generation/templates/requirements-to-outlines/system.md",
     "packages/@openmaic/generation/templates/requirements-to-outlines/user.md",
     "packages/@openmaic/generation/templates/slide-content/user.md",
     "scripts/gen-dan-y-mu.mjs",
@@ -838,7 +858,30 @@
   ],
   "coEvalPaths": true,
   "evalsHash": "6bfda89a60b02dd6206feeb7316448d21c3bda36c3bf4077a0e39cd55c6c5154",
-  "runBaseline": true,
+  "runBaseline": false,
+  "carriedAnalyst": {
+    "fromRound": 2,
+    "nonDiscriminating": [
+      {
+        "cmd": "./scripts/with-pinned-node.sh pnpm --filter @openmaic/generation test",
+        "evals": [
+          "E6"
+        ]
+      },
+      {
+        "cmd": "./scripts/with-pinned-node.sh pnpm test",
+        "evals": [
+          "E7b"
+        ]
+      },
+      {
+        "cmd": "./scripts/with-pinned-node.sh node scripts/design-gate-changed.mjs",
+        "evals": [
+          "E15"
+        ]
+      }
+    ]
+  },
   "carriedEvals": [
     {
       "id": "E1b",
@@ -869,6 +912,13 @@
       "cmd": "./scripts/with-pinned-node.sh pnpm test"
     },
     {
+      "id": "E5",
+      "runId": "minted-hieu-be-dang-hoc-gi-E5-r2",
+      "fromRound": 2,
+      "verifiedAt": "2026-09-22T13:01:00Z",
+      "cmd": "ui-check:E5"
+    },
+    {
       "id": "E5b",
       "runId": "minted-hieu-be-dang-hoc-gi-E5b-r1",
       "fromRound": 1,
@@ -878,13 +928,6 @@
     {
       "id": "E8",
       "runId": "minted-hieu-be-dang-hoc-gi-E8-r1",
-      "fromRound": 1,
-      "verifiedAt": "2026-09-22T12:10:28Z",
-      "cmd": "./scripts/with-pinned-node.sh pnpm --filter @openmaic/generation test"
-    },
-    {
-      "id": "E9",
-      "runId": "minted-hieu-be-dang-hoc-gi-E9-r1",
       "fromRound": 1,
       "verifiedAt": "2026-09-22T12:10:28Z",
       "cmd": "./scripts/with-pinned-node.sh pnpm --filter @openmaic/generation test"
@@ -920,26 +963,34 @@
   ],
   "carriedFindings": [
     {
-      "file": "app/api/generate/scene-outlines-stream/route.ts",
-      "title": "`learner` is unvalidated at the /api/generate/scene-outlines-stream boundary while the sibling route validates the identical payload",
+      "file": "packages/@openmaic/generation/src/prompt-formatters.ts",
+      "title": "formatLearnerContext tells the model \"no curriculum pack — say you're guessing\" in the same prompt that carries the pack body",
+      "severity": "high",
+      "plain": "Nếu một gói khung mới ra mắt sau khi hồ sơ bé đã được lưu, bài soạn ra có thể vừa nói với phụ huynh \"chưa có gói, máy đang đoán\" vừa thực ra dùng đúng nội dung sách giáo trình — lời cảnh báo không khớp với bài thật.",
+      "proposal": "known-limits",
+      "fromRound": 2
+    },
+    {
+      "file": "lib/server/curriculum-packs.ts",
+      "title": "Curriculum pack registry only guards against unparseable JSON, not malformed shape, so one bad pack file crashes every caller",
       "severity": "medium",
-      "plain": "Nếu phụ huynh gửi một hồ sơ có dữ liệu môn học sai định dạng ở cửa soạn nhanh (không phải xưởng Pro), sản phẩm có thể báo lỗi chung chung thay vì chỉ rõ cần sửa gì, và các trường như tên bé/trường/sách có thể không bị giới hạn độ dài trước khi đưa vào bài soạn.",
-      "proposal": "new-contract",
-      "fromRound": 1
+      "plain": "Nếu một tệp gói khung giáo trình bị lỗi định dạng (ví dụ thiếu thông tin khối lớp), toàn bộ việc soạn bài có thể bị gián đoạn cho mọi phụ huynh cho tới khi máy chủ khởi động lại.",
+      "proposal": "known-limits",
+      "fromRound": 2
+    },
+    {
+      "file": "_acceptance/hieu-be-dang-hoc-gi/evals.yaml",
+      "title": "Hình 5 — luật phủ khung khai BẢY dòng trạng thái nhưng bộ assert chỉ có SÁU, dòng thứ bảy được miễn ngay trong cùng bước",
+      "severity": "medium",
+      "plain": "Tài liệu nghiệm thu cho phép bỏ qua việc chụp ảnh minh chứng cho một trạng thái màn hình mới thêm (đang lưu), nên vòng nghiệm thu vẫn có thể coi là đạt dù trạng thái đó chưa từng được nhìn thấy thật.",
+      "proposal": "known-limits",
+      "fromRound": 2
     },
     {
       "file": "lib/server/agent-runtime/learner-context.ts",
       "title": "Server caps subjects at 12 and hard-fails session creation; the settings card has no cap",
       "severity": "medium",
       "plain": "Nếu phụ huynh thêm quá 12 môn vào hồ sơ, mọi lần mở xưởng Pro sau đó sẽ thất bại mà không có gợi ý nào chỉ ra nguyên nhân là do hồ sơ có quá nhiều môn.",
-      "proposal": "known-limits",
-      "fromRound": 1
-    },
-    {
-      "file": "app/api/generate/scene-outlines-stream/route.ts",
-      "title": "`slice(0, 200)` on the streamed anchor is dead — normalizeStreamedTitle already caps at 120",
-      "severity": "low",
-      "plain": "Với những dòng neo dài (khoảng 121-200 ký tự), bản xem trước theo thời gian thực có thể cắt cụt câu neo giữa chừng, trong khi các đường soạn khác giữ nguyên câu đầy đủ.",
       "proposal": "known-limits",
       "fromRound": 1
     },
@@ -1033,11 +1084,11 @@
     }
   ],
   "deltaFiles": [
-    ".prettierignore",
-    "_acceptance/hieu-be-dang-hoc-gi/evals.yaml",
+    "_acceptance/config.yaml",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-bot-mon.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-doi-lop.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-loi-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-mon-chua-goi.png",
@@ -1045,6 +1096,7 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-dang-dien.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-trong.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-moi-khai.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-neo-khong.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-network.txt",
@@ -1054,37 +1106,26 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8-neo-dang-doan.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-network.txt",
-    "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-step2-neo-dang-doan.html",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-step2.png",
     "_acceptance/hieu-be-dang-hoc-gi/s4-args.json",
+    "app/api/generate/scene-outlines-stream/route.ts",
     "app/generation-preview/page.tsx",
-    "components/generation/learner-subject-picker.tsx",
     "components/settings/learner-profile-settings.tsx",
-    "lib/i18n/locales/ar-SA.json",
-    "lib/i18n/locales/de-DE.json",
-    "lib/i18n/locales/en-US.json",
-    "lib/i18n/locales/es-MX.json",
-    "lib/i18n/locales/fr-FR.json",
-    "lib/i18n/locales/ja-JP.json",
-    "lib/i18n/locales/ko-KR.json",
-    "lib/i18n/locales/pt-BR.json",
-    "lib/i18n/locales/ru-RU.json",
-    "lib/i18n/locales/vi-VN.json",
-    "lib/i18n/locales/zh-CN.json",
-    "lib/i18n/locales/zh-TW.json",
+    "lib/prompts/templates/interactive-outlines/system.md",
     "lib/prompts/templates/interactive-outlines/user.md",
-    "lib/prompts/templates/task-engine-outlines/user.md",
-    "scripts/gen-dan-y-mu.mjs",
+    "lib/prompts/templates/task-engine-outlines/system.md",
+    "packages/@openmaic/generation/templates/requirements-to-outlines/system.md",
+    "scripts/with-dev-server.sh",
     "tests/generation/anchor-wiring.test.ts",
     "tests/settings/learner-profile-settings.test.ts"
   ],
   "thuocChup": {
-    "sha": "409cc620cfa9bbebd15838cc95db83dd324c6c54",
+    "sha": "09acf1dca699b8b086f90646be66cc2796671447",
     "n": 1014,
-    "digest": "34f0ddbb6b92f25843822556c3585784b71837adf36b65d604099a852b47430e",
+    "digest": "b1e51f2bff5a431fbbbbf122fbf7375e58ab5e8a7bbbfeb2a5c2f6688f2f89cd",
     "tep": {
       ".github/scripts/issue-triage.test.mjs": "df617be414b06402c7fd7f8de1cf38c99371c02ac1aae51486e7edbab66079f4",
-      "_acceptance/config.yaml": "f4ee8d9cf6cc1cf7ce41db1cde69b36b0f5b95b3e5280d37494202e5ee57b7b9",
+      "_acceptance/config.yaml": "444919f2b484c656d60dfc4e2708f041c3b514054d4d189996b679e7a87e6d8e",
       "_acceptance/hieu-be-dang-hoc-gi/evals.yaml": "6bfda89a60b02dd6206feeb7316448d21c3bda36c3bf4077a0e39cd55c6c5154",
       "e2e/tests/asset-byte-egress-cors.spec.ts": "723b60e067af51d79f40050de43701601efbaa6fdce7cf438957695103ccf661",
       "e2e/tests/classroom-complete-adaptive.spec.ts": "4f2bde64986313f71bbd4545605a5836ede3fd9d5283ae6a437897a3dfcafaeb",
@@ -1600,7 +1641,7 @@
       "tests/fixtures/fetch-url/chinese-article.html": "fdd32addb3382daf1e90b5bb80f485fb2a72831a700d1158759c499f3b9ec15f",
       "tests/fixtures/pbl-v1-scene.ts": "9144e4ddaf3f94871f3c798b82e8e1314be0a7c9357086e64466ca35028c6128",
       "tests/generation-preview/vocational-mode.test.ts": "b584c093d4a40e0d2e4b4d7471e35aaac7b6d2a93d6f7c9e3530558f31fd1c26",
-      "tests/generation/anchor-wiring.test.ts": "cdb24ba3a73c2bc628f08f13d159e07655dadfc2cf304bfa95ea668ab2b22faa",
+      "tests/generation/anchor-wiring.test.ts": "f09b4de62bbcbe5fc5148e0347e09606f568cf5670d46500cface86ec2debbcb",
       "tests/generation/diagram-node-constraints.test.ts": "f29244962ebdd6c94748c50414b343492894a61475a0b44566dbc28aa8e216a3",
       "tests/generation/extract-interactive-elements.test.ts": "07e9db91a5fc2d10e21ac6c7f15803869726e08a93aee3d94b7b646b2597e56c",
       "tests/generation/foreground-retry.test.ts": "6b22b468623854ff15ba1907d6bf0374ab1ed152c987eeeab786218a0c7dfde8",
@@ -1926,7 +1967,7 @@
       "tests/server/web-search-config.test.ts": "43bacdba139a7266ecb6dd92719f92b30593c244c6a6b47b169c3c7489ec8808",
       "tests/settings/custom-provider-baseurl.test.ts": "096d4bf1ece2394061385b4703de9eda8050b5250a9b0eaba0e8d21f2f5b5e10",
       "tests/settings/general-settings.test.ts": "c1e23b9367dcf34492801473f0120c8acbb60bbb529e46c5f9fbda03071568fb",
-      "tests/settings/learner-profile-settings.test.ts": "1f8e869ce11c6785c19f55be99cbac4f9a023977a527abba48835d371954db23",
+      "tests/settings/learner-profile-settings.test.ts": "493e6cd0e63702a2496c358045dade31390dd5b7d91b67936d27452cbdb79a3d",
       "tests/settings/skill-settings-locales.test.ts": "40b32a40a12b56b43d682f1b68ebdfb00f1e5f9104879cd524050ea13f859244",
       "tests/settings/skill-settings.test.ts": "9de1cf6266dee93df7efc4e7323b28caf0c2773ea39b764ff96008f060c649a2",
       "tests/setup-env.ts": "f62427599a22a98263689b395dc9c1c3e6bb949453c3be88cd94fd2947db0238",
