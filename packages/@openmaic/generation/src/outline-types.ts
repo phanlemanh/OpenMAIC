@@ -1,5 +1,7 @@
 import type { WidgetType } from '@openmaic/dsl';
 
+import type { LearnerContext } from './learner-types.js';
+
 export type { WidgetType } from '@openmaic/dsl';
 
 /** Image extracted from a source document with metadata used by outline prompts. */
@@ -28,6 +30,8 @@ export interface UserRequirements {
   webSearch?: boolean;
   interactiveMode?: boolean;
   taskEngineMode?: boolean;
+  /** Bối cảnh người học có cấu trúc. Vắng = hành vi y như trước vòng này. */
+  learner?: LearnerContext;
 }
 
 export interface WidgetOutline {

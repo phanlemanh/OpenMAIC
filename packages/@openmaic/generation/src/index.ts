@@ -99,8 +99,10 @@ export {
   formatAgentsForPrompt,
   formatImageDescription,
   formatImagePlaceholder,
+  formatLearnerContext,
   formatTeacherPersonaForPrompt,
 } from './prompt-formatters.js';
+export * from './learner-types.js';
 export type {
   ImageMapping,
   MediaGenerationRequest,
