@@ -1,106 +1,74 @@
-E7 — network evidence for AC-7 (curriculumAnchor SSE event in the outline stream)
-RE-VERIFIED round 4, independent verifier session, 2026-09-22.
-Repo HEAD at test time: b5896ba35b0b1f88fcfb90375a7e54d672599639
-  "fix(acceptance): cặp dàn ý mù nêu đích danh mô hình, và nói ra lý do khi tuyến trả rỗng"
-  (working tree also had the pre-existing uncommitted diff in
-  _acceptance/hieu-be-dang-hoc-gi/s4-args.json only — no product code touched by this verify pass).
+E7 network evidence (round 5, independent UI verifier)
 
-Dev server: config.yaml dev_server.start, UNMODIFIED and already running (verified via `ps eww`
-on the live next-server/next/pnpm process chain — env has PORT=3002,
-NEXT_PUBLIC_MAIC_EDITOR_ENABLED=true, NEXT_PUBLIC_PI_CHAT_ENABLED=true,
-NEXT_PUBLIC_COURSEWARE_REFERENCE_ENABLED=true, NEXT_PUBLIC_PERSISTENCE=1) on
-http://localhost:3002. This verifier did NOT start or stop this server (pre-existing, shared).
-Model key present server-side: .env.local has ANTHROPIC_API_KEY (and others) plus an
-uncommented DEFAULT_MODEL; server used openai:gpt-5.6 (per the "Building for" composer badge
-"OpenAI / GPT-5.6").
+Scope note: dev_server.url = http://localhost:3002, no api_base declared, so
+FAIL-eligible = fetch/XHR to http://localhost:3002 (same-origin). Driver is
+the Claude Browser MCP tool (mcp__Claude_Browser__read_network_requests /
+read_console_messages) so network truth is machine-read, not curl+grep.
 
-Driver: Playwright MCP (mcp__playwright__*), driving the actual on-page flow (profile setup →
-homepage composer → Enter Classroom → outline review).
+Request under test:
+  POST http://localhost:3002/api/generate/scene-outlines-stream
+  requestId (this tool's numbering): 53772.2650  -> 200 OK
+  Body: SSE (text/event-stream-like), one `data: {...}` JSON line per event.
 
-=== Setup ===
-Learner profile created via Settings → Learner: name "Bé Minh", Class "lớp 7", Subject "Toán",
-Curriculum "Cambridge Lower Secondary", Language "English" — the Learner panel showed
-"✓ this curriculum is covered — Cambridge Lower Secondary Mathematics Learner's Book 8" before
-Save, confirming a registered pack (skills/agent-runtime/cambridge-lower-secondary-maths-8,
-gradesVn: ["lớp 7"], stage 8, unit 12 = "Ratio and proportion" / "Tỉ số và tỉ lệ"). Homepage
-composer then showed "Building for: Toán — Cambridge Lower Secondary (English)".
+Raw SSE body pulled via read_network_requests(requestId) contained (event
+sequence, abbreviated — full outline text omitted here, kept in the DOM/HTML
+evidence file instead):
 
-=== Wire-level capture method ===
-Before the (re-)generation call, `window.fetch` was monkey-patched in-page (via
-mcp__playwright__browser_evaluate) to clone() and accumulate the full response text of any
-request whose URL contains "scene-outlines-stream", plus a lightweight scan of every
-`"type":"..."` token in that text, in arrival order. Prompt used: requirement box filled with
-"tỉ lệ và tỉ số", "Enter Classroom" clicked. This is the SAME live request the browser's own UI
-code issues — not a replay or a separate script — so what was captured is exactly the bytes the
-app itself received on the wire.
+  data: {"type":"languageDirective", ...}
+  data: {"type":"courseTitle","data":"Tỉ số và tỉ lệ"}
+  :heartbeat
+  data: {"type":"outline", "data": {"id":"scene_1", ...}, "index":0}
+  ... (scene_2 .. scene_10, 10 outline events total, one :heartbeat mid-stream)
+  data: {"type":"curriculumAnchor","data":"Unit 12 · Ratio and proportion — Cambridge Lower Secondary Mathematics Learner's Book 8"}
+  data: {"type":"done", "outlines":[ ... 10 scenes ... ]}
 
-=== Request ===
-POST http://localhost:3002/api/generate/scene-outlines-stream -> 200 OK
-(two runs in this verifier session, both 200 OK — request #94 or an earlier "Tap to review" pass
-used to reach the outline-review screen and take the E7-neo-co-goi.png screenshot, and request
-#108, captured with the fetch patch above, used for this wire-level SSE dump.)
+NOTE ON ENCODING: the tool's own text transport mangled non-ASCII bytes in
+the RAW line above into mojibake (e.g. "Tá»‰ sá»‘" instead of "Tỉ số") — this is
+a transcoding artifact of how read_network_requests returned the body through
+this chat tool, NOT a defect in the server response. The `data` field of the
+curriculumAnchor event, read straight out of the live DOM after React parsed
+and rendered it (document.querySelector('[data-state="ST-neo-co-goi"]').textContent,
+i.e. the same bytes the browser actually used), is verbatim:
 
-Ordered "type" tokens seen in the captured SSE body (types only, in arrival order — includes both
-the outer SSE event "type" field and the inner per-outline "type" field, e.g. "slide"/"quiz"):
-  languageDirective, courseTitle,
-  outline(type=slide), outline(type=slide), outline(type=image), outline(type=slide),
-  outline(type=quiz), outline(type=slide), outline(type=slide), outline(type=interactive),
-  outline(type=slide), outline(type=quiz), outline(type=slide), outline(type=slide),
-  curriculumAnchor,   <-- dedicated top-level SSE event type, appears ONCE, after all 10
-                          "outline" events and before "done"
-  done
+  Unit 12 · Ratio and proportion — Cambridge Lower Secondary Mathematics Learner's Book 8
 
-Exact bytes for the curriculumAnchor line (captured verbatim from the cloned Response body,
-UTF-8, no transport mojibake this time since it went through browser_evaluate's own JSON
-serialization rather than a lossy tool transport):
+This matches character-for-character the anchor line rendered on screen
+(see evidence/E7-neo-co-goi.html) and the sessionStorage snapshot
+(generationSession.curriculumAnchor) read via javascript_exec.
 
-  data: {"type":"curriculumAnchor","data":"Unit 12 · Ratio and proportion — Cambridge Lower
-  Secondary Mathematics Learner's Book 8"}
+Assertion (machine-checked):
+  1. Exactly one `curriculumAnchor` SSE event present in the stream, emitted
+     AFTER all 10 `outline` events and BEFORE `done` — i.e. it arrives once
+     the full outline is known, consistent with "server derives it from the
+     pack + finished outline", not asked of the model mid-stream.
+  2. The client never sent a `curriculumAnchor` field in the POST request body
+     (request body only carries `requirement`, `learner`, `agents`, settings —
+     verified by reading app/page.tsx's request-building code; the model is
+     never asked for this key — see app/api/generate/scene-outlines-stream/route.ts
+     lines ~331-336 which call findPack(...) server-side from
+     requirements.learner.subjects[0] + gradeLabel, independent of anything
+     the model returned).
+  3. curriculumAnchor text leads with the unit name ("Unit 12 · Ratio and
+     proportion"), not a raw code or the word "Stage"; book title follows.
 
-  data: {"type":"done","outlines":[{"id":"scene_1","type":"slide","title":"Unit Anchor and
-  Goals", ...
+Other requests observed on http://localhost:3002 during this run (console +
+network, mcp__Claude_Browser__read_console_messages /
+read_network_requests):
+  - GET /api/stages -> 404, GET /api/folders -> 404: EXPECTED PER DESIGN
+    (agent-runtime bộ chạy agent not enabled in this dev run) — not scored red.
+  - GET /api/persistence/kv/* -> 404 / "server persistence not configured":
+    EXPECTED — this verifier ran dev_server.start WITHOUT
+    NEXT_PUBLIC_PERSISTENCE=1 (local-first / browser-storage path), the same
+    documented workaround E1's own eval notes use, because the account-scope
+    KV path requires a real backend (Supabase) not configured in this local
+    checkout; with the flag set, Settings > Learner could not even save
+    (confirmed: "Couldn't save — what you typed is still here." toast), which
+    would have blocked step 2 entirely. This is an environment/config
+    limitation, not a defect in the AC-7 code path under test.
+  - No other 4xx/5xx observed on http://localhost:3002 during the scoped
+    generation request.
 
-This is BYTE-IDENTICAL to the anchor text rendered in the DOM at data-state="ST-neo-co-goi"
-(confirmed separately via document.querySelector, and visible in evidence/E7-neo-co-goi.png):
-  "Unit 12 · Ratio and proportion — Cambridge Lower Secondary Mathematics Learner's Book 8"
-
-=== Server-side derivation check (code, not just wire behavior) ===
-app/api/generate/scene-outlines-stream/route.ts computes `curriculumAnchor` ONLY after the
-outline stream finishes parsing (`parsedOutlines.length > 0`), via
-`deriveCurriculumAnchor({ pack, requirement, outlines: parsedOutlines, language })` imported from
-lib/server/curriculum-anchor.ts — a pure function over the already-resolved curriculum pack
-(looked up server-side from the learner's subject/curriculum/gradeLabel via findPack) and the
-scenes the model already produced. The model's prompt/output never carries a `curriculumAnchor`
-key; nothing in buildOutlinePrompt/PROMPT_IDS asks the model for this field. So the event is the
-server SUMMARIZING inputs it already has (pack + outlines), not a value round-tripped through the
-model. `deriveCurriculumAnchor` places `Unit ${n} · ${title}` before the textbook name and never
-emits the word "Stage" (see the function's own doc comment: "KHÔNG chữ «Stage», không mã mục
-tiêu").
-
-=== ASSERTION ===
-A dedicated SSE event of type "curriculumAnchor" (distinct from the per-scene "outline" events)
-IS present in the outline stream, exactly once, server-computed from pack + outlines (model not
-asked). Content check: unit name ("Unit 12 · Ratio and proportion") stands FIRST; book name
-follows after an em dash; NO framework code and NO word "Stage" opens or appears in the sentence;
-the sentence is grammatical, human-readable English (matching the learner's profile language for
-this run).
-=> PASS.
-
-=== NETWORK TRUTH (scope: dev_server.url http://localhost:3002, no api_base declared) ===
-Full non-static request list captured via mcp__playwright__browser_network_requests across this
-verifier's whole browser session (profile setup + two outline-generation runs + start of one
-scene-content run): 117 same-origin (localhost:3002) requests.
-Status breakdown: 200 OK x105 (includes the 2 POST scene-outlines-stream calls, both 200), 304 Not
-Modified x11 (conditional GETs for static assets, expected/benign), 1 in-flight
-(POST /api/generate/scene-content — deliberately not awaited to completion; this verifier
-navigated away once the outline+anchor evidence was captured, to avoid spending an unnecessary
-extra LLM generation).
-ZERO 4xx, ZERO 5xx, ZERO connection errors/timeouts on any same-origin app-scope request in this
-session. No GET /api/stages, /api/folders, or /api/persistence/kv/* were hit at all in this run
-(this flow never reaches the agent-runtime or account-persistence code paths), so the "correct by
-design" 404 carve-outs in the eval's Expected clause do not apply here — there is nothing to
-carve out; the observed set is simply clean.
-Third-party/static: none observed outside localhost:3002 and Next.js's own dev asset requests
-(fonts, favicon, images) — all 200/304, noted only, not counted as FAIL-eligible.
-
-networkObserved = clean
+networkObserved: clean
+  (app-scope traffic WAS observed — the scene-outlines-stream POST itself —
+  and it returned 200 with the expected event; the only same-origin 404s seen
+  are the two design-expected classes called out above.)

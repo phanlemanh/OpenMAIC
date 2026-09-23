@@ -1,81 +1,33 @@
+<!--
+E8b evidence — round 5, independent verifier (fresh-context UI check).
+Captured LIVE via JS from the running dev server (http://localhost:3002), NOT
+from Playwright capture.ui (interactive learner-profile + streaming session
+state cannot be reseeded into a fresh Playwright browser — same constraint as
+round 4). Fallback per harness rule: live DOM outerHTML instead of PNG.
+
+Captured at: 2026-09-22T23:39Z (approx, see evidence/E8b-network.txt for exact
+window). Flow: Settings -> Learner -> added second subject row
+Toán/MOET(Vietnam)/Vietnamese (kept existing Toán/Cambridge row untouched) ->
+Save (confirmed via localStorage read) -> home "Building for" dropdown ->
+selected "Toán — MOET (Vietnamese)" -> typed "tỉ lệ và tỉ số" -> Enter
+Classroom -> outline streaming -> clicked "Tap to review" -> captured the
+outline review card's outerHTML the instant document.querySelector(
+'[data-state^="ST-neo"]') resolved (single atomic polling script, no gap
+between finding the element and serializing it).
+
+Assertion: document.querySelectorAll('[data-state^="ST-neo"]') returned
+EXACTLY ONE element in this document at capture time:
+  data-state="ST-neo-dang-doan"
+  text: "⚠ No curriculum pack for MOET yet — this is an informed guess, not a
+         checked match."
+"MOET" here is the translated curriculum label (Settings > Learner shows the
+option as "MOET (Vietnam)"), not the raw lowercase storage key "moet" — no
+machine code leaked into the parent-facing copy. This was reproduced
+identically across three independent generation runs in this same verifier
+session (see outputTail).
+-->
 <!doctype html>
-<html lang="vi">
-<head>
-<meta charset="utf-8" />
-<title>E8b evidence — ST-neo-dang-doan (live DOM capture, fallback)</title>
-<style>
-  body { font-family: -apple-system, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
-  .note { background: #fff8e1; border: 1px solid #f0c14b; padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 1rem; }
-  .frame { border: 1px solid #ccc; border-radius: 8px; padding: 1rem; margin: 1rem 0; background: #fafafa; }
-  code { background: #eee; padding: 0.1rem 0.3rem; border-radius: 3px; }
-  pre { white-space: pre-wrap; background: #f5f5f5; padding: 0.75rem; border-radius: 6px; overflow-x: auto; }
-</style>
-</head>
+<html lang="vi"><head><meta charset="utf-8"><title>E8b evidence — ST-neo-dang-doan (round 5)</title></head>
 <body>
-<h1>E8b — ST-neo-dang-doan (Soạn cho: Toán — MOET, chưa có gói)</h1>
-
-<div class="note">
-  <strong>Fallback: chụp DOM SỐNG, không phải PNG.</strong> config.yaml khai
-  <code>capture.ui: node scripts/ui-capture.mjs</code>, nhưng script đó mở một
-  trình duyệt Playwright MỚI và chỉ chụp một URL tĩnh — không có cách seed lại
-  trạng thái đã tương tác (hồ sơ người học vừa điền, phiên soạn dàn ý đang
-  streaming trong sessionStorage của đúng tab đó) từ một tiến trình trình
-  duyệt khác. Bản thân trình duyệt Claude_Browser đang lái phiên này trả ảnh
-  chụp CHỈ inline (không có API lưu file). Do đó khung này bắt bằng
-  <code>document.querySelector('[data-state^="ST-neo"]').outerHTML</code> trên
-  trang SỐNG, đúng cách hạ cấp mà E7 (chính eval anh chị em của E8b) đã dùng
-  trước đó trong hồ sơ này (xem evidence/E7-neo-co-goi.html).
-</div>
-
-<h2>Bối cảnh</h2>
-<ul>
-  <li>URL lúc chụp: <code>http://localhost:3002/generation-preview</code></li>
-  <li>Thời điểm: 2026-09-22T15:51:33.452Z</li>
-  <li>Hồ sơ người học: Bé An · lớp 7 · môn Toán · giáo trình <code>moet</code> (MOET) · tiếng Việt · KHÔNG sách/gói</li>
-  <li>Ô «Soạn cho» trang chủ trước khi tạo: <em>Building for: Toán — MOET (Vietnamese)</em> (bản dịch tiếng Anh của UI, xem screenshot đính kèm trong lượt chat)</li>
-  <li>Đề bài gõ vào: «tỉ lệ và tỉ số» → Enter Classroom → dàn ý AI streaming thật (9 scene, không dữ liệu giả) → bấm «Tap to review» → màn «Review your outline»</li>
-</ul>
-
-<h2>Khung sống — data-state="ST-neo-dang-doan"</h2>
-<div class="frame">
-  <p style="display:flex;align-items:flex-start;gap:0.5rem;border:1px solid #f0b400;background:#fff7e0;padding:0.6rem 0.9rem;border-radius:6px;font-size:0.95rem;">
-    ⚠ No curriculum pack for MOET yet — this is an informed guess, not a checked match.
-  </p>
-</div>
-
-<p>outerHTML thật của phần tử, đọc trực tiếp bằng <code>javascript_tool</code> trên trang đang chạy (không suy diễn, không gõ tay):</p>
-<pre>&lt;p data-state="ST-neo-dang-doan" class="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/5 px-3 py-2 text-sm"&gt;
-  &lt;svg ... class="lucide lucide-triangle-alert mt-0.5 h-4 w-4 shrink-0 text-amber-600" aria-hidden="true"&gt;...&lt;/svg&gt;
-  &lt;span&gt;⚠ No curriculum pack for MOET yet — this is an informed guess, not a checked match.&lt;/span&gt;
-&lt;/p&gt;</pre>
-
-<h2>Đối chiếu Expected (AC-8 / E8b)</h2>
-<ul>
-  <li><strong>MỘT khung sống phủ dòng ST-neo-dang-doan</strong> — đúng: <code>data-state="ST-neo-dang-doan"</code> tìm thấy đúng một phần tử trên trang.</li>
-  <li><strong>Khung có chữ cảnh báo</strong> — đúng: icon tam giác cảnh báo (lucide-triangle-alert) + ký tự ⚠ + câu "this is an informed guess, not a checked match."</li>
-  <li><strong>Tên chương trình chưa có gói, đã dịch, không mã máy</strong> — đúng: câu hiện "MOET" (giá trị bản dịch <code>home.learnerInvite.curriculum.moet = "MOET"</code> trong <code>lib/i18n/locales/en-US.json</code>/<code>vi-VN.json</code>), KHÔNG phải chữ thường "moet" (đó mới là mã máy/khoá i18n). Đây là điểm khác biệt so với một bản evidence CŨ hơn trong cùng thư mục này (evidence/E8-neo-dang-doan.png, đã có từ trước lượt chạy này) — bản cũ đó hiện "No curriculum pack for <em>moet</em> yet" (chữ thường, lộ mã máy), tức PNG cũ đó chụp một trạng thái đã lỗi/đã fix sau đó. Lượt kiểm độc lập này ghi đè kết luận bằng bằng chứng SỐNG mới nhất trên đúng source hiện tại.</li>
-</ul>
-
-<h2>Văn bản đầy đủ của trang (get_page_text, để đối chiếu không có dòng ST-neo nào khác / không có dòng nào lộ mã máy khác)</h2>
-<pre>Back to Home
-Review your outline
-
-Edit, reorder, remove, or add scenes before content generation begins.
-
-AI-GENERATED OUTLINE
-Scene outline
-
-9 scenes total. You can edit, add, remove, or reorder them before generation starts.
-
-Collapse
-
-⚠ No curriculum pack for MOET yet — this is an informed guess, not a checked match.
-
-[... 9 scenes, nội dung dàn ý thật, xem lượt chat để có toàn văn ...]
-
-Always review outlines before generation
-Back to requirements
-Confirm and generate course</pre>
-
-</body>
-</html>
+<div class="z-10 w-full max-w-3xl pt-16 pb-8"><div class="space-y-6" style="opacity: 0; transform: translateY(-0.143421px);"><div class="flex justify-center gap-2"><div class="h-1.5 rounded-full transition-all duration-500 w-8 bg-blue-500"></div><div class="h-1.5 rounded-full transition-all duration-500 w-1.5 bg-muted/50"></div><div class="h-1.5 rounded-full transition-all duration-500 w-1.5 bg-muted/50"></div><div class="h-1.5 rounded-full transition-all duration-500 w-1.5 bg-muted/50"></div></div><div class="max-w-2xl space-y-2 text-center mx-auto"><h2 class="text-2xl font-bold tracking-tight">Review your outline</h2><p class="text-muted-foreground text-sm md:text-base">Outline is still streaming in. You can edit once it's complete.</p></div><div class="relative overflow-hidden rounded-3xl border border-border/40 bg-white/85 shadow-[0_30px_80px_-30px_rgba(15,23,42,0.25)] backdrop-blur-xl dark:border-white/5 dark:bg-slate-950/70 dark:shadow-[0_30px_80px_-30px_rgba(0,0,0,0.6)]" style="transform: translate3d(0px, -20.4531px, 0px) rotate(-0.221872deg) scale(0.942991, 0.946892); transform-origin: 50% 50% 0px; opacity: 1;"><div class="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-blue-500/40 to-transparent"></div><div class="pointer-events-none absolute -top-32 left-1/2 h-64 w-[80%] -translate-x-1/2 rounded-full bg-blue-500/[0.04] blur-3xl dark:bg-blue-400/[0.08]"></div><div class="relative flex items-start gap-3 px-6 pt-6 pb-4 md:px-10 md:pt-8 md:pb-6"><div class="min-w-0 flex-1 space-y-1.5"><div class="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground/70">AI-generated outline</div><h2 class="text-2xl font-semibold tracking-tight md:text-[28px]">Scene outline</h2><p class="flex min-h-[1.5rem] items-center gap-2 text-sm text-muted-foreground"><span aria-hidden="true" class="inline-flex size-1.5 rounded-full bg-blue-500" style="transform: scale(0.992223);"></span>Streaming · 2 scenes ready</p></div><button type="button" aria-label="Collapse" class="mt-1 inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium text-muted-foreground">Collapse</button></div><div class="px-3 pb-2 md:px-6"><p data-state="ST-neo-dang-doan" class="flex items-start gap-2 rounded-md border border-amber-500/40 bg-amber-500/5 px-3 py-2 text-sm"><span>⚠ No curriculum pack for MOET yet — this is an informed guess, not a checked match.</span></p></div><div class="relative max-h-[64vh] overflow-y-auto px-3 pb-2 md:px-6"><ol class="flex flex-col py-1"><li id="outline-scene-scene_1"><div class="min-w-0 flex-1 space-y-1.5"><div class="flex items-start justify-between gap-2"><span>Tỉ số quanh ta</span><span class="rounded-full bg-blue-50 text-blue-600 px-2.5 py-1 text-[11px] font-semibold uppercase">Slide</span></div><span>Khởi động bằng các tình huống quen thuộc để học sinh nhận ra vai trò của tỉ số và tỉ lệ trong đời sống.</span><div class="flex flex-wrap items-center gap-1.5 pt-1"><span title="So sánh số bạn nam và số bạn nữ trong một nhóm">So sánh số bạn nam và số bạn nữ trong một nhóm</span><span title="Nhận biết tỉ lệ pha nước và si-rô trong một đồ uống">Nhận biết tỉ lệ pha nước và si-rô trong một đồ uống</span><span title="Nêu mục tiêu: đọc, viết, rút gọn và vận dụng tỉ số">Nêu mục tiêu: đọc, viết, rút gọn và vận dụng tỉ số</span><span title="Lưu ý: nội dung MOET được neo bằng hiểu biết chung và chưa được kiểm chứng với một khung giáo trình cụ thể">Lưu ý: nội dung MOET được neo bằng hiểu biết chung và chưa được kiểm chứng với một khung giáo trình cụ thể</span></div></div></li><li id="outline-scene-scene_2"><div class="min-w-0 flex-1 space-y-1.5"><div class="flex items-start justify-between gap-2"><span>Tỉ số là gì?</span><span class="rounded-full bg-blue-50 text-blue-600 px-2.5 py-1 text-[11px] font-semibold uppercase">Slide</span></div><span>Giới thiệu khái niệm tỉ số và ba cách biểu diễn thông dụng.</span></div></li></ol></div><div class="relative flex flex-col gap-3 border-t border-border/40 bg-gradient-to-t from-background/95 to-transparent px-6 py-4 md:flex-row md:items-center md:justify-between md:px-10 md:py-5"><label class="flex cursor-pointer items-center gap-2.5 text-sm text-muted-foreground"><button type="button" role="checkbox" aria-checked="false" data-state="unchecked"></button><span>Always review outlines before generation</span></label><div class="flex flex-col-reverse gap-2 md:flex-row md:items-center md:gap-2"><button>Back to requirements</button><button disabled="">Waiting for outlines…</button></div></div></div></div></div>
+</body></html>

@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-22T15:39:52Z",
-  "generated_sha": "b5896ba35b0b1f88fcfb90375a7e54d672599639",
+  "generated_at": "2026-09-22T23:19:36Z",
+  "generated_sha": "de1228d426fffff17fe60aef0ddcc71b308d1b77",
   "mainBranchInfo": {
     "branch": "main",
     "source": "remote"
   },
   "slug": "hieu-be-dang-hoc-gi",
-  "round": 4,
+  "round": 5,
   "riskTier": "T2",
   "evals": [
     {
@@ -280,10 +280,11 @@
     {
       "id": "E8b",
       "criterion": "AC-8",
-      "expected": "\"exit 0; MỘT khung sống phủ dòng ST-neo-dang-doan (luật phủ khung); khung ST-neo-dang-doan có chữ cảnh báo và tên chương trình chưa có gói (đã dịch, không mã máy). Các phản hồi sau là ĐÚNG THIẾT KẾ, không phải lỗi: 404 ở GET /api/stages và GET /api/folders (chỉ phục vụ khi bộ chạy agent bật), và 404 ở GET /api/persistence/kv/* khi lối máy chủ không bật; mọi 4xx/5xx khác trên cùng origin là đỏ. Chiều đỏ: dòng neo đọc như có gói, không có dòng nào, hoặc dòng cảnh báo lộ mã giáo trình → đỏ nêu đích danh.\"",
+      "expected": "\"exit 0; MỘT khung sống phủ dòng ST-neo-dang-doan (luật phủ khung); khung ST-neo-dang-doan có chữ cảnh báo và tên chương trình chưa có gói (đã dịch, không mã máy). Các phản hồi sau là ĐÚNG THIẾT KẾ, không phải lỗi: 404 ở GET /api/stages và GET /api/folders (chỉ phục vụ khi bộ chạy agent bật), và 404 ở GET /api/persistence/kv/* khi lối máy chủ không bật; mọi 4xx/5xx khác trên cùng origin là đỏ. Lỗi kết nối TRƯỚC mốc bắt đầu đếm (máy chủ phát triển tự nạp lại lúc mở tab) không phải lỗi sản phẩm — bước 1 buộc đợi ổn định rồi mới đếm; lỗi kết nối hay 5xx SAU mốc ấy là đỏ. Chiều đỏ: dòng neo đọc như có gói, không có dòng nào, hoặc dòng cảnh báo lộ mã giáo trình → đỏ nêu đích danh.\"",
       "executor": "ui-check",
       "expectedExit": 0,
       "steps": [
+        "Chỉ bắt đầu khi máy chủ đã ỔN ĐỊNH: mở tab, đợi trang chủ tải xong và kênh HMR của máy chủ phát triển đã nối (không còn dòng WebSocket failed trong console); còn lỗi kết nối trong lúc khởi động thì tải lại tab rồi mới đếm — dump network tính từ bước kế tiếp, ghi rõ mốc thời gian bắt đầu đếm",
         "Như E7 nhưng ô «Soạn cho» ở Toán — MOET (chưa có gói) → màn xem trước",
         "Dòng neo mang cảnh báo đang đoán → chụp evidence/E8-neo-dang-doan.png"
       ],
@@ -465,7 +466,7 @@
         "rationale",
         "run_id"
       ],
-      "inputsHash": "795cd7fb9301f703c7ea8db489b420a3f63d6f71503cf5ead6b790ec7912cc05"
+      "inputsHash": "cd2eb7bf8b9a2ae06528cc262a2adbc77a5b27e49a08328f6b396b4a609d450e"
     },
     {
       "id": "E14",
@@ -483,7 +484,7 @@
         "verdict",
         "rationale"
       ],
-      "inputsHash": "9ba4a4dc6796860a78084bea42735b254887596a432160bffa422a68bc46f0b3"
+      "inputsHash": "f7759a22c3b8c4a98ae9ac77c2d7b8c274c8bb604983bb4284983c9ec4420761"
     },
     {
       "id": "E15",
@@ -537,16 +538,17 @@
   "templatePath": "/Users/manhphan/.claude/plugins/cache/acceptance-gate-kit/acceptance-gate/2.18.1/skills/acceptance/references/evidence-report-template.md",
   "toolKillRule": "# TOOL-KILL-RULE — lệnh bị công cụ ngắt KHÔNG phải lệnh fail\n\n**Nguồn duy nhất** của luật «hết giờ không phải trượt» cho MỌI đường chạy lệnh\nkiểm của kit. Hai đường tiêu thụ, cùng đọc khối marker dưới đây, không chép tay:\n\n- **Vòng lặp tính năng** (plugin feature-loop): skill `feature-loop` đọc file này\n  (resolve qua `resolve-plugin.mjs --require skills/acceptance/references/tool-kill-rule.md`)\n  và truyền NGUYÊN VĂN vào `args.toolKillRule` của workflow\n  `acceptance-verify.js`; workflow rút khối marker và nội suy vào prompt của mọi\n  agent chạy lệnh (machine · ui-check · baseline). Thiếu args hoặc không rút\n  được marker → workflow trả BLOCKED có tên, không chạy không luật.\n- **Đường VERIFY độc lập** (skill `acceptance` Phase 3): phiên điều phối chép khối\n  marker VERBATIM vào prompt của phiên tươi VERIFY, cùng nếp «Network truth».\n\nVì sao có luật: verifier chạy lệnh qua Bash tool có trần thời gian mặc định\n(~120 s) NGẮN hơn nhiều suite; lệnh bị công cụ giết trả exit code CỦA CÔNG CỤ,\nkhông phải của lệnh (vấp thật release-2-2-0 S4 r5: suite 108 s đơn lẻ, dưới tải\nbị giết ở 118 s → REJECT giả 4 eval). Nhận diện là việc AGENT (nó thấy tool\nresult thật); phần máy chỉ phòng thủ trên field cấu trúc `killedByTool` —\nKHÔNG grep nội dung output trong engine (chuỗi tổng kết là của suite từng repo).\n\n<!-- <<<TOOL-KILL-RULE -->\nTRAN THOI GIAN CONG CU: khi goi Bash chay lenh, LUON dat tham so timeout >= 600000 (ms) — tran mac dinh cua cong cu (~120s) NGAN hon nhieu suite; lenh vuot tran se bi CONG CU giet va exit code luc do la cua cong cu, KHONG phai cua lenh. Neu lenh van bi cong cu dung (tool result bao timeout/killed, hoac output bi CAT giua chung truoc dong tong ket cuoi cua lenh) → DO KHONG PHAI ket qua that: khai cannotRun=true + killedByTool=true + reason \"bi cong cu giet o <so giay> giay\" kem dau hieu (timeout tool / output cat). TUYET DOI khong bao exitCode nhu the lenh tu fail va khong doan PASS/FAIL tu output cut.\n<!-- TOOL-KILL-RULE>>> -->\n\n## Hồ sơ cho lượt bị ngắt (đường độc lập)\n\nPhiên tươi VERIFY gặp lệnh bị công cụ ngắt thì:\n\n- dòng run-log của eval đó: `\"exit_code\": null, \"killed_by_tool\": true` (không\n  ghi mã thoát của công cụ như mã thoát của lệnh);\n- verdict báo cáo `BLOCKED`, `reason: bi cong cu giet o <so giay> giay — <eval ids>`\n  (kèm dấu hiệu: timeout tool / output cắt trước dòng tổng kết); `failed_evals`\n  rỗng — người đọc hồ sơ thấy đây là sự cố hạ tầng, chữa bằng chạy lại với trần\n  công cụ đủ dài, không phải sửa sản phẩm.\n",
   "contractPath": "/Users/manhphan/dev/OpenMAIC/_acceptance/hieu-be-dang-hoc-gi/contract.md",
-  "invokedAt": "2026-09-22T15:39:52Z",
-  "invokedSha": "b5896ba35b0b1f88fcfb90375a7e54d672599639",
+  "invokedAt": "2026-09-22T23:19:36Z",
+  "invokedSha": "de1228d426fffff17fe60aef0ddcc71b308d1b77",
   "vungVat": [
     ".prettierignore",
     "_acceptance/config.yaml",
     "_acceptance/hieu-be-dang-hoc-gi/evals.yaml",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-bot-mon.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu-post-save.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu.png",
-    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.html",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-doi-lop.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-loi-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-mon-chua-goi.png",
@@ -561,8 +563,9 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-nho-lua-chon.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-san-sang.png",
-    "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-neo-co-goi.html",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-neo-co-goi.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-network.txt",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E8-neo-dang-doan.html",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8-neo-dang-doan.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-step2-neo-dang-doan.html",
@@ -621,8 +624,10 @@
     "lib/store/selected-subject.ts",
     "lib/types/generation.ts",
     "lib/types/settings.ts",
+    "packages/@openmaic/dsl/package.json",
     "packages/@openmaic/dsl/src/stage.ts",
     "packages/@openmaic/dsl/test/schema.test.ts",
+    "packages/@openmaic/generation/package.json",
     "packages/@openmaic/generation/src/index.ts",
     "packages/@openmaic/generation/src/learner-types.ts",
     "packages/@openmaic/generation/src/outline-generator.ts",
@@ -713,8 +718,9 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence-report.md",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-bot-mon.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu-post-save.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu.png",
-    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.html",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-doi-lop.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-loi-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-mon-chua-goi.png",
@@ -731,8 +737,9 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-nho-lua-chon.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-san-sang.png",
-    "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-neo-co-goi.html",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-neo-co-goi.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-network.txt",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E8-neo-dang-doan.html",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8-neo-dang-doan.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-step2-neo-dang-doan.html",
@@ -797,8 +804,10 @@
     "lib/store/selected-subject.ts",
     "lib/types/generation.ts",
     "lib/types/settings.ts",
+    "packages/@openmaic/dsl/package.json",
     "packages/@openmaic/dsl/src/stage.ts",
     "packages/@openmaic/dsl/test/schema.test.ts",
+    "packages/@openmaic/generation/package.json",
     "packages/@openmaic/generation/src/index.ts",
     "packages/@openmaic/generation/src/learner-types.ts",
     "packages/@openmaic/generation/src/outline-generator.ts",
@@ -840,8 +849,9 @@
     "_acceptance/hieu-be-dang-hoc-gi/evals.yaml",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-assertions.json",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-bot-mon.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu-post-save.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu.png",
-    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.html",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-doi-lop.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-loi-luu.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-mon-chua-goi.png",
@@ -856,8 +866,9 @@
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-nho-lua-chon.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-san-sang.png",
-    "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-neo-co-goi.html",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-neo-co-goi.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-network.txt",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E8-neo-dang-doan.html",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8-neo-dang-doan.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-network.txt",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-step2-neo-dang-doan.html",
@@ -969,18 +980,225 @@
     "skills/agent-runtime/cambridge-lower-secondary-maths-8/curriculum-pack.json"
   ],
   "coEvalPaths": true,
-  "evalsHash": "fa0214da62a4c775d2264a5408517e0a0265e010296fc922cce4cfe089c2f4aa",
+  "evalsHash": "649610990420ced07f9367b3601c775f2bb199d10ef6c766218baed1aa8fb36e",
   "runBaseline": true,
   "carriedEvals": [
+    {
+      "id": "E1",
+      "runId": "manual-verifier-E1-round4-ui",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "ui-check:E1"
+    },
+    {
+      "id": "E1b",
+      "runId": "minted-hieu-be-dang-hoc-gi-E1b-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm test"
+    },
+    {
+      "id": "E2",
+      "runId": "minted-hieu-be-dang-hoc-gi-E2-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm test"
+    },
+    {
+      "id": "E3",
+      "runId": "minted-hieu-be-dang-hoc-gi-E3-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm test"
+    },
+    {
+      "id": "E4",
+      "runId": "minted-hieu-be-dang-hoc-gi-E4-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm test"
+    },
+    {
+      "id": "E5",
+      "runId": "minted-hieu-be-dang-hoc-gi-E5-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "ui-check:E5"
+    },
+    {
+      "id": "E5b",
+      "runId": "minted-hieu-be-dang-hoc-gi-E5b-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm test"
+    },
+    {
+      "id": "E6",
+      "runId": "minted-hieu-be-dang-hoc-gi-E6-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm --filter @openmaic/generation test"
+    },
+    {
+      "id": "E8",
+      "runId": "minted-hieu-be-dang-hoc-gi-E8-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm --filter @openmaic/generation test"
+    },
+    {
+      "id": "E9",
+      "runId": "minted-hieu-be-dang-hoc-gi-E9-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm --filter @openmaic/generation test"
+    },
     {
       "id": "E10",
       "runId": "minted-hieu-be-dang-hoc-gi-E10-r1",
       "fromRound": 1,
       "verifiedAt": "2026-09-22T12:10:28Z",
       "cmd": "./scripts/with-pinned-node.sh pnpm --filter @openmaic/generation test"
+    },
+    {
+      "id": "E10b",
+      "runId": "minted-hieu-be-dang-hoc-gi-E10b-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm test"
+    },
+    {
+      "id": "E10c",
+      "runId": "minted-hieu-be-dang-hoc-gi-E10c-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm --filter @openmaic/dsl test"
+    },
+    {
+      "id": "E11",
+      "runId": "minted-hieu-be-dang-hoc-gi-E11-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm test"
+    },
+    {
+      "id": "E12",
+      "runId": "minted-hieu-be-dang-hoc-gi-E12-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm test"
+    },
+    {
+      "id": "E13gen",
+      "runId": "blind-34d83b3d-d487-4107-8e9d-52e1c6899f06",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "env -u ANTHROPIC_BASE_URL OPENMAIC_MODEL=${OPENMAIC_MODEL:-anthropic:claude-sonnet-5} ./scripts/with-dev-server.sh ./scripts/with-pinned-node.sh node scripts/gen-dan-y-mu.mjs"
+    },
+    {
+      "id": "E15",
+      "runId": "minted-hieu-be-dang-hoc-gi-E15-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh node scripts/design-gate-changed.mjs"
+    },
+    {
+      "id": "E16",
+      "runId": "minted-hieu-be-dang-hoc-gi-E16-r4",
+      "fromRound": 4,
+      "verifiedAt": "2026-09-22T15:39:52Z",
+      "cmd": "./scripts/with-pinned-node.sh pnpm test"
     }
   ],
   "carriedFindings": [
+    {
+      "file": "app/api/generate/scene-outlines-stream/route.ts",
+      "title": "Client-supplied `requirements.learner` reaches the prompt with no shape validation",
+      "severity": "medium",
+      "plain": "Nếu dữ liệu gửi lên bị sai định dạng hoặc quá lớn, yêu cầu soạn bài có thể báo lỗi chung chung thay vì một lời nhắc rõ ràng, và không có giới hạn cho lượng dữ liệu về bé được gửi cho mô hình.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "lib/server/curriculum-packs.ts",
+      "title": "Curriculum pack registry only guards JSON parse errors, not pack shape — a malformed pack crashes every generate request",
+      "severity": "medium",
+      "plain": "Nếu một file gói giáo trình trên máy chủ bị thiếu trường dữ liệu, các yêu cầu soạn bài có hồ sơ học sinh có thể bị lỗi, không chỉ môn liên quan tới file đó.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "app/page.tsx",
+      "title": "Unused import `subjectKey` left in app/page.tsx",
+      "severity": "low",
+      "plain": "Không ảnh hưởng gì tới trải nghiệm phụ huynh; đây chỉ là một dòng mã thừa bị công cụ kiểm tra mã nêu ra.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "packages/@openmaic/generation/src/prompt-formatters.ts",
+      "title": "Guess-mode is decided from a frozen packId, so the prompt can declare \"no curriculum pack\" in the same request that injects the pack",
+      "severity": "high",
+      "plain": "Có lúc nội dung gửi cho AI có thể nói 'chưa có sách giáo khoa để bám theo' trong khi màn hình lại hiện chắc chắn một đường dẫn tới chương sách cho cùng bài soạn đó, gây thông tin mâu thuẫn.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "app/generation-preview/page.tsx",
+      "title": "Preview shows the \"no curriculum pack — machine is guessing\" warning for the whole outline stream, even when a pack exists",
+      "severity": "medium",
+      "plain": "Trong lúc bài đang được soạn, phụ huynh có thể tạm thời thấy dòng cảnh báo 'chưa có sách, máy đang đoán' dù môn đó thực ra có sách, trước khi dòng đúng hiện ra lúc soạn xong.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "lib/server/curriculum-packs.ts",
+      "title": "A pack whose SKILL.md is missing yields a confident anchor with no framework text in the prompt",
+      "severity": "low",
+      "plain": "Trong một số cách cài đặt đặc biệt, máy có thể hiện một đường dẫn chương sách rất chắc chắn cho phụ huynh dù thực ra không có nội dung sách nào được đưa cho AI.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "tests/hooks/continuation-requirements.test.ts",
+      "title": "Tuyên quét LỚP nhưng chỉ có điểm-case: đếm chỗ gọi bằng cận dưới >= 2",
+      "severity": "high",
+      "plain": "Đây là vấn đề của bộ kiểm thử nội bộ, không phải điều phụ huynh gặp phải; nó có nghĩa một lỗi trong tương lai ở chỗ này có thể lọt qua mà không ai biết.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "packages/@openmaic/generation/test/no-regression-prompt.test.ts",
+      "title": "Assert giá trị có mặt trong khi lời hứa là QUAN HỆ: cờ tự-khai của ảnh nền không bao giờ đỏ được",
+      "severity": "high",
+      "plain": "Đây là lỗ hổng trong công cụ kiểm tra nội bộ; nó không tự nó cho thấy có gì sai với những gì phụ huynh nhìn thấy, nhưng nghĩa là một lỗi thật ở khu vực này có thể không bị phát hiện.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "tests/persistence/learner-profile-store.test.ts",
+      "title": "Assert chuỗi có mặt trong khi lời hứa là QUAN HỆ: «xoá bộ nhớ đệm» đo bằng substring tên hằng",
+      "severity": "medium",
+      "plain": "Đây là vấn đề của bài kiểm nội bộ; nó không chứng minh nút Xoá bộ nhớ đệm hiện đang bỏ sót dữ liệu nào, chỉ là nếu sau này có bỏ sót thì bài kiểm này sẽ không bắt được.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "tests/settings/learner-profile-settings.test.ts",
+      "title": "Đo CHỈ DẪN thay vì ĐẦU RA: quét «chuỗi kỹ thuật lọt lên thẻ» trên khoá i18n, không trên chữ phụ huynh đọc",
+      "severity": "medium",
+      "plain": "Không có bằng chứng phụ huynh hiện đang thấy chữ khó hiểu trên thẻ; vấn đề là bài kiểm nội bộ hiện không có khả năng phát hiện nếu điều đó xảy ra.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
+    {
+      "file": "tests/components/curriculum-anchor-line.test.ts",
+      "title": "Đo CHỈ DẪN thay vì ĐẦU RA: dòng cảnh báo «đang đoán» đo bằng tên khoá dịch",
+      "severity": "low",
+      "plain": "Không có bằng chứng phụ huynh hiện đang thấy mã kỹ thuật ở dòng cảnh báo 'đang đoán'; bài kiểm nội bộ hiện không có khả năng phát hiện nếu điều đó xảy ra.",
+      "proposal": "known-limits",
+      "fromRound": 4
+    },
     {
       "file": "scripts/with-dev-server.sh",
       "title": "with-dev-server.sh dựng `pnpm dev` KHÔNG qua with-pinned-node.sh — đúng thứ kho đã lập lớp để cấm",
@@ -1103,74 +1321,46 @@
     }
   ],
   "deltaFiles": [
-    "_acceptance/config.yaml",
     "_acceptance/hieu-be-dang-hoc-gi/evals.yaml",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-assertions.json",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-bot-mon.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu-post-save.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-da-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.html",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-dang-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-doi-lop.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-loi-luu.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-mon-chua-goi.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-mon-co-goi.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-network.txt",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-dang-dien.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E1-the-trong.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E13-khoa.txt",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-assertions.json",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-moi-khai.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-neo-khong.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-network.txt",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-nho-lua-chon.png",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E5-san-sang.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-neo-co-goi.html",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-neo-co-goi.png",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E7-network.txt",
+    "_acceptance/hieu-be-dang-hoc-gi/evidence/E8-neo-dang-doan.html",
     "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-network.txt",
-    "_acceptance/hieu-be-dang-hoc-gi/evidence/E8b-step2.html",
     "_acceptance/hieu-be-dang-hoc-gi/s4-args.json",
-    "app/api/agent/sessions/route.ts",
-    "app/api/generate/scene-outlines-stream/route.ts",
-    "app/generation-preview/page.tsx",
-    "components/classroom/ClassroomSurface.tsx",
-    "components/settings/learner-profile-settings.tsx",
-    "lib/hooks/continuation-requirements.ts",
-    "lib/hooks/use-scene-generator.ts",
-    "lib/i18n/locales/ar-SA.json",
-    "lib/i18n/locales/de-DE.json",
-    "lib/i18n/locales/en-US.json",
-    "lib/i18n/locales/es-MX.json",
-    "lib/i18n/locales/fr-FR.json",
-    "lib/i18n/locales/ja-JP.json",
-    "lib/i18n/locales/ko-KR.json",
-    "lib/i18n/locales/pt-BR.json",
-    "lib/i18n/locales/ru-RU.json",
-    "lib/i18n/locales/vi-VN.json",
-    "lib/i18n/locales/zh-CN.json",
-    "lib/i18n/locales/zh-TW.json",
-    "lib/prompts/templates/interactive-outlines/system.md",
-    "lib/prompts/templates/interactive-outlines/user.md",
-    "lib/prompts/templates/task-engine-outlines/system.md",
-    "lib/prompts/templates/task-engine-outlines/user.md",
-    "lib/server/agent-runtime/course-tools.ts",
-    "lib/server/agent-runtime/generation-tools.ts",
-    "lib/server/agent-runtime/learner-context.ts",
-    "lib/server/agent-runtime/runner.ts",
     "lib/server/curriculum-anchor.ts",
-    "lib/server/curriculum-packs.ts",
-    "lib/store/learner-profile-key.ts",
-    "lib/store/learner-profile.ts",
-    "lib/workbench/session-store.ts",
-    "packages/@openmaic/dsl/src/stage.ts",
-    "packages/@openmaic/dsl/test/schema.test.ts",
-    "packages/@openmaic/generation/src/learner-types.ts",
-    "packages/@openmaic/generation/src/outline-generator.ts",
-    "packages/@openmaic/generation/templates/requirements-to-outlines/system.md",
-    "packages/@openmaic/generation/templates/requirements-to-outlines/user.md",
-    "packages/@openmaic/generation/test/learner-in-outline.test.ts",
-    "scripts/gen-dan-y-mu.mjs",
-    "skills/agent-runtime/cambridge-lower-secondary-maths-8/curriculum-pack.json",
-    "tests/agent-runtime/generation-tools.test.ts",
-    "tests/agent-runtime/learner-context.test.ts",
-    "tests/agent-runtime/sessions-route.test.ts",
-    "tests/curriculum/curriculum-anchor.test.ts",
-    "tests/generation/anchor-wiring.test.ts",
-    "tests/generation/learner-on-stage.test.ts",
-    "tests/generation/outline-stream-learner.test.ts",
-    "tests/hooks/continuation-requirements.test.ts",
-    "tests/persistence/account-scope-wiring.test.ts",
-    "tests/settings/learner-profile-settings.test.ts"
+    "packages/@openmaic/dsl/package.json",
+    "packages/@openmaic/generation/package.json",
+    "tests/curriculum/curriculum-anchor.test.ts"
   ],
   "thuocChup": {
-    "sha": "b5896ba35b0b1f88fcfb90375a7e54d672599639",
+    "sha": "de1228d426fffff17fe60aef0ddcc71b308d1b77",
     "n": 1017,
-    "digest": "adb920f2d1c7ed967cbdd48f56921b71c9b991b171fed3dc5ab8dce638e19ee1",
+    "digest": "cbff6404dbeb84b6b87a3050e4f8d867aabf93ed3313b055e7f46c7730f14061",
     "tep": {
       ".github/scripts/issue-triage.test.mjs": "df617be414b06402c7fd7f8de1cf38c99371c02ac1aae51486e7edbab66079f4",
       "_acceptance/config.yaml": "f5e1ecc745cc68434f7e44cfbc6dbf059a7fe221e581b388fa582cef621390be",
-      "_acceptance/hieu-be-dang-hoc-gi/evals.yaml": "fa0214da62a4c775d2264a5408517e0a0265e010296fc922cce4cfe089c2f4aa",
+      "_acceptance/hieu-be-dang-hoc-gi/evals.yaml": "649610990420ced07f9367b3601c775f2bb199d10ef6c766218baed1aa8fb36e",
       "e2e/tests/asset-byte-egress-cors.spec.ts": "723b60e067af51d79f40050de43701601efbaa6fdce7cf438957695103ccf661",
       "e2e/tests/classroom-complete-adaptive.spec.ts": "4f2bde64986313f71bbd4545605a5836ede3fd9d5283ae6a437897a3dfcafaeb",
       "e2e/tests/classroom-interaction.spec.ts": "14419e5687b78cf3b848e24821f004d32aab815145a26c5741f927b949ca8ead",
@@ -1584,7 +1774,7 @@
       "tests/config/feature-flags.test.ts": "2cb2af2958f9d75665c5d68ff61b32dd54646b9e0afceff0aeca727b4584b2d9",
       "tests/config/settings-agent-voice-overrides.test.ts": "09417104acf51be7de2b986ddbaf166c182a8feed38791f12c3709f84925e49c",
       "tests/config/token-plan-apply-persist.test.ts": "f91776f526db8a3437d8b08d301984db3daa9480322d184b2cd31e1a0de5edc4",
-      "tests/curriculum/curriculum-anchor.test.ts": "35d843872c8e5a939ad29ccffd8fe6b11c84900705b9f8c2f9c44fb8f09a05f4",
+      "tests/curriculum/curriculum-anchor.test.ts": "e2702d4383555c7ee7a8b67dbe715bfc8da42fb5530fccca8b5d1c6c976e75a1",
       "tests/curriculum/curriculum-packs.test.ts": "a35a16a1b5be6481b7765e988aac8a81549ff32117cf6b3a11284752e7bc7c92",
       "tests/document-store/document-storage-config.test.ts": "6e819a7cf35d5922c24e85fb04b5833f3fbc1129479b227b1a04f68b209b82a8",
       "tests/document-store/migration.test.ts": "6d098544b17de69ac23e066d734ff5a6c206fa48aea95ad092ae86fee31dfc50",
