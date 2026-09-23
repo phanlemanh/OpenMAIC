@@ -6,7 +6,7 @@ failed_evals: []
 verified_by: fresh-context verification subagent
 enforcement_mode: strict
 bypass_used: false
-verified_commit: d96920e43ea1ef48244dd25a40bd9e8842a78ba0
+verified_commit: 2be5e6342ffbbc1a31ddf305cc7d5ce0f894c1f4
 human_signoff: Manh Phan 2026-09-23
 ---
 
@@ -304,3 +304,7 @@ Round 5: E7b/E7c (bộ `pnpm test`) chạy lại xanh, không phân biệt với
 ### Re-pin lần 1 — 2026-09-23, do hoá cũ do chính commit chữ ký
 run_id: repin-20260923T010135Z-93312
 sha: d96920e43ea1ef48244dd25a40bd9e8842a78ba0 · suites: 2 lệnh exit 0 · evals: 18/18 eval máy đạt kỳ vọng · ngoài làn máy: E1, E5, E7, E8b, E13 (E13 không khai paths), E14 (E14 không khai paths) · AC không có chốt máy: AC-14
+
+### Re-pin lần 2 — 2026-09-23, do hoá cũ do bản sửa đuôi nhập của test sau chữ ký
+run_id: repin-20260923T010633Z-97769
+sha: 2be5e6342ffbbc1a31ddf305cc7d5ce0f894c1f4 · suites: 2 lệnh exit 0 · evals: 18/18 eval máy đạt kỳ vọng · ngoài làn máy: E1, E5, E7, E8b, E13 (E13 không khai paths), E14 (E14 không khai paths) · AC không có chốt máy: AC-14
