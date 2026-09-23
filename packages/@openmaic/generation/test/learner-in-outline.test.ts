@@ -13,8 +13,8 @@ import { join } from 'node:path';
 
 import { describe, expect, test } from 'vitest';
 
-import { buildOutlinePrompt, formatLearnerContext, type LearnerContext } from '../src';
-import { generateSceneOutlinesFromRequirements } from '../src/outline-generator';
+import { buildOutlinePrompt, formatLearnerContext, type LearnerContext } from '../src/index.js';
+import { generateSceneOutlinesFromRequirements } from '../src/outline-generator.js';
 
 const BE: LearnerContext = {
   nickname: 'Bi',

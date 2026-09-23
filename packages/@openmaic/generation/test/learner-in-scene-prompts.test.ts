@@ -5,9 +5,9 @@
  */
 import { describe, expect, test, vi } from 'vitest';
 
-import { formatLearnerContext, type LearnerContext } from '../src';
-import { generateSceneContent } from '../src/scene-generator';
-import type { SceneOutline } from '../src/outline-types';
+import { formatLearnerContext, type LearnerContext } from '../src/index.js';
+import { generateSceneContent } from '../src/scene-generator.js';
+import type { SceneOutline } from '../src/outline-types.js';
 
 const BE: LearnerContext = {
   nickname: 'Bi',

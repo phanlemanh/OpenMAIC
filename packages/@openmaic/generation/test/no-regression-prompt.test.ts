@@ -9,8 +9,8 @@ import { join } from 'node:path';
 
 import { describe, expect, test } from 'vitest';
 
-import { buildPrompt } from '../src/prompts/loader';
-import { buildOutlinePrompt } from '../src';
+import { buildPrompt } from '../src/prompts/loader.js';
+import { buildOutlinePrompt } from '../src/index.js';
 
 const BASE_COMMIT = '40f1cf954f5d2a5b6593e5d1dfe0ef85a05b26f9';
 const BASELINE = join(__dirname, '__baseline__', `prompts-${BASE_COMMIT.slice(0, 7)}.json`);
