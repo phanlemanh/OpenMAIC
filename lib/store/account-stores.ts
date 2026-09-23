@@ -12,13 +12,24 @@
  */
 import { didLastReadFindStoredValue } from '@/lib/store/kv-persist';
 import { isPersistUnavailable } from '@/lib/store/persist-health';
+import { useLearnerProfileStore } from '@/lib/store/learner-profile';
 import { useSettingsStore } from '@/lib/store/settings';
 import { useUserProfileStore } from '@/lib/store/user-profile';
 
 interface AccountStore {
   /** Tên lưu bền — CHÍNH tên mà tín hiệu sức khoẻ nêu khi lần đọc hỏng. */
   persistName: string;
-  persist: { rehydrate: () => void | Promise<void> };
+  /**
+   * Chỉ hai việc bên ngoài cần ở một kho: nạp lại, và hỏi nó lưu dưới tên gì
+   * trong ngăn nào — màn Cài đặt dùng cái thứ hai để XOÁ đúng khoá ấy.
+   */
+  persist: {
+    rehydrate: () => void | Promise<void>;
+    getOptions: () => {
+      name?: string;
+      storage?: { removeItem: (name: string) => unknown };
+    };
+  };
   getState: () => Record<string, unknown>;
 }
 
@@ -36,6 +47,11 @@ export const ACCOUNT_SCOPE_STORES: Readonly<Record<string, AccountStore>> = {
     persistName: 'user-profile-storage',
     persist: useUserProfileStore.persist,
     getState: () => useUserProfileStore.getState() as unknown as Record<string, unknown>,
+  },
+  learnerProfile: {
+    persistName: 'learner-profile-storage',
+    persist: useLearnerProfileStore.persist,
+    getState: () => useLearnerProfileStore.getState() as unknown as Record<string, unknown>,
   },
 };
 

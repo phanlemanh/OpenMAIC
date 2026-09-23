@@ -37,6 +37,7 @@ import {
   buildCourseContext,
   formatAgentsForPrompt,
   formatTeacherPersonaForPrompt,
+  formatLearnerContext,
 } from './prompt-formatters.js';
 import type { PromptId } from './prompts/types.js';
 import { buildPrompt, PROMPT_IDS } from './prompts/index.js';
@@ -279,6 +280,9 @@ export async function generateSceneContent(
     });
   }
 
+  // MỘT nguồn: cùng hàm mà prompt dàn ý và lời giảng dùng.
+  const learnerContext = formatLearnerContext(options.userRequirements?.learner);
+
   switch (outline.type) {
     case 'slide':
       return generateSlideContent(
@@ -295,9 +299,17 @@ export async function generateSceneContent(
         baselineContent,
         log,
         options.onFailure,
+        learnerContext,
       );
     case 'quiz':
-      return generateQuizContent(outline, aiCall, languageDirective, log, options.onFailure);
+      return generateQuizContent(
+        outline,
+        aiCall,
+        languageDirective,
+        log,
+        options.onFailure,
+        learnerContext,
+      );
     case 'pbl':
       return generatePBLSceneContent(
         outline,
@@ -613,6 +625,9 @@ async function generateSlideContent(
   baselineContent?: GeneratedSlideContent,
   log: GenerationLogger = noopGenerationLogger,
   onFailure?: (failure: SceneContentFailure) => void,
+  // Đặt CUỐI có chủ ý: danh sách này theo vị trí và đã dài, chen vào giữa là
+  // xê dịch mọi lời gọi. Rỗng = không hồ sơ, prompt như trước vòng này.
+  learnerContext = '',
 ): Promise<GeneratedSlideContent | null> {
   // Build assigned images description for the prompt
   let assignedImagesText = '无可用图片，禁止插入任何 image 元素';
@@ -716,6 +731,7 @@ async function generateSlideContent(
     canvas_width: canvasWidth,
     canvas_height: canvasHeight,
     teacherContext,
+    learnerContext,
     languageDirective: languageDirective || '',
     imageElementEnabled,
     generatedImageEnabled,
@@ -857,6 +873,7 @@ async function generateQuizContent(
   languageDirective?: string,
   log: GenerationLogger = noopGenerationLogger,
   onFailure?: (failure: SceneContentFailure) => void,
+  learnerContext = '',
 ): Promise<GeneratedQuizContent | null> {
   const quizConfig = outline.quizConfig || {
     questionCount: 3,
@@ -871,6 +888,7 @@ async function generateQuizContent(
     questionCount: quizConfig.questionCount,
     difficulty: quizConfig.difficulty,
     questionTypes: quizConfig.questionTypes.join(', '),
+    learnerContext,
     languageDirective: languageDirective || '',
   });
 

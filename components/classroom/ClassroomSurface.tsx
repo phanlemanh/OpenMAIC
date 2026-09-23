@@ -450,6 +450,9 @@ export function ClassroomSurface({
           userProfile: params.userProfile,
           languageDirective: params.languageDirective || stage.languageDirective,
           taskEngineMode: stage.taskEngineMode,
+          // Khoá học là nguồn bền; túi tiếp-tục chỉ là bản chép cho lượt chuyển
+          // trang. Đọc túi trước (cùng lượt), rơi về khoá học (mở lại sau).
+          learner: params.learner ?? stage.learner,
         });
 
       const imageMapping: Record<string, string> = {};

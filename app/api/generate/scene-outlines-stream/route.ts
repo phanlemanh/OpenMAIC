@@ -8,6 +8,7 @@
  * SSE events:
  *   { type: 'languageDirective', data: string }
  *   { type: 'courseTitle', data: string }
+ *   { type: 'curriculumAnchor', data: string }   // chỉ khi có gói khung; máy chủ suy từ gói + dàn ý
  *   { type: 'outline', data: SceneOutline, index: number }
  *   { type: 'done', outlines: SceneOutline[], languageDirective: string, courseTitle?: string }
  *   { type: 'error', error: string }
@@ -15,6 +16,8 @@
 
 import { NextRequest } from 'next/server';
 import { streamLLM } from '@/lib/ai/llm';
+import { findPack, readPackBody } from '@/lib/server/curriculum-packs';
+import { deriveCurriculumAnchor } from '@/lib/server/curriculum-anchor';
 import { buildPrompt, PROMPT_IDS } from '@/lib/prompts';
 import {
   formatImageDescription,
@@ -23,6 +26,8 @@ import {
   buildOutlinePrompt,
   uniquifyMediaElementIds,
   formatTeacherPersonaForPrompt,
+  formatLearnerContext,
+  formatLegacyProfile,
 } from '@openmaic/generation';
 import type { AgentInfo } from '@openmaic/generation';
 import { DEFAULT_LANGUAGE_DIRECTIVE } from '@openmaic/generation';
@@ -313,11 +318,22 @@ export async function POST(req: NextRequest) {
     };
     requirementSnippet = requirements?.requirement?.substring(0, 60);
 
-    // Build user profile string for language inference context
-    const userProfileText =
-      requirements.userNickname || requirements.userBio
-        ? `## Student Profile\n\nStudent: ${requirements.userNickname || 'Unknown'}${requirements.userBio ? ` — ${requirements.userBio}` : ''}\n\nConsider this student's background when designing the course. Adapt difficulty, examples, and teaching approach accordingly.\n\n---`
-        : '';
+    // Khối hồ sơ đến từ MỘT bộ định dạng dùng chung — trước vòng này đoạn chữ
+    // dưới đây được chép tay ở ba chỗ của đường soạn, nên sửa một chỗ thì hai
+    // chỗ kia lặng lẽ lệch.
+    const userProfileText = requirements.learner
+      ? formatLearnerContext(requirements.learner)
+      : formatLegacyProfile(requirements.userNickname, requirements.userBio);
+
+    // Thân gói khung: route TỰ tra từ hồ sơ, client không gửi mã gói. Môn đang
+    // soạn là môn ĐẦU danh sách — client đưa lựa chọn của người lên đầu, nên
+    // không có trường «chỉ số môn» nào để hai bên lệch nhau.
+    const chosenSubject = requirements.learner?.subjects?.[0];
+    const pack =
+      chosenSubject && requirements.learner
+        ? findPack(chosenSubject.subject, chosenSubject.curriculum, requirements.learner.gradeLabel)
+        : null;
+    const curriculumContext = pack ? readPackBody(pack.id) : '';
 
     // Detect vision capability
     const hasVision = !!modelInfo?.capabilities?.vision;
@@ -427,6 +443,7 @@ export async function POST(req: NextRequest) {
       videoGenerationEnabled,
       researchContext,
       teacherContext,
+      curriculumContext,
     });
 
     if (taskEngineMode || interactiveMode) {
@@ -444,6 +461,7 @@ export async function POST(req: NextRequest) {
         mediaEnabled: mediaGenerationEnabled,
         teacherContext,
         userProfile: userProfileText,
+        curriculumContext,
       });
     }
 
@@ -514,6 +532,7 @@ export async function POST(req: NextRequest) {
           let parsedOutlines: SceneOutline[] = [];
           let languageDirective: string | null = null;
           let courseTitle: string | null = null;
+          let curriculumAnchor: string | null = null;
           let lastError: string | undefined;
 
           for (let attempt = 1; attempt <= MAX_STREAM_RETRIES + 1; attempt++) {
@@ -606,6 +625,23 @@ export async function POST(req: NextRequest) {
                   // placed after the outlines array or past the 8KB head window;
                   // recover it from the now-complete response before finalizing.
                   courseTitle = extractCourseTitleFromComplete(fullText);
+                }
+                // Câu neo SUY TRONG CODE từ gói và dàn ý vừa sinh — không rút
+                // từ đầu ra mô hình. Có gói là có câu neo; không gói là không.
+                curriculumAnchor = pack
+                  ? deriveCurriculumAnchor({
+                      pack,
+                      requirement: requirements.requirement ?? '',
+                      outlines: parsedOutlines,
+                      language: chosenSubject?.language,
+                    })
+                  : null;
+                if (curriculumAnchor) {
+                  const caEvent = JSON.stringify({
+                    type: 'curriculumAnchor',
+                    data: curriculumAnchor,
+                  });
+                  controller.enqueue(encoder.encode(`data: ${caEvent}\n\n`));
                 }
                 break;
               }

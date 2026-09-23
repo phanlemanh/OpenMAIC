@@ -1,0 +1,119 @@
+{
+  "assertions": [
+    {
+      "name": "E1-the-trong: card state ST-the-trong",
+      "pass": true,
+      "detail": "ST-the-trong"
+    },
+    {
+      "name": "E1-the-trong: nút Lưu mờ (disabled)",
+      "pass": true,
+      "detail": "true"
+    },
+    {
+      "name": "E1-the-dang-dien: card state ST-the-dang-dien",
+      "pass": true,
+      "detail": "ST-the-dang-dien"
+    },
+    {
+      "name": "E1-mon-co-goi: dòng môn Cambridge lớp 7 hiện có gói",
+      "pass": true,
+      "detail": "ST-the-mon-co-goi"
+    },
+    {
+      "name": "E1-mon-co-goi: tên sách hiển thị",
+      "pass": true,
+      "detail": "Chương trình MOET (Việt Nam) Cambridge Lower Secondary IB MYP Khác Ngôn ngữ học Tiếng Việt Tiếng Anh ✓ máy biết chương trình này — Cambridge Lower Secondary Mathematics Learner's Book 8"
+    },
+    {
+      "name": "E1-mon-chua-goi: dòng MOET hiện chưa có gói",
+      "pass": true,
+      "detail": "ST-the-mon-chua-goi"
+    },
+    {
+      "name": "E1-dang-luu: bắt được ST-the-dang-luu bằng MutationObserver (DOM live)",
+      "pass": true,
+      "detail": "caught=true"
+    },
+    {
+      "name": "E1-da-luu (post-save, trước reload): card state ST-the-da-luu",
+      "pass": true,
+      "detail": "ST-the-da-luu"
+    },
+    {
+      "name": "E1-da-luu (post-save): toast/text \"Đã lưu\" xuất hiện",
+      "pass": true,
+      "detail": "2"
+    },
+    {
+      "name": "E1-da-luu: tên gọi còn nguyên sau tải lại",
+      "pass": true,
+      "detail": "An"
+    },
+    {
+      "name": "E1-da-luu: lớp còn nguyên sau tải lại",
+      "pass": true,
+      "detail": "lớp 7"
+    },
+    {
+      "name": "E1-da-luu: đủ hai dòng môn sau tải lại",
+      "pass": true,
+      "detail": "2"
+    },
+    {
+      "name": "E1-da-luu: sau tải lại card state (đúng công thức: touched=true, save reset idle → ST-the-dang-dien, KHÔNG phải lỗi)",
+      "pass": true,
+      "detail": "ST-the-dang-dien"
+    },
+    {
+      "name": "bước chuẩn bị: có option MOET trong \"Soạn cho\"",
+      "pass": true,
+      "detail": "Toán — Cambridge Lower Secondary (tiếng Anh) | Toán — MOET (tiếng Việt)"
+    },
+    {
+      "name": "E1-doi-lop: dòng Cambridge chuyển sang chưa có gói ở lớp 8 (không có pack cho lớp 8 trong fixture)",
+      "pass": true,
+      "detail": "ST-the-mon-chua-goi"
+    },
+    {
+      "name": "E1-doi-lop: không lộ chữ \"Stage\" trên thẻ",
+      "pass": true,
+      "detail": "Chương trình\nMOET (Việt Nam)\nCambridge Lower Secondary\nIB MYP\nKhác\nNgôn ngữ học\nTiếng Việt\nTiếng Anh\n\nChưa có gói cho chương trình này — máy sẽ đoán và nói rõ là đang đoán.\n\nBớt môn"
+    },
+    {
+      "name": "E1-loi-luu: card state ST-the-loi-luu",
+      "pass": true,
+      "detail": "ST-the-loi-luu"
+    },
+    {
+      "name": "E1-loi-luu: giá trị vừa gõ còn trên form",
+      "pass": true,
+      "detail": "An (thử lưu hỏng)"
+    },
+    {
+      "name": "E1-loi-luu: toast \"chưa lưu được\" xuất hiện",
+      "pass": true,
+      "detail": "2"
+    },
+    {
+      "name": "E1-loi-luu: KHÔNG có toast \"Đã lưu\" mới xuất hiện trong lúc ghi hỏng",
+      "pass": true,
+      "detail": "before=0 after=0"
+    },
+    {
+      "name": "E1-bot-mon (chuẩn bị): còn đúng 1 dòng môn sau khi bớt MOET",
+      "pass": true,
+      "detail": "1"
+    },
+    {
+      "name": "E1-bot-mon: chỉ còn 1 lựa chọn trong \"Soạn cho\"",
+      "pass": true,
+      "detail": "1"
+    },
+    {
+      "name": "E1-bot-mon: ô \"Soạn cho\" rơi về môn còn lại (Cambridge), không giữ lựa chọn mồ côi (MOET)",
+      "pass": true,
+      "detail": "value=Toán::cambridge-lower-secondary text=Toán — Cambridge Lower Secondary (tiếng Anh)"
+    }
+  ]
+}

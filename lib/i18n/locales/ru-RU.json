@@ -11,7 +11,21 @@
   },
   "home": {
     "slogan": "Generative Learning in Multi-Agent Interactive Classroom",
-    "greetingWithName": "Привет, {{name}}"
+    "greetingWithName": "Привет, {{name}}",
+    "learnerInvite": {
+      "prompt": "Готовите для ребёнка? Ответьте на пять вопросов",
+      "composeFor": "Готовим для:",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "Другая"
+      },
+      "language": {
+        "vi-VN": "вьетнамский",
+        "en-US": "английский"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "Парсер",
@@ -1906,6 +1920,36 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "This machine now shares the choices the other machine had. Anything it never set was left as it is."
+    },
+    "learnerProfile": {
+      "nav": "Ученик",
+      "title": "Ученик",
+      "description": "Укажите один раз, что изучает ребёнок, — и каждый созданный урок будет этому следовать.",
+      "nickname": "Как зовут ребёнка",
+      "nicknamePlaceholder": "Как вы его называете?",
+      "grade": "Класс",
+      "gradePlaceholder": "Выберите класс",
+      "school": "Школа (необязательно)",
+      "schoolPlaceholder": "напр. Emasi",
+      "subjects": "Предметы",
+      "subjectPlaceholder": "Предмет, напр. Математика",
+      "curriculumPlaceholder": "Программа",
+      "languagePlaceholder": "Язык обучения",
+      "textbookPlaceholder": "Учебник (необязательно)",
+      "addSubject": "Добавить предмет",
+      "removeSubject": "Убрать",
+      "packFound": "✓ эта программа поддерживается",
+      "packMissing": "Для этой программы пакета пока нет — урок будет обоснованной догадкой, и об этом будет сказано.",
+      "workbenchNeedsSync": "Этот профиль хранится только на этом устройстве. Мастерская Pro работает на сервере и пока его не видит — включите синхронизацию аккаунта, чтобы уроки оттуда тоже подстраивались под ребёнка.",
+      "save": "Сохранить",
+      "saved": "Сохранено",
+      "saveFailed": "Не удалось сохранить — введённое осталось на экране. Попробуйте ещё раз.",
+      "curriculumMoet": "MOET (Вьетнам)",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "Другая",
+      "langVi": "Вьетнамский",
+      "langEn": "Английский"
     }
   },
   "workspace": {
@@ -2062,6 +2106,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ Для {{curriculum}} пакета программы пока нет — это догадка, а не проверенное соответствие."
     }
   }
 }

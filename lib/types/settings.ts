@@ -11,6 +11,7 @@ export type SettingsSection =
   | 'image'
   | 'video'
   | 'web-search'
+  | 'learner'
   | 'skills'
   | 'my-devices';
 

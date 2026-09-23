@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { OutlinesEditor } from '@/components/generation/outlines-editor';
+import { CurriculumAnchorLine } from '@/components/generation/curriculum-anchor-line';
 import { cn } from '@/lib/utils';
 import { useStageStore } from '@/lib/store/stage';
 import { useSettingsStore } from '@/lib/store/settings';
@@ -25,7 +26,7 @@ import {
   fetchSceneContent,
   generateTTSForScene,
 } from '@/lib/hooks/use-scene-generator';
-import { isAbortError } from '@openmaic/generation';
+import { isAbortError, formatLearnerContext, formatLegacyProfile } from '@openmaic/generation';
 import { FOREGROUND_SCENE_RETRY_OPTIONS } from './foreground-retry';
 import {
   loadImageMapping,
@@ -547,6 +548,7 @@ function GenerationPreviewContent() {
       let outlines = currentSession.sceneOutlines;
       let languageDirective = currentSession.languageDirective;
       let courseTitle = currentSession.courseTitle;
+      let curriculumAnchor = currentSession.curriculumAnchor;
 
       const outlineStepIdx = activeSteps.findIndex((s) => s.id === 'outline');
       setCurrentStepIndex(outlineStepIdx >= 0 ? outlineStepIdx : 0);
@@ -559,11 +561,13 @@ function GenerationPreviewContent() {
           outlines: SceneOutline[];
           languageDirective: string;
           courseTitle?: string;
+          curriculumAnchor?: string;
           taskEngineMode: boolean;
         }>((resolve, reject) => {
           const collected: SceneOutline[] = [];
           let directive: string | undefined;
           let title: string | undefined;
+          let anchor: string | undefined;
 
           fetch('/api/generate/scene-outlines-stream', {
             method: 'POST',
@@ -610,6 +614,8 @@ function GenerationPreviewContent() {
                           directive = evt.data;
                         } else if (evt.type === 'courseTitle') {
                           title = evt.data;
+                        } else if (evt.type === 'curriculumAnchor') {
+                          anchor = evt.data;
                         } else if (evt.type === 'outline') {
                           collected.push(evt.data);
                           setStreamingOutlines([...collected]);
@@ -621,6 +627,7 @@ function GenerationPreviewContent() {
                           // inherit the previous attempt's stale values.
                           directive = undefined;
                           title = undefined;
+                          anchor = undefined;
                           setStreamingOutlines([]);
                           setStatusMessage(t('generation.outlineRetrying'));
                         } else if (evt.type === 'done') {
@@ -631,6 +638,7 @@ function GenerationPreviewContent() {
                               directive ||
                               'Teach in the language that matches the user requirement.',
                             courseTitle: evt.courseTitle || title,
+                            curriculumAnchor: anchor,
                             taskEngineMode: resolveTaskEngineModeFromOutlineDoneEvent(evt),
                           });
                           return;
@@ -654,6 +662,9 @@ function GenerationPreviewContent() {
                         // a stream that ends without an explicit `done` event
                         // does not silently drop a valid inferred title.
                         courseTitle: title,
+                        // Đi cùng courseTitle: một luồng kết không có sự kiện
+                        // `done` không được lặng lẽ đánh rơi câu neo đã bắt.
+                        curriculumAnchor: anchor,
                         taskEngineMode: false,
                       });
                     } else {
@@ -672,6 +683,7 @@ function GenerationPreviewContent() {
         outlines = outlineResult.outlines;
         languageDirective = outlineResult.languageDirective;
         courseTitle = outlineResult.courseTitle;
+        curriculumAnchor = outlineResult.curriculumAnchor;
         const effectiveTaskEngineMode = outlineResult.taskEngineMode;
         setIsOutlineStreaming(false);
 
@@ -684,6 +696,7 @@ function GenerationPreviewContent() {
           sceneOutlines: outlines,
           languageDirective,
           courseTitle,
+          curriculumAnchor,
           taskEngineMode: effectiveTaskEngineMode,
           previewPhase: shouldReviewOutlines ? 'review' : 'outline-ready',
         };
@@ -724,6 +737,14 @@ function GenerationPreviewContent() {
       // Store languageDirective on the stage
       if (languageDirective) {
         stage.languageDirective = languageDirective;
+      }
+
+      // Hồ sơ người học đóng lên KHOÁ HỌC, cạnh languageDirective: đây là tầng
+      // tuổi thọ đúng của nó. Trên yêu cầu thì trang đầu có, trang sau mất;
+      // trên khoá học thì trang thứ N, lượt sinh lại, và xưởng Pro mở lại khoá
+      // học này đều thấy cùng một đứa trẻ.
+      if (currentSession.requirements.learner) {
+        stage.learner = currentSession.requirements.learner;
       }
 
       // Adopt the LLM-inferred course title as the stage name when available,
@@ -955,10 +976,16 @@ function GenerationPreviewContent() {
         style: stage.style,
       };
 
+      // Khối hồ sơ cho lời giảng đến từ CÙNG bộ định dạng với prompt dàn ý và
+      // nội dung — trước vòng này chỗ đây tự ghép một dạng chữ thứ ba, nên ba
+      // đường nói ba kiểu về cùng một đứa trẻ.
       const userProfile =
-        currentSession.requirements.userNickname || currentSession.requirements.userBio
-          ? `Student: ${currentSession.requirements.userNickname || 'Unknown'}${currentSession.requirements.userBio ? ` — ${currentSession.requirements.userBio}` : ''}`
-          : undefined;
+        (currentSession.requirements.learner
+          ? formatLearnerContext(currentSession.requirements.learner)
+          : formatLegacyProfile(
+              currentSession.requirements.userNickname,
+              currentSession.requirements.userBio,
+            )) || undefined;
 
       // Generate ONLY the first scene
       store.setGeneratingOutlines(outlines);
@@ -1044,6 +1071,7 @@ function GenerationPreviewContent() {
           agents,
           userProfile,
           languageDirective,
+          learner: stage.learner,
         }),
       );
 
@@ -1295,6 +1323,26 @@ function GenerationPreviewContent() {
               isLoading={isConfirmingOutlines}
               isStreaming={isOutlineStreaming}
               onCollapse={handleCollapseEditor}
+              anchorLine={
+                <CurriculumAnchorLine
+                  anchor={session?.curriculumAnchor}
+                  guessingFor={
+                    // Chỉ nói «đang đoán» khi hồ sơ CÓ khai giáo trình mà mô
+                    // hình không trả câu neo — tức thật sự thiếu gói. Hồ sơ
+                    // trống thì không dòng nào, y như trước vòng này.
+                    //
+                    // DỊCH mã giáo trình trước khi đưa lên màn: dòng này là
+                    // lời cảnh báo nhắm thẳng vào phụ huynh không chuyên, nên
+                    // nó là dòng CUỐI CÙNG được phép lộ một mã máy. Mọi mặt
+                    // khác đã dịch qua cùng bộ khoá này.
+                    !session?.curriculumAnchor && session?.requirements?.learner?.subjects?.[0]
+                      ? t(
+                          `home.learnerInvite.curriculum.${session.requirements.learner.subjects[0].curriculum}`,
+                        )
+                      : undefined
+                  }
+                />
+              }
             />
           </motion.div>
         </div>

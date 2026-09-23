@@ -136,6 +136,40 @@ export interface MultiAgentConfig {
 }
 
 /**
+ * One subject the learner studies, with its own curriculum and language.
+ *
+ * A child can follow two frameworks at once (for example MOET Vietnamese
+ * alongside Cambridge Lower Secondary English), so the curriculum and the
+ * language belong to the subject, not to the learner.
+ */
+export interface LearnerSubject {
+  subject: string;
+  /** Curriculum code, e.g. 'cambridge-lower-secondary' | 'moet'. */
+  curriculum: string;
+  /** BCP-47 tag of the language this subject is studied in, e.g. 'vi-VN' | 'en-US'. */
+  language: string;
+  textbook?: string;
+  /** Matched curriculum pack. Absent = no pack → guess mode. */
+  packId?: string;
+}
+
+/**
+ * Who the course is for. Declared once in the learner profile; stamped on the
+ * Stage at creation so every page of the course — the first one and every
+ * later one, on every machine — is generated for the same child.
+ *
+ * Child data is limited to a nickname, a grade label, a school and subjects.
+ * No full name, no date of birth.
+ */
+export interface LearnerContext {
+  nickname: string;
+  /** Grade label in the family's own system, e.g. 'lớp 7'. Mapping to a stage is the pack's job. */
+  gradeLabel: string;
+  school?: string;
+  subjects: LearnerSubject[];
+}
+
+/**
  * Stage - Represents the entire classroom/course.
  */
 export interface Stage {
@@ -146,6 +180,11 @@ export interface Stage {
   updatedAt: number;
   // Stage metadata
   languageDirective?: string;
+  /**
+   * The learner this course was generated for. Set from the learner profile
+   * when the course is created; absent on courses generated without one.
+   */
+  learner?: LearnerContext;
   style?: string;
   // Whiteboard data
   whiteboard?: Whiteboard[];

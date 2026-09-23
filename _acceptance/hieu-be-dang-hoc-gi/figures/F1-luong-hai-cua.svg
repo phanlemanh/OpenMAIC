@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1048 396" xmlns="http://www.w3.org/2000/svg" font-family="'Geist', system-ui, sans-serif">
+      <defs>
+        <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Lora:ital,wght@0,400;1,400&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;display=swap');</style>
+        <marker id="arr-muted" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f5d75"/></marker>
+        <marker id="arr-accent" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#eb6c36"/></marker>
+        <marker id="arr-link" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2e5aa8"/></marker>
+      </defs>
+
+      <!-- paper -->
+      <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+      <!-- lane tint: only the shared lane -->
+      <rect x="0" y="124" width="1048" height="88" fill="rgba(45,49,66,0.018)"/>
+
+      <!-- lane dividers + label column border -->
+      <line x1="0" y1="36" x2="1048" y2="36" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <line x1="0" y1="124" x2="1048" y2="124" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <line x1="0" y1="212" x2="1048" y2="212" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <line x1="0" y1="300" x2="1048" y2="300" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+      <line x1="140" y1="36" x2="140" y2="300" stroke="rgba(45,49,66,0.12)" stroke-width="0.8"/>
+
+      <!-- step header chips -->
+      <g font-family="'Geist Mono', ui-monospace, monospace" font-size="9" font-weight="600" text-anchor="middle" letter-spacing="0.18em">
+        <rect x="176" y="10" width="104" height="16" rx="8" fill="rgba(45,49,66,0.12)"/>
+        <text x="228" y="21" fill="#2d3142">01 · KHAI</text>
+        <rect x="352" y="10" width="104" height="16" rx="8" fill="rgba(45,49,66,0.12)"/>
+        <text x="404" y="21" fill="#2d3142">02 · MANG THEO</text>
+        <rect x="528" y="10" width="104" height="16" rx="8" fill="rgba(45,49,66,0.12)"/>
+        <text x="580" y="21" fill="#2d3142">03 · ĐỊNH DẠNG</text>
+        <rect x="704" y="10" width="104" height="16" rx="8" fill="rgba(45,49,66,0.12)"/>
+        <text x="756" y="21" fill="#2d3142">04 · MÔ HÌNH</text>
+        <rect x="880" y="10" width="104" height="16" rx="8" fill="rgba(235,108,54,0.20)"/>
+        <text x="932" y="21" fill="#ba4513">05 · NEO</text>
+      </g>
+
+      <!-- lane labels -->
+      <g font-family="'Geist Mono', ui-monospace, monospace" font-size="9" font-weight="500" letter-spacing="0.18em" text-anchor="middle" fill="#4f5d75">
+        <text x="70" y="76">CỬA</text>
+        <text x="70" y="88">BẤM MỘT PHÁT</text>
+        <text x="70" y="164">NỀN CHUNG</text>
+        <text x="70" y="176">HAI CỬA DÙNG</text>
+        <text x="70" y="252">CỬA</text>
+        <text x="70" y="264">XƯỞNG PRO</text>
+      </g>
+
+      <!-- ===== arrows (before nodes) ===== -->
+      <g stroke="#4f5d75" stroke-width="1" fill="none" marker-end="url(#arr-muted)">
+        <!-- lane 0: bấm một phát -->
+        <line x1="300" y1="80" x2="332" y2="80"/>
+        <line x1="476" y1="80" x2="508" y2="80"/>
+        <line x1="652" y1="80" x2="684" y2="80"/>
+        <!-- lane 1: nền chung -->
+        <line x1="300" y1="168" x2="332" y2="168"/>
+        <line x1="476" y1="168" x2="508" y2="168"/>
+        <!-- lane 2: xưởng Pro -->
+        <line x1="300" y1="256" x2="332" y2="256"/>
+        <line x1="476" y1="256" x2="508" y2="256"/>
+        <line x1="652" y1="256" x2="684" y2="256"/>
+        <line x1="828" y1="256" x2="860" y2="256"/>
+        <!-- hồ sơ lên hai cửa (bước 01) -->
+        <line x1="228" y1="132" x2="228" y2="116"/>
+        <line x1="228" y1="204" x2="228" y2="220"/>
+        <!-- bộ định dạng lên hai cửa (bước 03) -->
+        <line x1="580" y1="132" x2="580" y2="116"/>
+        <line x1="580" y1="204" x2="580" y2="220"/>
+      </g>
+      <!-- focal: câu neo về màn xem trước -->
+      <line x1="828" y1="80" x2="860" y2="80" stroke="#eb6c36" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+      <rect x="832" y="56" width="24" height="16" rx="2" fill="#f5f5f5"/>
+      <text x="844" y="67" fill="#ba4513" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle" letter-spacing="0.06em">NEO</text>
+
+      <!-- ===== nodes ===== -->
+      <!-- lane 0 · cửa bấm một phát -->
+      <g>
+        <rect x="156" y="44" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="156" y="44" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="228" y="70" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Trang chủ</text>
+        <text x="228" y="86" fill="#4f5d75" font-size="9" text-anchor="middle">ô «Soạn cho» chọn môn</text>
+        <text x="228" y="102" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(app/page.tsx)</text>
+      </g>
+      <g>
+        <rect x="332" y="44" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="332" y="44" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="404" y="70" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Yêu cầu dàn ý</text>
+        <text x="404" y="86" fill="#4f5d75" font-size="9" text-anchor="middle">hồ sơ + môn đã chọn đi kèm</text>
+        <text x="404" y="102" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(requirements.learner)</text>
+      </g>
+      <g>
+        <rect x="508" y="44" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="508" y="44" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="580" y="70" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Route dàn ý</text>
+        <text x="580" y="86" fill="#4f5d75" font-size="9" text-anchor="middle">đổ hồ sơ + thân gói vào mẫu</text>
+        <text x="580" y="102" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">({{curriculumContext}})</text>
+      </g>
+      <g>
+        <rect x="684" y="44" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="684" y="44" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="756" y="70" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Mô hình</text>
+        <text x="756" y="86" fill="#4f5d75" font-size="9" text-anchor="middle">trả câu neo cùng dàn ý</text>
+        <text x="756" y="102" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(curriculumAnchor · SSE)</text>
+      </g>
+      <g>
+        <rect x="860" y="44" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="860" y="44" width="144" height="72" rx="6" fill="rgba(235,108,54,0.07)" stroke="#eb6c36" stroke-width="1.4"/>
+        <text x="932" y="70" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Màn xem trước</text>
+        <text x="932" y="86" fill="#4f5d75" font-size="9" text-anchor="middle">dòng neo: bài theo unit nào</text>
+        <text x="932" y="102" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(generation-preview)</text>
+      </g>
+
+      <!-- lane 1 · nền chung -->
+      <g>
+        <rect x="156" y="132" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="156" y="132" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="228" y="158" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Hồ sơ người học</text>
+        <text x="228" y="174" fill="#4f5d75" font-size="9" text-anchor="middle">bé · lớp · môn[] · gói đã khớp</text>
+        <text x="228" y="190" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(kho account · zustand)</text>
+      </g>
+      <g>
+        <rect x="332" y="132" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="332" y="132" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="404" y="158" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Gói khung</text>
+        <text x="404" y="174" fill="#4f5d75" font-size="9" text-anchor="middle">mạch → unit → chủ đề</text>
+        <text x="404" y="190" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(curriculum-pack.json)</text>
+      </g>
+      <g>
+        <rect x="508" y="132" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="508" y="132" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="580" y="158" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Bộ định dạng — một</text>
+        <text x="580" y="174" fill="#4f5d75" font-size="9" text-anchor="middle">cùng một câu cho hai cửa</text>
+        <text x="580" y="190" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(formatLearnerContext)</text>
+      </g>
+
+      <!-- lane 2 · cửa xưởng Pro -->
+      <g>
+        <rect x="156" y="220" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="156" y="220" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="228" y="246" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Mở phiên</text>
+        <text x="228" y="262" fill="#4f5d75" font-size="9" text-anchor="middle">hồ sơ đi kèm yêu cầu</text>
+        <text x="228" y="278" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(POST …/agent/sessions)</text>
+      </g>
+      <g>
+        <rect x="332" y="220" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="332" y="220" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="404" y="246" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Bản chụp chủ sở hữu</text>
+        <text x="404" y="262" fill="#4f5d75" font-size="9" text-anchor="middle">hồ sơ chụp lúc mở phiên</text>
+        <text x="404" y="278" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(KV owner · snapshot)</text>
+      </g>
+      <g>
+        <rect x="508" y="220" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="508" y="220" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="580" y="246" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Runner</text>
+        <text x="580" y="262" fill="#4f5d75" font-size="9" text-anchor="middle">dựng khối người học</text>
+        <text x="580" y="278" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(learnerPromptBlock)</text>
+      </g>
+      <g>
+        <rect x="684" y="220" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="684" y="220" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="756" y="246" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Agent</text>
+        <text x="756" y="262" fill="#4f5d75" font-size="9" text-anchor="middle">đọc skill gói rồi mới soạn</text>
+        <text x="756" y="278" fill="#636b80" font-size="9" font-family="'Geist Mono', ui-monospace, monospace" text-anchor="middle">(CoursePromptBlocks)</text>
+      </g>
+      <g>
+        <rect x="860" y="220" width="144" height="72" rx="6" fill="#f5f5f5"/>
+        <rect x="860" y="220" width="144" height="72" rx="6" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+        <text x="932" y="246" fill="#2d3142" font-size="10" font-weight="600" text-anchor="middle">Câu neo trong chat</text>
+        <text x="932" y="262" fill="#4f5d75" font-size="9" text-anchor="middle">nói bài neo vào unit nào</text>
+      </g>
+
+      <!-- ===== legend strip ===== -->
+      <g font-family="'Geist Mono', ui-monospace, monospace" font-size="9" font-weight="500" letter-spacing="0.18em" fill="#4f5d75">
+        <text x="30" y="320">LUỒNG</text>
+        <text x="30" y="344">CHỞ HỒ SƠ</text>
+        <text x="30" y="368">BỊ LOẠI</text>
+      </g>
+
+      <!-- row 1: flow -->
+      <line x1="140" y1="316" x2="172" y2="316" stroke="#4f5d75" stroke-width="1" marker-end="url(#arr-muted)"/>
+      <text x="180" y="320" fill="#4f5d75" font-size="9">hồ sơ đi theo yêu cầu</text>
+      <line x1="332" y1="316" x2="364" y2="316" stroke="#eb6c36" stroke-width="1.2" marker-end="url(#arr-accent)"/>
+      <text x="372" y="320" fill="#4f5d75" font-size="9">câu neo về màn</text>
+      <rect x="508" y="308" width="24" height="16" rx="4" fill="rgba(235,108,54,0.07)" stroke="#eb6c36" stroke-width="1.4"/>
+      <text x="540" y="320" fill="#4f5d75" font-size="9">đích chung: dòng neo — cả hai cửa đều phải tới</text>
+
+      <!-- row 2: chosen carrier -->
+      <rect x="140" y="332" width="24" height="16" rx="4" fill="#f5f5f5" stroke="rgba(45,49,66,0.25)" stroke-width="1"/>
+      <text x="172" y="344" fill="#4f5d75" font-size="9">theo yêu cầu: kèm lúc tạo dàn ý (bấm một phát) · kèm lúc mở phiên → bản chụp chủ sở hữu (KV, xưởng Pro)</text>
+
+      <!-- row 3: rejected carriers -->
+      <text x="140" y="368" fill="#4f5d75" font-size="9">✕ bảng phiên — vùng T3, không đụng</text>
+      <text x="380" y="368" fill="#4f5d75" font-size="9">✕ custom_message — tới mô hình như lời nhắn, không phải hồ sơ</text>
+    </svg>

@@ -1,0 +1,83 @@
+E8b network dump — verifier run (independent), round 5, 2026-09-22
+
+dev_server.url = http://localhost:3002 (shared, already-running next-server process
+reused across this verifier session; NOT started/stopped by this run — a fan-out
+sibling verifier appears to already have it up when this run began).
+
+== Step 1 (stability gate) ==
+Tab opened ~23:21:18Z. Home page loaded, console showed "[HMR] connected", only the
+eval's own whitelisted 404s (persistence/kv/*, /api/stages, /api/folders) during
+bootstrap — no "WebSocket ... failed" lines and no connection-refused at that point.
+Stability mark T0 = 2026-09-22T23:22:23Z. Counting started from T0 per step 1.
+
+== Mid-session blip (self-contained, handled per step-1's own reload rule) ==
+At ~23:24:01Z, while this run was mid-interaction (Settings > Learner "Save"), the
+shared dev server hot-reloaded/restarted (matches the exact next-dev restart
+signature seen in round 4): 2 requests failed net::ERR_CONNECTION_REFUSED
+(POST /__nextjs_original-stack-frames and GET /api/persistence/kv/entries/
+learner-profile-storage — both FAIL-eligible, same-origin fetch/XHR), console showed
+"WebSocket ... failed" (x4) then reconnected, followed by a full page auto-reload.
+Per step 1's own instruction ("còn lỗi kết nối ... thì tải lại tab rồi mới đếm"),
+this run treated it the same way: reloaded the tab (navigate to http://localhost:3002),
+confirmed a fully clean bootstrap on the reload (no connection errors, no failed
+websocket, only the whitelisted 404s), and re-marked stability at
+T1 = 2026-09-22T23:37:54Z. Everything reported below as the FINAL assertion window
+is from T1 onward.
+
+== FAIL-eligible scope note ==
+FAIL-eligible = fetch/XHR to origin http://localhost:3002 (no dev_server.api_base
+configured, same-origin API). WebSocket (ws://localhost:3002/_next/hmr) is Next.js
+dev-tooling infrastructure, not app fetch/XHR — noted, not counted.
+
+== Noise from this run's OWN abandoned exploratory attempts (not FAIL-eligible per rule) ==
+Between T0 and T1 this run made several exploratory generation attempts while
+learning the app's flow (mis-clicked the model picker instead of "Enter Classroom",
+navigated Back/reloaded while an earlier attempt's outline/scene-content stream was
+still in flight). Those in-flight POSTs to /api/generate/scene-outlines-stream and
+/api/generate/scene-content show as "200 OK [FAILED: net::ERR_ABORTED]" in the raw
+network log — i.e. the server responded 200 and started streaming, and the CLIENT
+(this run) aborted the read by navigating/reloading away. net::ERR_ABORTED here is a
+client-initiated cancellation (AbortController on unmount/navigation), not a
+connection-error, timeout, or a 4xx/5xx status — it is a byproduct of this run's own
+repeated manual retries, not something a single pass through the eval's three steps
+would produce. It is excluded from the FAIL determination on that basis, and would
+not reproduce if steps 1-3 are executed once, cleanly.
+
+== FINAL assertion window (from T1 = 23:37:54Z through the successful capture) ==
+Full raw network log for tab-1 checked (499 requests total across the whole session;
+the tail from T1 onward is the relevant window). In this window:
+  - GET / (reload)                                          → 200 OK
+  - all /_next/static/* chunks, fonts, css                  → 200/304 OK
+  - GET /api/server-providers, /api/comfyui-workflows,
+    /api/access-code/status                                 → 200 OK (x N, polled)
+  - GET /api/persistence/kv/entries/settings-storage         → 404 (whitelisted — server
+  - GET /api/persistence/kv/entries/learner-profile-storage  → 404   persistence path
+  - GET /api/persistence/kv/entries/user-profile-storage     → 404   not enabled)
+  - GET /api/stages, GET /api/folders                        → 404 (whitelisted — agent
+                                                                       runtime bundle off)
+  - GET /api/curriculum-packs                                 → 200 OK (x4, polled)
+  - GET /generation-preview?_rsc=...                          → 200 OK
+  - POST /api/generate/scene-outlines-stream                  → 200 OK  <- the actual
+                                                                            assertion call
+  - GET /logos/*.svg, /avatars/*.png                          → 200/304 OK
+Zero connection-errors, zero timeouts, zero 4xx/5xx outside the eval's own whitelist,
+on the FAIL-eligible surface, in this final window. The POST that generated the
+MOET/no-pack outline (whose result is what evidence/E8-neo-dang-doan.html captures)
+returned 200 OK cleanly.
+
+== Console (final window) ==
+No new console [error] lines after the T1 reload other than the same whitelisted
+404-driven KVPersist/StageStorage/Home messages already covered above (persistence
+path off by design, per the eval's own text) and the disappearing HMR-websocket
+churn that occurs on every reload, then "[HMR] connected" settles again.
+
+== networkObserved ==
+clean
+  Reason: the definitive, final assertion pass (T1 onward, including the exact
+  request that produced the captured outline) shows only app-scope traffic that is
+  either 200/304 OK or one of the eval's explicitly whitelisted 404s. The one earlier
+  connection-refused blip (23:24:01Z, shared-dev-server hot-reload, matches round 4's
+  documented failure mode) is handled per step 1's explicit reload-and-recount rule,
+  and the ERR_ABORTED noise is this run's own client-side navigation artifact from
+  abandoned exploratory attempts, not a connection-error/timeout/5xx on the real,
+  final pass through steps 1-3.

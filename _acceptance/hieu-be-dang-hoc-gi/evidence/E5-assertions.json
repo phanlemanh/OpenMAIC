@@ -1,0 +1,71 @@
+{
+  "ranAt": "2026-09-22T16:04:21.912Z",
+  "baseUrl": "http://localhost:3003",
+  "assertions": [
+    {
+      "name": "ST-chon-moi-khai: hồ sơ trống → nút mời khai hiện",
+      "pass": true,
+      "detail": "count=1"
+    },
+    {
+      "name": "ST-chon-moi-khai: KHÔNG có ô «Soạn cho»",
+      "pass": true,
+      "detail": "count=0"
+    },
+    {
+      "name": "nút Lưu bật khi hồ sơ đủ (2 môn hợp lệ)",
+      "pass": true,
+      "detail": "disabled=false"
+    },
+    {
+      "name": "Lưu hồ sơ: trạng thái \"đã lưu\" hiện ra",
+      "pass": true,
+      "detail": "count=2"
+    },
+    {
+      "name": "ST-chon-san-sang: ô «Soạn cho» xuất hiện",
+      "pass": true,
+      "detail": "count=1"
+    },
+    {
+      "name": "Nhãn ô đúng «Toán — Cambridge Lower Secondary (Tiếng Anh)» (đủ 3 phần)",
+      "pass": true,
+      "detail": "Toán — Cambridge Lower Secondary (tiếng Anh)"
+    },
+    {
+      "name": "Đổi ô sang MOET trước khi tải lại",
+      "pass": true,
+      "detail": "Toán — MOET (tiếng Việt)"
+    },
+    {
+      "name": "ST-chon-san-sang (nhớ lựa chọn): sau tải lại vẫn ở MOET, đủ 3 phần nhãn",
+      "pass": true,
+      "detail": "Toán — MOET (tiếng Việt)"
+    },
+    {
+      "name": "Mở được hộp thoại Cài đặt",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "Sau xoá dữ liệu: hồ sơ trống trở lại (lời mời hiện lại)",
+      "pass": true,
+      "detail": "count=1"
+    },
+    {
+      "name": "Nút gửi bật khi có yêu cầu (hồ sơ trống vẫn cho soạn)",
+      "pass": true,
+      "detail": "disabled=false"
+    },
+    {
+      "name": "màn xem lại đề cương xuất hiện",
+      "pass": true,
+      "detail": "expandClicked=true"
+    },
+    {
+      "name": "ST-neo-khong: hồ sơ trống → màn xem trước KHÔNG có dòng neo nào",
+      "pass": true,
+      "detail": "count=0"
+    }
+  ]
+}

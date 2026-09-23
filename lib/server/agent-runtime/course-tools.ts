@@ -29,7 +29,7 @@
  */
 import type { AgentTool } from '@earendil-works/pi-agent-core';
 import type { DocumentFolderStore, DocumentStore, MaicDocument } from '@openmaic/storage';
-import type { Stage } from '@openmaic/dsl';
+import type { LearnerContext, Stage } from '@openmaic/dsl';
 
 import type { Scene } from '@/lib/types/stage';
 import { STAGE_WRITER_TOOL_NAMES } from '@/lib/agent-runtime/stage-writer-tools';
@@ -95,6 +95,12 @@ export interface CourseToolDeps {
   synthesizeTts?: (input: SceneTtsInput) => Promise<SceneTtsSummary>;
   /** Resolve the skill that owns structural diagnostics for the current turn. */
   getActiveSkill?: () => LoadedSkill | null;
+  /**
+   * The session owner's learner profile, read once per run from the account
+   * partition. Every page the generation tools produce is generated for this
+   * learner; absent when the owner has no profile or sync is off.
+   */
+  learner?: LearnerContext | null;
 }
 
 /**
@@ -292,6 +298,12 @@ interface CoursePromptBlocks {
    * with nothing to read).
    */
   materials?: string;
+  /**
+   * Bé đang học gì — và gói khung nào cần đọc trước khi soạn môn nào. Chỉ có
+   * mặt khi chủ sở hữu đã khai hồ sơ người học (cùng luật với `materials`:
+   * khối không được xuất hiện khi không có gì để nói).
+   */
+  learner?: string;
   /** Roster guidance (list_voices / set_roster; always registered). */
   roster?: string;
   /** Voice-cloning guidance (clip_audio / register_voice; always registered). */
@@ -311,6 +323,7 @@ export function courseSystemPrompt(blocks: CoursePromptBlocks): string {
   if (blocks.dslTools) parts.push('', blocks.dslTools);
   if (blocks.fetch) parts.push('', blocks.fetch);
   if (blocks.untrustedContent) parts.push('', blocks.untrustedContent);
+  if (blocks.learner) parts.push('', blocks.learner);
   if (blocks.materials) parts.push('', blocks.materials);
   if (blocks.roster) parts.push('', blocks.roster);
   if (blocks.voice) parts.push('', blocks.voice);

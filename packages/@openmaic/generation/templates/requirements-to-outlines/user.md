@@ -10,7 +10,9 @@ Please generate scene outlines based on the following course requirements.
 
 {{userProfile}}
 
-## Language Context
+{{#if curriculumContext}}{{curriculumContext}}
+
+{{/if}}## Language Context
 
 Infer the course language directive by applying the decision rules from the system prompt. Key reminders:
 - Requirement language = teaching language (unless overridden by explicit request or learner context)

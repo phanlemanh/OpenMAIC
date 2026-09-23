@@ -11,7 +11,21 @@
   },
   "home": {
     "slogan": "Generative Learning in Multi-Agent Interactive Classroom",
-    "greetingWithName": "嗨，{{name}}"
+    "greetingWithName": "嗨，{{name}}",
+    "learnerInvite": {
+      "prompt": "为孩子备课？回答五个问题",
+      "composeFor": "备课对象：",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "其他"
+      },
+      "language": {
+        "vi-VN": "越南语",
+        "en-US": "英语"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "解析器",
@@ -1906,6 +1920,36 @@
       "serverSilent": "无法连接服务器。当前设置未更改。",
       "retry": "重试",
       "adoptedPartly": "本机已共享另一台设备已有的设置；它从未设置过的内容保持不变。"
+    },
+    "learnerProfile": {
+      "nav": "学习者",
+      "title": "学习者",
+      "description": "填一次孩子在学什么，之后生成的每节课都会跟着走。",
+      "nickname": "孩子的称呼",
+      "nicknamePlaceholder": "家里怎么称呼？",
+      "grade": "年级",
+      "gradePlaceholder": "选择年级",
+      "school": "学校（选填）",
+      "schoolPlaceholder": "例如 Emasi",
+      "subjects": "科目",
+      "subjectPlaceholder": "科目，例如数学",
+      "curriculumPlaceholder": "课程体系",
+      "languagePlaceholder": "授课语言",
+      "textbookPlaceholder": "教材（选填）",
+      "addSubject": "添加科目",
+      "removeSubject": "移除",
+      "packFound": "✓ 已支持该课程体系",
+      "packMissing": "该课程体系暂无框架包 —— 课程会基于常识推测，并会明确说明。",
+      "workbenchNeedsSync": "此档案目前只保存在本设备上。Pro 工作台在服务器上运行，暂时看不到它 —— 开启账户同步后，在那里创建的课程也会贴合孩子。",
+      "save": "保存",
+      "saved": "已保存",
+      "saveFailed": "保存失败 —— 刚才填的内容还在，请重试。",
+      "curriculumMoet": "MOET（越南）",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "其他",
+      "langVi": "越南语",
+      "langEn": "英语"
     }
   },
   "workspace": {
@@ -2062,6 +2106,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ {{curriculum}} 暂无课程框架包 —— 这是基于常识的推测，并非已核对的对应关系。"
     }
   }
 }

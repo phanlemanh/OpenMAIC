@@ -11,7 +11,21 @@
   },
   "home": {
     "slogan": "멀티 에이전트 인터랙티브 교실에서 펼치는 생성형 학습",
-    "greetingWithName": "안녕하세요, {{name}}!"
+    "greetingWithName": "안녕하세요, {{name}}!",
+    "learnerInvite": {
+      "prompt": "아이를 위해 만드시나요? 다섯 가지만 알려주세요",
+      "composeFor": "대상:",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "기타"
+      },
+      "language": {
+        "vi-VN": "베트남어",
+        "en-US": "영어"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "파서",
@@ -1906,6 +1920,36 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "This machine now shares the choices the other machine had. Anything it never set was left as it is."
+    },
+    "learnerProfile": {
+      "nav": "학습자",
+      "title": "학습자",
+      "description": "아이가 무엇을 배우는지 한 번만 입력하면 이후 모든 수업이 이를 따릅니다.",
+      "nickname": "아이 호칭",
+      "nicknamePlaceholder": "집에서 부르는 이름",
+      "grade": "학년",
+      "gradePlaceholder": "학년 선택",
+      "school": "학교(선택)",
+      "schoolPlaceholder": "예: Emasi",
+      "subjects": "과목",
+      "subjectPlaceholder": "과목, 예: 수학",
+      "curriculumPlaceholder": "교육과정",
+      "languagePlaceholder": "수업 언어",
+      "textbookPlaceholder": "교재(선택)",
+      "addSubject": "과목 추가",
+      "removeSubject": "삭제",
+      "packFound": "✓ 이 교육과정을 지원합니다",
+      "packMissing": "이 교육과정의 팩이 아직 없습니다. 추정해서 만들고 그 사실을 밝힙니다.",
+      "workbenchNeedsSync": "이 프로필은 이 기기에만 저장되어 있습니다. Pro 워크벤치는 서버에서 실행되어 아직 프로필을 볼 수 없습니다. 계정 동기화를 켜면 그곳에서 만든 수업도 아이에게 맞춰집니다.",
+      "save": "저장",
+      "saved": "저장됨",
+      "saveFailed": "저장하지 못했습니다. 입력한 내용은 그대로 있습니다. 다시 시도해 주세요.",
+      "curriculumMoet": "MOET(베트남)",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "기타",
+      "langVi": "베트남어",
+      "langEn": "영어"
     }
   },
   "workspace": {
@@ -2062,6 +2106,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ {{curriculum}}의 교육과정 팩이 아직 없습니다. 확인된 대응이 아니라 추정입니다."
     }
   }
 }

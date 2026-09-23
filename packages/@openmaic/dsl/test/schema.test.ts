@@ -84,6 +84,49 @@ describe('generated JSON Schema — Stage', () => {
   });
 });
 
+describe('generated JSON Schema — Stage.learner', () => {
+  const v = validator('Stage');
+  const base = { id: 's', name: 'n', createdAt: 1, updatedAt: 2 };
+  it('accepts a stage carrying the learner it was generated for', () => {
+    expect(
+      v({
+        ...base,
+        learner: {
+          nickname: 'Bi',
+          gradeLabel: 'lớp 7',
+          school: 'Emasi',
+          subjects: [
+            {
+              subject: 'Toán',
+              curriculum: 'cambridge-lower-secondary',
+              language: 'en-US',
+              textbook: "Learner's Book 8",
+              packId: 'cambridge-lower-secondary-maths-8',
+            },
+            { subject: 'Toán', curriculum: 'moet', language: 'vi-VN' },
+          ],
+        },
+      }),
+    ).toBe(true);
+  });
+  it('rejects a learner subject without a curriculum', () => {
+    expect(
+      v({
+        ...base,
+        learner: {
+          nickname: 'Bi',
+          gradeLabel: 'lớp 7',
+          subjects: [{ subject: 'Toán', language: 'en-US' }],
+        },
+      }),
+      'learner subject accepted without a curriculum',
+    ).toBe(false);
+  });
+  it('rejects a learner without a grade label', () => {
+    expect(v({ ...base, learner: { nickname: 'Bi', subjects: [] } })).toBe(false);
+  });
+});
+
 describe('generated JSON Schema — Action', () => {
   const v = validator('Action');
   it('accepts a spotlight action', () => {

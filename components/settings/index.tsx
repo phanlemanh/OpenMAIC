@@ -30,6 +30,7 @@ import {
   Plus,
   CreditCard,
   Sparkles,
+  GraduationCap,
 } from 'lucide-react';
 import { useI18n } from '@/lib/hooks/use-i18n';
 import { useSettingsStore } from '@/lib/store/settings';
@@ -60,6 +61,7 @@ import { WEB_SEARCH_PROVIDERS, getWebSearchProviderDisplayName } from '@/lib/web
 import type { WebSearchProviderId } from '@/lib/web-search/types';
 import { GeneralSettings } from './general-settings';
 import { MyDevicesSettings } from './my-devices-settings';
+import { LearnerProfileSettings } from '@/components/settings/learner-profile-settings';
 import { accountStoreStates, reloadAccountStoresAndConfirm } from '@/lib/store/account-stores';
 import { hasLocalChoicesInAccountScope } from '@/lib/store/local-choices';
 import { useUserProfileStore } from '@/lib/store/user-profile';
@@ -590,6 +592,8 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
         );
       case 'token-plan':
         return <h2 className="text-lg font-semibold">{t('settings.tokenPlan.nav')}</h2>;
+      case 'learner':
+        return <h2 className="text-lg font-semibold">{t('settings.learnerProfile.title')}</h2>;
       case 'my-devices':
         return <h2 className="text-lg font-semibold">{t('settings.myDevices.title')}</h2>;
       case 'providers':
@@ -887,6 +891,19 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
             </button>
 
             <button
+              onClick={() => setActiveSection('learner')}
+              className={cn(
+                'w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors text-left min-w-0',
+                activeSection === 'learner'
+                  ? 'bg-primary/10 text-primary font-medium'
+                  : 'hover:bg-muted',
+              )}
+            >
+              <GraduationCap className="h-4 w-4 shrink-0" />
+              <span className="truncate">{t('settings.learnerProfile.nav')}</span>
+            </button>
+
+            <button
               onClick={() => setActiveSection('my-devices')}
               className={cn(
                 'w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors text-left min-w-0',
@@ -1118,6 +1135,7 @@ export function SettingsDialog({ open, onOpenChange, initialSection }: SettingsD
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-5">
+              {activeSection === 'learner' && <LearnerProfileSettings />}
               {activeSection === 'my-devices' && (
                 <MyDevicesSettings
                   onAdopted={reloadAccountStoresAndConfirm}

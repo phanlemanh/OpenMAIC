@@ -11,7 +11,21 @@
   },
   "home": {
     "slogan": "Aprendizagem Generativa em Sala de Aula Interativa Multi-Agente",
-    "greetingWithName": "Olá, {{name}}"
+    "greetingWithName": "Olá, {{name}}",
+    "learnerInvite": {
+      "prompt": "Para seu filho? Responda cinco perguntas",
+      "composeFor": "Criando para:",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "Outro"
+      },
+      "language": {
+        "vi-VN": "vietnamita",
+        "en-US": "inglês"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "Analisador",
@@ -1906,6 +1920,36 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "This machine now shares the choices the other machine had. Anything it never set was left as it is."
+    },
+    "learnerProfile": {
+      "nav": "Estudante",
+      "title": "Estudante",
+      "description": "Informe uma vez o que seu filho estuda: todas as aulas geradas vão seguir isso.",
+      "nickname": "Como chamam a criança",
+      "nicknamePlaceholder": "Como vocês a chamam?",
+      "grade": "Ano escolar",
+      "gradePlaceholder": "Escolha o ano",
+      "school": "Escola (opcional)",
+      "schoolPlaceholder": "ex.: Emasi",
+      "subjects": "Disciplinas",
+      "subjectPlaceholder": "Disciplina, ex.: Matemática",
+      "curriculumPlaceholder": "Currículo",
+      "languagePlaceholder": "Idioma",
+      "textbookPlaceholder": "Livro didático (opcional)",
+      "addSubject": "Adicionar disciplina",
+      "removeSubject": "Remover",
+      "packFound": "✓ este currículo é suportado",
+      "packMissing": "Ainda não há pacote para este currículo — as aulas serão uma estimativa e vão dizer isso.",
+      "workbenchNeedsSync": "Este perfil está guardado só neste dispositivo. A oficina Pro roda no servidor e ainda não consegue vê-lo — ative a sincronização da conta para que as aulas feitas lá também sigam sua criança.",
+      "save": "Salvar",
+      "saved": "Salvo",
+      "saveFailed": "Não foi possível salvar — o que você digitou continua aqui. Tente de novo.",
+      "curriculumMoet": "MOET (Vietnã)",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "Outro",
+      "langVi": "Vietnamita",
+      "langEn": "Inglês"
     }
   },
   "workspace": {
@@ -2062,6 +2106,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ Ainda não há pacote para {{curriculum}} — isto é uma estimativa, não uma correspondência verificada."
     }
   }
 }

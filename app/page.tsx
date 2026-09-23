@@ -54,6 +54,10 @@ import type {
 import { useSettingsStore } from '@/lib/store/settings';
 import { hasUsableLLMProvider } from '@/lib/store/settings-validation';
 import { useUserProfileStore, AVATAR_OPTIONS } from '@/lib/store/user-profile';
+import { useLearnerProfileStore } from '@/lib/store/learner-profile';
+import { subjectKey, withChosenFirst } from '@/lib/store/selected-subject';
+import { LearnerSubjectPicker } from '@/components/generation/learner-subject-picker';
+import type { LearnerSubject } from '@openmaic/generation';
 import {
   StageListItem,
   listStages,
@@ -230,6 +234,7 @@ function HomePage() {
   // toolbar's add/remove affordances, so the session is always built from a
   // set that cannot change under it.
   const [preparingGenerate, setPreparingGenerate] = useState(false);
+  const [learnerSubject, setLearnerSubject] = useState<LearnerSubject | null>(null);
   const [classrooms, setClassrooms] = useState<StageListItem[]>([]);
   const [thumbnails, setThumbnails] = useState<Record<string, Slide>>({});
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
@@ -605,8 +610,15 @@ function HomePage() {
     setPreparingGenerate(true);
     try {
       const userProfile = useUserProfileStore.getState();
+      // Hồ sơ người học đi THEO YÊU CẦU: route tự tra gói khung từ nó. Vắng hồ
+      // sơ thì đường biệt-danh-và-giới-thiệu cũ chạy nguyên như trước vòng này.
+      const learner = useLearnerProfileStore.getState().learner ?? undefined;
       const requirements: UserRequirements = {
         requirement: form.requirement,
+        // Môn đang chọn đứng ĐẦU danh sách: thứ tự tự mang lựa chọn, nên không
+        // cần một kênh thứ hai (chỉ số môn) để hai bên lệch nhau. Các môn còn
+        // lại vẫn đi theo — biết bé cũng học Toán tiếng Việt là bối cảnh thật.
+        ...(learner ? { learner: withChosenFirst(learner, learnerSubject) } : {}),
         userNickname: userProfile.nickname || undefined,
         userBio: userProfile.bio || undefined,
         webSearch: form.webSearch || undefined,
@@ -894,6 +906,17 @@ function HomePage() {
               onKeyDown={handleKeyDown}
               rows={4}
             />
+
+            {/* Soạn cho: môn của bé — hoặc lời mời khai hồ sơ nếu chưa có */}
+            <div className="px-4 pb-1">
+              <LearnerSubjectPicker
+                onOpenSettings={() => {
+                  setSettingsSection('learner');
+                  setSettingsOpen(true);
+                }}
+                onSubjectChange={setLearnerSubject}
+              />
+            </div>
 
             {/* Toolbar row */}
             <div className="px-3 pb-3 flex items-end gap-2">

@@ -418,6 +418,14 @@ export function buildGenerationTools(deps: GenerationToolDeps): AgentTool<never,
         content = await generateSceneContent(outline, aiCallFor(sceneContentStage(params.type)), {
           agents,
           languageDirective: doc.stage.languageDirective ?? '',
+          // Hồ sơ đi vào TỪNG trang, không chỉ lời nhắc hệ thống: bộ sinh nội
+          // dung trang có lời nhắc riêng, và một lời nhắc không nhắc tới bé
+          // thì trang ấy soạn cho một học sinh chung chung. Ưu tiên hồ sơ đã
+          // đóng trên khoá học (tạo từ cửa bấm-một-phát) rồi mới tới hồ sơ
+          // của chủ sở hữu (khoá học tạo trong xưởng).
+          ...((doc.stage.learner ?? deps.learner)
+            ? { userRequirements: { requirement: '', learner: doc.stage.learner ?? deps.learner! } }
+            : {}),
           allowProceduralSkill: true,
           ...(assignedImages.length ? { assignedImages, imageMapping } : {}),
           ...(params.instruction ? { editDirective: params.instruction } : {}),

@@ -55,6 +55,9 @@ lib/export/svg-arc-to-cubic-bezier.d.ts
 # Impeccable design-gate engine: vendored verbatim, same reason as the kit above.
 vendor/impeccable/
 
-# Acceptance records written by the gate tools (figures, loop arguments).
+# Acceptance records written by the gate tools (figures, loop arguments, captured
+# evidence). Bằng chứng phải giữ NGUYÊN như lúc chụp — định dạng lại một khung
+# đã chụp là sửa chính vật đang được dùng làm chứng.
 _acceptance/**/figures/
+_acceptance/**/evidence/
 _acceptance/**/s4-args.json

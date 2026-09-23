@@ -17,8 +17,7 @@ import {
 import { Loader2, Trash2, AlertTriangle } from 'lucide-react';
 import { useI18n } from '@/lib/hooks/use-i18n';
 import { clearDatabase } from '@/lib/utils/database';
-import { useSettingsStore } from '@/lib/store/settings';
-import { useUserProfileStore } from '@/lib/store/user-profile';
+import { ACCOUNT_SCOPE_STORES } from '@/lib/store/account-stores';
 import { toast } from 'sonner';
 import { createLogger } from '@/lib/logger';
 import { clearCacheErrorMessage } from './clear-cache-error-message';
@@ -69,11 +68,15 @@ export function GeneralSettings() {
         clearSessionStorage: () => sessionStorage.clear(),
         clearPersistedStores: async () => {
           // The blanket clear only reaches these stores while their KV backend
-          // happens to use localStorage. Account-scoped storage needs explicit cleanup.
-          await Promise.all([
-            clearPersistedStore(useSettingsStore.persist, 'settings-storage'),
-            clearPersistedStore(useUserProfileStore.persist, 'user-profile-storage'),
-          ]);
+          // happens to use localStorage. Account-scoped storage needs explicit
+          // cleanup — rút từ sổ đăng ký, không chép tay: thêm một kho account
+          // mà quên thêm vào đây là lớp lỗi đã xảy ra một lần
+          // (cau-hinh-di-theo-nguoi#F1).
+          await Promise.all(
+            Object.values(ACCOUNT_SCOPE_STORES).map((s) =>
+              clearPersistedStore(s.persist, s.persistName),
+            ),
+          );
         },
       });
 

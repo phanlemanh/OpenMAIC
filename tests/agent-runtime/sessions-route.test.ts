@@ -13,6 +13,7 @@ const mocks = vi.hoisted(() => ({
   findSkill: vi.fn(),
   inferSkillIdFromPrompt: vi.fn(),
   scheduleConversationTitle: vi.fn(),
+  getServerPersistenceProvider: vi.fn(),
 }));
 
 vi.mock('@/lib/config/feature-flags', () => ({
@@ -45,6 +46,12 @@ vi.mock('@/lib/server/agent-runtime/session-materials', () => ({
 }));
 vi.mock('@/lib/server/agent-runtime/conversation-title-task', () => ({
   scheduleConversationTitle: mocks.scheduleConversationTitle,
+}));
+// Hồ sơ người học KHÔNG đi qua route này nữa: máy chủ đọc thẳng kho hồ sơ ở
+// ngăn tài khoản khi chạy. Bất kỳ lượt chạm nào vào lớp lưu bền từ đây là một
+// bản chụp mồ côi đang được ghi lại.
+vi.mock('@/lib/persistence/server-provider', () => ({
+  getServerPersistenceProvider: mocks.getServerPersistenceProvider,
 }));
 
 import { GET, POST } from '@/app/api/agent/sessions/route';
@@ -108,6 +115,25 @@ describe('agent session collection route', () => {
       }),
     );
     expect(mocks.scheduleConversationTitle).toHaveBeenCalledWith('session-1', 'anon:test');
+  });
+
+  it('không chép hồ sơ ra một khoá riêng khi mở phiên — trường learner trên thân bị bỏ qua', async () => {
+    const response = await post({
+      prompt: 'Soạn toán cho bé',
+      learner: {
+        nickname: 'Bi',
+        gradeLabel: 'lớp 7',
+        subjects: [{ subject: 'Toán', curriculum: 'cambridge-lower-secondary', language: 'en-US' }],
+      },
+    });
+
+    expect(response.status).toBe(202);
+    expect(mocks.createSession).toHaveBeenCalledTimes(1);
+    expect(
+      mocks.getServerPersistenceProvider,
+      'orphan learner snapshot written on session open',
+    ).not.toHaveBeenCalled();
+    expect(mocks.createSession.mock.calls[0][0]).not.toHaveProperty('learner');
   });
 
   it('does not schedule an ordinary session until its create write resolves', async () => {

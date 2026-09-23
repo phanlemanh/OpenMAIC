@@ -62,6 +62,7 @@ import {
   type SkillPreload,
 } from './skill-preload';
 import { listSessionMaterials, sessionMaterialsPromptBlock } from './session-materials';
+import { learnerPromptBlock, readLearnerProfileForOwner } from './learner-context';
 import {
   availableSkillsPromptBlock,
   createNativeSkillReadTool,
@@ -1356,6 +1357,19 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
     // owner-gated by `withOwnerStageAuthorization`, and patch_stage is marked
     // sequential by the shared STAGE_WRITER_TOOL_NAMES registry
     // (course-tools.ts).
+    // Hồ sơ người học đọc MỘT lần cho cả lượt chạy, từ chính kho mà trình
+    // duyệt ghi vào ngăn tài khoản của chủ sở hữu — không từ bảng phiên, không
+    // từ một bản chụp riêng. Hồ sơ đi theo NGƯỜI, nên phiên mở hôm nay và
+    // phiên mở tuần sau cùng thấy bản mới nhất; và cùng một bản đi vào cả lời
+    // nhắc hệ thống lẫn từng trang mà công cụ sinh ra. Đọc hỏng, hoặc bản
+    // triển khai tắt đồng bộ tài khoản, thì không hồ sơ — bài soạn kém đi,
+    // phiên vẫn chạy.
+    let learner: Awaited<ReturnType<typeof readLearnerProfileForOwner>> = null;
+    try {
+      learner = await readLearnerProfileForOwner(process.env.DATABASE_URL ?? '', meta.ownerId);
+    } catch (error) {
+      log.warn(`learner profile not read: ${String(error)}`);
+    }
     const dslTools = buildDslCourseToolset({
       store: ownerScopedStore,
       backgroundStore: mediaJobStore,
@@ -1364,6 +1378,7 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
       sessionId: id,
       abortSignal: abort.signal,
       getActiveSkill: () => activeSkill,
+      ...(learner ? { learner } : {}),
     });
     const curriculumTools = buildCurriculumTools({
       store: ownerScopedStore,
@@ -1458,6 +1473,8 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
     );
     const askUserLatch = createAskUserTerminateLatch();
     let toolCalls = 0;
+    const learnerBlock = learnerPromptBlock(learner);
+
     const agent = buildAgent({
       streamFn,
       systemPrompt: buildRunnerCoursePrompt({
@@ -1466,6 +1483,7 @@ export async function runSession(ctx: RunContext, meta: ClaimedAgentSession): Pr
         ...(search ? { search: searchPromptBlock() } : {}),
         fetch: fetchPromptBlock(),
         untrustedContent: untrustedContentPolicyPromptBlock(),
+        ...(learnerBlock ? { learner: learnerBlock } : {}),
         ...(materials.length ? { materials: sessionMaterialsPromptBlock(materials) } : {}),
         roster: ROSTER_TOOLS_PROMPT,
         voice: voiceCloneToolsPrompt(voiceRegistrationEnabled),

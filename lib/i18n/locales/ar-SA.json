@@ -11,7 +11,21 @@
   },
   "home": {
     "slogan": "التعلّم التوليدي في فصل تفاعلي متعدد الوكلاء",
-    "greetingWithName": "مرحبًا، {{name}}"
+    "greetingWithName": "مرحبًا، {{name}}",
+    "learnerInvite": {
+      "prompt": "تُعدّ لطفلك؟ أجب عن خمسة أسئلة",
+      "composeFor": "الإعداد لـ:",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "أخرى"
+      },
+      "language": {
+        "vi-VN": "الفيتنامية",
+        "en-US": "الإنجليزية"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "محلل PDF",
@@ -1906,6 +1920,36 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "This machine now shares the choices the other machine had. Anything it never set was left as it is."
+    },
+    "learnerProfile": {
+      "nav": "المتعلّم",
+      "title": "المتعلّم",
+      "description": "سجّل مرة واحدة ما يدرسه طفلك، وستتبعه كل حصة تنشئها.",
+      "nickname": "اسم الطفل",
+      "nicknamePlaceholder": "بماذا تنادونه؟",
+      "grade": "الصف",
+      "gradePlaceholder": "اختر الصف",
+      "school": "المدرسة (اختياري)",
+      "schoolPlaceholder": "مثال: Emasi",
+      "subjects": "المواد",
+      "subjectPlaceholder": "المادة، مثال: الرياضيات",
+      "curriculumPlaceholder": "المنهج",
+      "languagePlaceholder": "لغة الدراسة",
+      "textbookPlaceholder": "الكتاب المدرسي (اختياري)",
+      "addSubject": "إضافة مادة",
+      "removeSubject": "إزالة",
+      "packFound": "✓ هذا المنهج مدعوم",
+      "packMissing": "لا توجد حزمة لهذا المنهج بعد — ستكون الحصة تقديرًا مبنيًا على المعرفة العامة، وسيُذكر ذلك صراحة.",
+      "workbenchNeedsSync": "هذا الملف محفوظ على هذا الجهاز فقط. تعمل ورشة Pro على الخادم ولا تراه بعد — فعّل مزامنة الحساب لتتبع الدروس المنشأة هناك طفلك أيضًا.",
+      "save": "حفظ",
+      "saved": "تم الحفظ",
+      "saveFailed": "تعذّر الحفظ — ما كتبته ما زال موجودًا. حاول مرة أخرى.",
+      "curriculumMoet": "MOET (فيتنام)",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "أخرى",
+      "langVi": "الفيتنامية",
+      "langEn": "الإنجليزية"
     }
   },
   "workspace": {
@@ -2062,6 +2106,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ لا توجد حزمة منهج لـ {{curriculum}} بعد — هذا تقدير وليس مطابقة مُتحقَّقًا منها."
     }
   }
 }

@@ -1,0 +1,74 @@
+E7 network evidence (round 5, independent UI verifier)
+
+Scope note: dev_server.url = http://localhost:3002, no api_base declared, so
+FAIL-eligible = fetch/XHR to http://localhost:3002 (same-origin). Driver is
+the Claude Browser MCP tool (mcp__Claude_Browser__read_network_requests /
+read_console_messages) so network truth is machine-read, not curl+grep.
+
+Request under test:
+  POST http://localhost:3002/api/generate/scene-outlines-stream
+  requestId (this tool's numbering): 53772.2650  -> 200 OK
+  Body: SSE (text/event-stream-like), one `data: {...}` JSON line per event.
+
+Raw SSE body pulled via read_network_requests(requestId) contained (event
+sequence, abbreviated — full outline text omitted here, kept in the DOM/HTML
+evidence file instead):
+
+  data: {"type":"languageDirective", ...}
+  data: {"type":"courseTitle","data":"Tỉ số và tỉ lệ"}
+  :heartbeat
+  data: {"type":"outline", "data": {"id":"scene_1", ...}, "index":0}
+  ... (scene_2 .. scene_10, 10 outline events total, one :heartbeat mid-stream)
+  data: {"type":"curriculumAnchor","data":"Unit 12 · Ratio and proportion — Cambridge Lower Secondary Mathematics Learner's Book 8"}
+  data: {"type":"done", "outlines":[ ... 10 scenes ... ]}
+
+NOTE ON ENCODING: the tool's own text transport mangled non-ASCII bytes in
+the RAW line above into mojibake (e.g. "Tá»‰ sá»‘" instead of "Tỉ số") — this is
+a transcoding artifact of how read_network_requests returned the body through
+this chat tool, NOT a defect in the server response. The `data` field of the
+curriculumAnchor event, read straight out of the live DOM after React parsed
+and rendered it (document.querySelector('[data-state="ST-neo-co-goi"]').textContent,
+i.e. the same bytes the browser actually used), is verbatim:
+
+  Unit 12 · Ratio and proportion — Cambridge Lower Secondary Mathematics Learner's Book 8
+
+This matches character-for-character the anchor line rendered on screen
+(see evidence/E7-neo-co-goi.html) and the sessionStorage snapshot
+(generationSession.curriculumAnchor) read via javascript_exec.
+
+Assertion (machine-checked):
+  1. Exactly one `curriculumAnchor` SSE event present in the stream, emitted
+     AFTER all 10 `outline` events and BEFORE `done` — i.e. it arrives once
+     the full outline is known, consistent with "server derives it from the
+     pack + finished outline", not asked of the model mid-stream.
+  2. The client never sent a `curriculumAnchor` field in the POST request body
+     (request body only carries `requirement`, `learner`, `agents`, settings —
+     verified by reading app/page.tsx's request-building code; the model is
+     never asked for this key — see app/api/generate/scene-outlines-stream/route.ts
+     lines ~331-336 which call findPack(...) server-side from
+     requirements.learner.subjects[0] + gradeLabel, independent of anything
+     the model returned).
+  3. curriculumAnchor text leads with the unit name ("Unit 12 · Ratio and
+     proportion"), not a raw code or the word "Stage"; book title follows.
+
+Other requests observed on http://localhost:3002 during this run (console +
+network, mcp__Claude_Browser__read_console_messages /
+read_network_requests):
+  - GET /api/stages -> 404, GET /api/folders -> 404: EXPECTED PER DESIGN
+    (agent-runtime bộ chạy agent not enabled in this dev run) — not scored red.
+  - GET /api/persistence/kv/* -> 404 / "server persistence not configured":
+    EXPECTED — this verifier ran dev_server.start WITHOUT
+    NEXT_PUBLIC_PERSISTENCE=1 (local-first / browser-storage path), the same
+    documented workaround E1's own eval notes use, because the account-scope
+    KV path requires a real backend (Supabase) not configured in this local
+    checkout; with the flag set, Settings > Learner could not even save
+    (confirmed: "Couldn't save — what you typed is still here." toast), which
+    would have blocked step 2 entirely. This is an environment/config
+    limitation, not a defect in the AC-7 code path under test.
+  - No other 4xx/5xx observed on http://localhost:3002 during the scoped
+    generation request.
+
+networkObserved: clean
+  (app-scope traffic WAS observed — the scene-outlines-stream POST itself —
+  and it returned 200 with the expected event; the only same-origin 404s seen
+  are the two design-expected classes called out above.)

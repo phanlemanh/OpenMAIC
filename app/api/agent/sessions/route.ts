@@ -89,7 +89,6 @@ export async function POST(req: NextRequest) {
   if (!decodedCourseRefs.ok) {
     return apiError('INVALID_REQUEST', 400, decodedCourseRefs.error);
   }
-
   return withRequestOwnerId(req, async (ownerId, responseHeaders) => {
     // An EXPLICIT skill — a `?skill=` launch link, not composer UI — is
     // rejected here rather than at claim time: a session created with a typo'd

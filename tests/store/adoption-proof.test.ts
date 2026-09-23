@@ -140,14 +140,19 @@ describe('thứ máy kia chưa từng đặt thì để nguyên, và không bị
         return noEntry();
       }),
     );
-    const { reloadAccountStoresAndConfirm } = await import('@/lib/store/account-stores');
+    const { ACCOUNT_SCOPE_STORES, reloadAccountStoresAndConfirm } =
+      await import('@/lib/store/account-stores');
     const scope = await reloadAccountStoresAndConfirm();
     expect(scope.replaced, 'adoption claimed a key the other machine never wrote').toEqual([
       'settings',
     ]);
-    expect(scope.keptOwn, 'adoption claimed a key the other machine never wrote').toEqual([
-      'userProfile',
-    ]);
+    // Kỳ vọng rút từ SỔ ĐĂNG KÝ, không chép tay: ngăn giả chỉ phục vụ kho cấu
+    // hình, nên mọi kho account còn lại phải nằm ở «giữ nguyên». Thêm một kho
+    // account mới thì danh sách này tự dài ra — không phải sửa bài kiểm, và
+    // quan trọng hơn: một kho bị BỎ SÓT khỏi việc nhận vẫn làm bài này đỏ.
+    expect(scope.keptOwn, 'adoption claimed a key the other machine never wrote').toEqual(
+      Object.keys(ACCOUNT_SCOPE_STORES).filter((name) => name !== 'settings'),
+    );
   });
 
   it('ngăn có CẢ HAI kho thì không còn gì phải giữ nguyên', async () => {

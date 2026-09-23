@@ -12,7 +12,8 @@ import type {
   ImageMapping,
   UserRequirements,
 } from '@/lib/types/generation';
-import type { AgentInfo } from '@openmaic/generation';
+import type { AgentInfo, LearnerContext } from '@openmaic/generation';
+import { continuationRequirements } from '@/lib/hooks/continuation-requirements';
 import type { Scene } from '@/lib/types/stage';
 import type { SpeechAction } from '@/lib/types/action';
 import { splitLongSpeechActions } from '@/lib/audio/tts-utils';
@@ -751,6 +752,12 @@ export interface GenerationParams {
   languageDirective?: string;
   /** Vocational task-engine flag; gates procedural-skill generation server-side (see resolveVocationalActive). */
   taskEngineMode?: boolean;
+  /**
+   * Bé mà khoá học này soạn cho — đọc từ `stage.learner`. Trang đầu nhận hồ
+   * sơ qua yêu cầu; các trang sau sinh ở đây, và trước vòng này chúng KHÔNG
+   * nhận gì — trang 1 soạn cho Bi, trang 2 trở đi soạn cho một học sinh chung.
+   */
+  learner?: LearnerContext;
 }
 
 export function useSceneGenerator(options: UseSceneGeneratorOptions = {}) {
@@ -864,7 +871,7 @@ export function useSceneGenerator(options: UseSceneGeneratorOptions = {}) {
               stageInfo: params.stageInfo,
               agents: params.agents,
               languageDirective: params.languageDirective,
-              ...(params.taskEngineMode ? { requirements: { taskEngineMode: true } } : {}),
+              ...continuationRequirements(params),
             },
             signal,
           );
@@ -1118,7 +1125,7 @@ export function useSceneGenerator(options: UseSceneGeneratorOptions = {}) {
             stageInfo: params.stageInfo,
             agents: params.agents,
             languageDirective: params.languageDirective,
-            ...(params.taskEngineMode ? { requirements: { taskEngineMode: true } } : {}),
+            ...continuationRequirements(params),
           },
           signal,
         );

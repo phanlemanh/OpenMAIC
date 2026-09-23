@@ -7,7 +7,9 @@
 - **Key Points**:
   {{keyPoints}}
 
-{{teacherContext}}
+{{teacherContext}}{{#if learnerContext}}
+
+{{learnerContext}}{{/if}}
 
 ## Available Resources
 

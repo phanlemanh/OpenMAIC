@@ -11,7 +11,21 @@
   },
   "home": {
     "slogan": "Generative Learning in Multi-Agent Interactive Classroom",
-    "greetingWithName": "Hi, {{name}}"
+    "greetingWithName": "Hi, {{name}}",
+    "learnerInvite": {
+      "prompt": "Building for your child? Answer five questions",
+      "composeFor": "Building for:",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "Other"
+      },
+      "language": {
+        "vi-VN": "Vietnamese",
+        "en-US": "English"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "Parser",
@@ -1906,6 +1920,36 @@
       "serverSilent": "Could not reach the server. Your current choices are unchanged.",
       "retry": "Try again",
       "adoptedPartly": "This machine now shares the choices the other machine had. Anything it never set was left as it is."
+    },
+    "learnerProfile": {
+      "nav": "Learner",
+      "title": "Learner",
+      "description": "Tell us what your child is studying, once. Every lesson you build will follow it.",
+      "nickname": "Child's name",
+      "nicknamePlaceholder": "What do you call them?",
+      "grade": "Class",
+      "gradePlaceholder": "Pick a class",
+      "school": "School (optional)",
+      "schoolPlaceholder": "e.g. Emasi",
+      "subjects": "Subjects",
+      "subjectPlaceholder": "Subject, e.g. Maths",
+      "curriculumPlaceholder": "Curriculum",
+      "languagePlaceholder": "Language",
+      "textbookPlaceholder": "Textbook (optional)",
+      "addSubject": "Add a subject",
+      "removeSubject": "Remove",
+      "packFound": "✓ this curriculum is covered",
+      "packMissing": "No pack for this curriculum yet — lessons will be an informed guess, and will say so.",
+      "workbenchNeedsSync": "This profile is only stored on this device. The Pro workbench runs on the server and cannot see it yet — turn on account sync so lessons made there follow your child too.",
+      "save": "Save",
+      "saved": "Saved",
+      "saveFailed": "Couldn't save — what you typed is still here. Try again.",
+      "curriculumMoet": "MOET (Vietnam)",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "Other",
+      "langVi": "Vietnamese",
+      "langEn": "English"
     }
   },
   "workspace": {
@@ -2062,6 +2106,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ No curriculum pack for {{curriculum}} yet — this is an informed guess, not a checked match."
     }
   }
 }

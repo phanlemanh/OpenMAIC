@@ -11,7 +11,21 @@
   },
   "home": {
     "slogan": "Học tập sinh tạo trong lớp học tương tác đa tác nhân",
-    "greetingWithName": "Chào {{name}}"
+    "greetingWithName": "Chào {{name}}",
+    "learnerInvite": {
+      "prompt": "Soạn cho bé nhà mình? Khai 5 câu",
+      "composeFor": "Soạn cho:",
+      "curriculum": {
+        "moet": "MOET",
+        "cambridge-lower-secondary": "Cambridge Lower Secondary",
+        "ib-myp": "IB MYP",
+        "other": "Khác"
+      },
+      "language": {
+        "vi-VN": "tiếng Việt",
+        "en-US": "tiếng Anh"
+      }
+    }
   },
   "toolbar": {
     "pdfParser": "Bộ đọc PDF",
@@ -1906,6 +1920,36 @@
       "serverSilent": "Chưa gọi được máy chủ. Lựa chọn đang dùng không đổi.",
       "retry": "Thử lại",
       "adoptedPartly": "Máy này đã dùng chung những lựa chọn máy kia có. Thứ máy kia chưa từng đặt vẫn để nguyên."
+    },
+    "learnerProfile": {
+      "nav": "Người học",
+      "title": "Người học",
+      "description": "Khai một lần bé đang học gì. Mọi bài soạn sau đó bám theo.",
+      "nickname": "Tên gọi của bé",
+      "nicknamePlaceholder": "Ở nhà gọi bé là gì?",
+      "grade": "Lớp",
+      "gradePlaceholder": "Chọn lớp",
+      "school": "Trường (không bắt buộc)",
+      "schoolPlaceholder": "ví dụ Emasi",
+      "subjects": "Các môn",
+      "subjectPlaceholder": "Môn, ví dụ Toán",
+      "curriculumPlaceholder": "Chương trình",
+      "languagePlaceholder": "Ngôn ngữ học",
+      "textbookPlaceholder": "Sách (không bắt buộc)",
+      "addSubject": "Thêm môn",
+      "removeSubject": "Bớt môn",
+      "packFound": "✓ máy biết chương trình này",
+      "packMissing": "Chưa có gói cho chương trình này — máy sẽ đoán và nói rõ là đang đoán.",
+      "workbenchNeedsSync": "Hồ sơ này đang chỉ lưu trên máy này. Xưởng Pro chạy trên máy chủ nên chưa thấy được hồ sơ — bật đồng bộ tài khoản thì bài soạn trong xưởng cũng bám theo bé.",
+      "save": "Lưu",
+      "saved": "Đã lưu",
+      "saveFailed": "Chưa lưu được — thứ vừa gõ vẫn còn trên màn. Thử lại nhé.",
+      "curriculumMoet": "MOET (Việt Nam)",
+      "curriculumCambridge": "Cambridge Lower Secondary",
+      "curriculumIb": "IB MYP",
+      "curriculumOther": "Khác",
+      "langVi": "Tiếng Việt",
+      "langEn": "Tiếng Anh"
     }
   },
   "workspace": {
@@ -2062,6 +2106,11 @@
       "error": {
         "materialExtraction": null
       }
+    }
+  },
+  "preview": {
+    "curriculumAnchor": {
+      "guessing": "⚠ Chưa có gói khung cho {{curriculum}} — máy đang đoán theo hiểu biết chung, chưa phải một khớp đã kiểm."
     }
   }
 }
