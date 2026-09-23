@@ -6,7 +6,7 @@ failed_evals: []
 verified_by: fresh-context verification subagent
 enforcement_mode: strict
 bypass_used: false
-verified_commit: de1228d426fffff17fe60aef0ddcc71b308d1b77
+verified_commit: d96920e43ea1ef48244dd25a40bd9e8842a78ba0
 human_signoff: Manh Phan 2026-09-23
 ---
 
@@ -300,3 +300,7 @@ Round 2: E1, E5, E6, E7, E7b, E15 và suite `@openmaic/storage` xanh; E8b không
 Round 3: E6, E9, E7b, E15, E7 và suite `@openmaic/storage` xanh; E1 không đạt (thiếu khung sống ST-the-dang-luu — file đặt tên cho khung này thực chất chụp ST-the-da-luu); E8b không đạt (network-truth: 404 app-origin, cùng nguyên nhân round 2, chưa fix); E13gen không đạt (tuyến dàn ý không trả kết quả, thiếu khoá nhà cung cấp) → verdict REJECT, failed_evals=[E13gen, E1, E8b].
 Round 4: E1 sửa xong (khung ST-the-dang-luu bắt bằng DOM-live .html); E13gen sửa xong (máy chủ + khoá mô hình sẵn, sinh cặp dàn ý mù thành công) → E13 (judgment) nâng UNCERTAIN→PASS; 16 eval test/script khác đều xanh và không phân biệt được với baseline; E14 vẫn UNCERTAIN (Input của câu hỏi này chưa liệt kê evidence/E7-neo-co-goi.png dù file đã tồn tại); E8b không đạt với nguyên nhân MỚI (2 lượt GET /api/curriculum-packs bị từ chối kết nối nhất thời lúc bootstrap/HMR, khác 404 round 2/3 đã sửa) → verdict REJECT, failed_evals=[E8b].
 Round 5: E7b/E7c (bộ `pnpm test`) chạy lại xanh, không phân biệt với baseline; E7 và E8b (ui-check) đều xanh sạch — network-truth `clean` lần đầu tiên cho cả hai (nguyên nhân network của E8b ở round 4 không tái diễn); hội đồng chấm lại E13 (giữ PASS) và E14 (UNCERTAIN→PASS, nay có đủ cả bằng chứng "điền gì" và "neo vào đâu" trong phạm vi Input); 17 eval khác carry-forward nguyên trạng (16 từ round 4, 1 — E10 — từ round 1), delta vòng này không chạm paths của chúng → mọi eval PASS, verdict PASS.
+
+### Re-pin lần 1 — 2026-09-23, do hoá cũ do chính commit chữ ký
+run_id: repin-20260923T010135Z-93312
+sha: d96920e43ea1ef48244dd25a40bd9e8842a78ba0 · suites: 2 lệnh exit 0 · evals: 18/18 eval máy đạt kỳ vọng · ngoài làn máy: E1, E5, E7, E8b, E13 (E13 không khai paths), E14 (E14 không khai paths) · AC không có chốt máy: AC-14
