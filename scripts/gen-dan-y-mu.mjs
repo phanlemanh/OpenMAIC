@@ -21,7 +21,8 @@
  * đo thì chưa từng tồn tại. Nên hai tệp phải đến từ CHÍNH tuyến soạn thật, mang
  * mã lượt chạy ở dòng đầu, và hội đồng chỉ chấm tệp có mã.
  *
- * Dùng: node scripts/gen-dan-y-mu.mjs [--slug <slug>] [--de "<đề bài>"] [--base-url <url>] [--model <provider:model>]
+ * Dùng: node scripts/gen-dan-y-mu.mjs [--slug <slug>] [--de "<đề bài>"] [--base-url <url>] [--model <provider:model>] [--out <thư mục>]
+ * Ghi ra: `.acceptance-runs/<slug>/` (mặc định) — xem chú thích ở `outDir`.
  * Cần: một máy chủ đang chạy đã khai khoá nhà cung cấp (mặc định
  * http://localhost:3002, khớp dev_server.url của hồ sơ). Không có máy chủ →
  * thoát 2 và nói rõ, KHÔNG dựng dữ liệu giả.
@@ -48,7 +49,13 @@ const slug = opt('--slug', 'hieu-be-dang-hoc-gi');
 const de = opt('--de', 'tỉ lệ và tỉ số');
 const baseUrl = opt('--base-url', process.env.OPENMAIC_BASE_URL ?? 'http://localhost:3002');
 const model = opt('--model', process.env.OPENMAIC_MODEL ?? process.env.DEFAULT_MODEL ?? '');
-const outDir = join(process.cwd(), '_acceptance', slug, 'evidence');
+// Ghi vào THƯ MỤC LƯỢT CHẠY, không vào hồ sơ nghiệm thu. Lệnh này chạy lại ở
+// nhiều nơi (lượt nghiệm thu, làn trước chữ ký, CI); một đường dẫn dưới
+// `_acceptance/` sẽ bị ghi đè mỗi lần — kể cả cặp dàn ý hội đồng ĐÃ chấm, sau
+// khi hồ sơ qua cổng và cây ấy đã thành sử liệu chỉ đọc. Lượt nghiệm thu muốn
+// dùng cặp này làm bằng chứng thì CHÉP sang `evidence/` — đó là việc của lượt,
+// không phải tác dụng phụ của lệnh. `--out <thư mục>` đổi nơi ghi.
+const outDir = opt('--out', join(process.cwd(), '.acceptance-runs', slug));
 
 /** Nhà cung cấp máy chủ khai là đã có khoá — để thông điệp thiếu-mô-hình chỉ đúng chỗ. */
 async function configuredProviders() {

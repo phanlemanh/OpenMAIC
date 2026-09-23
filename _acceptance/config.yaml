@@ -13,6 +13,13 @@ executors:
     importer: "./scripts/with-pinned-node.sh pnpm --filter @openmaic/importer test"     # suy từ: ci.yml "Unit Tests (importer)"
     dsl: "./scripts/with-pinned-node.sh pnpm --filter @openmaic/dsl test"               # suy từ: ci.yml "Unit Tests (dsl)"
     render_service: "./scripts/with-pinned-node.sh npm --prefix render-service test"    # suy từ: ci.yml job "render-service"
+  # Làn chụp-sống ui-check của feature-loop KHÔNG phải một lệnh: verifier TƯƠI
+  # của lượt nghiệm thu lái trình duyệt theo đúng `steps` của từng eval trong
+  # evals.yaml và lưu khung vào `_acceptance/<slug>/evidence/`. Khoá này khai
+  # làn ấy để báo cáo bằng chứng ghi được `verifier:` trỏ vào một làn CÓ KHAI
+  # (thay vì một tên tự đặt); không ai giải nó thành lệnh, vì eval ui-check
+  # không khai `cmd`. Khác `design.ui_check` bên dưới (quét sàn thẩm mỹ).
+  ui-check: "fresh-verifier-agent: trình duyệt theo evals.yaml steps → _acceptance/<slug>/evidence/"
   # Executor trỏ vào scripts/ TRONG repo, không vào plugin cache: file này được
   # commit, mà đường dẫn cache khác nhau theo từng máy/từng user.
   script:

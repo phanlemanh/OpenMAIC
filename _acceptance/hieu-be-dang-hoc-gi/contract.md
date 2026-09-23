@@ -5,7 +5,7 @@ slug: hieu-be-dang-hoc-gi
 owner: phanlemanh@gmail.com
 risk_tier: T2
 surfaces: [api, ui]
-status: verified
+status: signed-off
 design_doc: _acceptance/hieu-be-dang-hoc-gi/design.md
 approved_by:
 approved_at:
@@ -96,3 +96,41 @@ Chân ngành đối chiếu: [NGÀNH: MagicSchool.ai] · [NGÀNH: Khanmigo] · [
 - Luật phủ khung: MỖI dòng `ST-*` của bảng trạng thái phải có ÍT NHẤT một khung chụp sống; thiếu một dòng là đỏ nêu đích danh tên dòng. Chụp thêm khung cho hành vi (đổi lớp, bớt môn) là được — luật là phủ, không phải bằng. Mười một dòng chia cho bốn phép đo: E1 phủ sáu dòng `ST-the-*`, E5 phủ `ST-chon-moi-khai` `ST-chon-san-sang` `ST-neo-khong`, E7 phủ `ST-neo-co-goi`, E8b phủ `ST-neo-dang-doan`.
 - Khoá cấu hình S3 phải thêm trước khi chạy nghiệm thu máy: `executors.script.dan_y_mu` trỏ `scripts/gen-dan-y-mu.mjs` (bộ sinh cặp dàn ý mù cho E13gen). Thiếu khoá thì bước chuẩn-bị-args của S4 dừng có tên, không đoán.
 - Dữ liệu trẻ em: hồ sơ chỉ giữ tên gọi, lớp, trường, môn, sách; không họ tên đầy đủ, không ngày sinh.
+
+### Known limits (Cổng 2, Manh Phan 2026-09-23)
+
+- Known limit (Ngoài-1): Nếu hồ sơ bị lỗi định dạng khi gửi lên, một số màn soạn bài có thể báo lỗi và không ra được bài, thay vì bỏ qua thông tin sai.
+- Known limit (Ngoài-2): Một gói khung giáo trình bị lỗi định dạng có thể làm mọi bài soạn có hồ sơ người học bị lỗi, không soạn được.
+- Known limit (Ngoài-3): Người dùng ngôn ngữ khác tiếng Việt vẫn thấy chữ "lớp" bằng tiếng Việt trong ô chọn lớp.
+- Known limit (Ngoài-4): Số phiên bản gói phần mềm báo hiệu một thay đổi phá vỡ dù thực tế không có gì phá vỡ, có thể khiến nơi khác dùng gói này ngại nâng cấp.
+- Known limit (Ngoài-7): Trong lúc bài đang được soạn, phụ huynh có thể thấy cảnh báo "đang đoán, chưa có sách" dù bé có sách, rồi cảnh báo tự biến mất sau khi soạn xong.
+- Known limit (Ngoài-8): Nếu hồ sơ bé tải chậm, thẻ khai hồ sơ có thể hiện trống dù đã có hồ sơ, và nếu phụ huynh lưu ngay lúc đó có thể làm mất các môn đã khai trước.
+- Known limit (Ngoài-9): Nếu hồ sơ đã lưu bị lỗi nhẹ (ví dụ khai quá nhiều môn), xưởng Pro âm thầm soạn như không có hồ sơ mà không báo cho ai biết.
+- Known limit (Ngoài-10): Nếu tên môn học có khoảng trắng thừa hoặc viết hoa khác đi, gói khung đúng ra khớp sẽ không được gắn, dù màn hình có báo rõ là chưa có gói.
+- Known limit (Ngoài-11): Bằng chứng cho rằng mã gói không bị lưu cứng vào hồ sơ đã lưu có thể không thực sự đúng, nhưng phép đo hiện tại sẽ luôn báo đạt dù sai.
+- Known limit (Ngoài-12): Bài kiểm cho luồng soạn dàn ý có thể không phát hiện được trường hợp bài soạn vừa có sách vừa tự nói đang đoán vì không có sách.
+- Known limit (Ngoài-13): Bài kiểm cho việc gói phải khớp đúng lớp có thể không thực sự phát hiện khi gói bị gắn nhầm lớp.
+- Known limit (Ngoài-14): Khi hồ sơ bé bị xoá hết, ô nhớ môn đang chọn trước đó có thể không được dọn sạch, dù phần khác của màn hình vẫn hiện đúng lời mời khai hồ sơ.
+- Known limit (Ngoài-15): Nếu vòng nghiệm thu chạy trên một bản sao mã khác, kết quả kiểm tra có thể vô tình đọc nhầm tài liệu từ máy của người viết tính năng thay vì bản đang được kiểm, khiến kết quả sai lệch.
+- Known limit (Ngoài-16): Nội dung cảnh báo "đang đoán" thật sự hiển thị cho phụ huynh ở từng ngôn ngữ chưa được kiểm tra là dịch đúng và đọc được.
+- Known limit (Ngoài-17): Nếu dữ liệu gửi lên bị sai định dạng hoặc quá lớn, yêu cầu soạn bài có thể báo lỗi chung chung thay vì một lời nhắc rõ ràng, và không có giới hạn cho lượng dữ liệu về bé được gửi cho mô hình.
+- Known limit (Ngoài-18): Nếu một file gói giáo trình trên máy chủ bị thiếu trường dữ liệu, các yêu cầu soạn bài có hồ sơ học sinh có thể bị lỗi, không chỉ môn liên quan tới file đó.
+- Known limit (Ngoài-19): Không ảnh hưởng gì tới trải nghiệm phụ huynh; đây chỉ là một dòng mã thừa bị công cụ kiểm tra mã nêu ra.
+- Known limit (Ngoài-20): Có lúc nội dung gửi cho AI có thể nói 'chưa có sách giáo khoa để bám theo' trong khi màn hình lại hiện chắc chắn một đường dẫn tới chương sách cho cùng bài soạn đó, gây thông tin mâu thuẫn.
+- Known limit (Ngoài-21): Trong lúc bài đang được soạn, phụ huynh có thể tạm thời thấy dòng cảnh báo 'chưa có sách, máy đang đoán' dù môn đó thực ra có sách, trước khi dòng đúng hiện ra lúc soạn xong.
+- Known limit (Ngoài-22): Trong một số cách cài đặt đặc biệt, máy có thể hiện một đường dẫn chương sách rất chắc chắn cho phụ huynh dù thực ra không có nội dung sách nào được đưa cho AI.
+- Known limit (Ngoài-23): Đây là vấn đề của bộ kiểm thử nội bộ, không phải điều phụ huynh gặp phải; nó có nghĩa một lỗi trong tương lai ở chỗ này có thể lọt qua mà không ai biết.
+- Known limit (Ngoài-24): Đây là lỗ hổng trong công cụ kiểm tra nội bộ; nó không tự nó cho thấy có gì sai với những gì phụ huynh nhìn thấy, nhưng nghĩa là một lỗi thật ở khu vực này có thể không bị phát hiện.
+- Known limit (Ngoài-25): Đây là vấn đề của bài kiểm nội bộ; nó không chứng minh nút Xoá bộ nhớ đệm hiện đang bỏ sót dữ liệu nào, chỉ là nếu sau này có bỏ sót thì bài kiểm này sẽ không bắt được.
+- Known limit (Ngoài-26): Không có bằng chứng phụ huynh hiện đang thấy chữ khó hiểu trên thẻ; vấn đề là bài kiểm nội bộ hiện không có khả năng phát hiện nếu điều đó xảy ra.
+- Known limit (Ngoài-27): Không có bằng chứng phụ huynh hiện đang thấy mã kỹ thuật ở dòng cảnh báo 'đang đoán'; bài kiểm nội bộ hiện không có khả năng phát hiện nếu điều đó xảy ra.
+- Known limit (Ngoài-28): Kết quả đo tự động của tính năng này có thể chạy trên một phiên bản máy khác với phiên bản dùng để kiểm, nên một báo cáo xanh chưa chắc phản ánh đúng sản phẩm thật.
+- Known limit (Ngoài-29): Nếu máy đo tái sử dụng một máy chủ có sẵn với cấu hình khác cấu hình đúng, kết quả kiểm tính năng có thể không đáng tin dù báo cáo hiện xanh.
+- Known limit (Ngoài-30): Nếu máy đo tái sử dụng một máy chủ có cấu hình khác, kết quả kiểm tính năng có thể không đáng tin dù báo cáo hiện xanh.
+- Known limit (Ngoài-31): Nút 'Xoá bộ nhớ đệm' có thể trong tương lai bỏ sót việc xoá hồ sơ của bé mà không ai phát hiện ra, vì phép kiểm hiện không đủ chặt để báo động.
+- Known limit (Ngoài-32): Trạng thái 'đã có gói khung hay chưa' có thể trong tương lai bị đóng băng sai mà không phép kiểm nào bắt được.
+- Known limit (Ngoài-33): Phép kiểm 'không đổi hành vi cũ khi chưa có hồ sơ' có thể xanh giả, khiến một thay đổi ngoài ý muốn lọt qua mà không ai biết.
+- Known limit (Ngoài-34): Nếu thiếu một dòng chữ dịch ở một trong 12 ngôn ngữ, phụ huynh dùng ngôn ngữ đó có thể thấy một đoạn mã kỹ thuật thay vì câu cảnh báo dễ hiểu.
+- Known limit (Ngoài-35): Nếu một gói khung mới ra mắt sau khi hồ sơ bé đã được lưu, bài soạn ra có thể vừa nói với phụ huynh "chưa có gói, máy đang đoán" vừa thực ra dùng đúng nội dung sách giáo trình — lời cảnh báo không khớp với bài thật.
+- Known limit (Ngoài-39): Một trong các nơi bài soạn dùng hồ sơ người học không được kiểm tra là có dùng đúng bối cảnh hồ sơ hay không — nếu chỗ này lệch chuẩn, sẽ không có cảnh báo nào.
+- Known limit (Ngoài-40): Một cờ dùng để cảnh báo «ảnh chụp prompt đã cũ» luôn được ghi cứng là an toàn bất kể thực tế, nên cảnh báo này sẽ không bao giờ tự bật lên dù ảnh chụp đã lỗi thời.
